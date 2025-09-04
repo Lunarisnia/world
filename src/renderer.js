@@ -1,0 +1,42 @@
+import { WebGLRenderer } from "three";
+import Camera from "./camera";
+import { Scene } from "three";
+
+export default class Renderer {
+	/** @type {WebGLRenderer} */
+	instance;
+	/** @type {Scene} */
+	scene;
+	/** @type {Camera} */
+	camera;
+
+	constructor() {
+		this.instance = new WebGLRenderer();
+	}
+
+	/**
+	 * Set Scene
+	 * @param {Scene} scene - desc
+	 */
+	setScene(scene) {
+		this.scene = scene;
+	}
+
+	/**
+	 * Set Camera
+	 * @param {Camera} camera - desc
+	 */
+	setCamera(camera) {
+		this.camera = camera;
+	}
+
+	setSize(width, height) {
+		this.instance.setSize(width, height);
+	}
+
+	startRenderLoop() {
+		this.instance.setAnimationLoop(() => {
+			this.instance.render(this.scene, this.camera.instance);
+		});
+	}
+};

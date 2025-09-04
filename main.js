@@ -1,8 +1,15 @@
 import * as THREE from 'three';
+import Game from './src/game';
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const game = new Game();
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const cube = new THREE.Mesh(geometry, material);
+game.world.add(cube);
+
+game.mainCamera.instance.position.z = 5;
+game.mainCamera.instance.position.y = 1;
+
+game.run();
+
