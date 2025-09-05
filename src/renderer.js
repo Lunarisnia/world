@@ -34,9 +34,7 @@ export default class Renderer {
 		this.instance.setSize(width, height);
 	}
 
-	startRenderLoop() {
-		this.instance.setAnimationLoop(() => {
-			this.instance.render(this.scene, this.camera.instance);
-		});
+	render() {
+		this.instance.render(this.scene, this.camera.instance);
 	}
 };

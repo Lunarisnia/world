@@ -1,6 +1,7 @@
-import { Scene } from "three";
+import { Clock, Scene } from "three";
 import Camera from "./camera";
 import Renderer from "./renderer";
+import World from "./world";
 
 export default class Game {
 	/** @type {Game} */
@@ -10,6 +11,10 @@ export default class Game {
 	/** @type {Camera} */
 	mainCamera;
 	/** @type {Scene} */
+	scene;
+	/** @type {Clock} */
+	clock;
+	/** @type {World} */
 	world;
 
 	constructor() {
@@ -19,11 +24,22 @@ export default class Game {
 		Game.instance = this;
 
 		this.mainCamera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 1000);
-		this.world = new Scene();
+		this.scene = new Scene();
+		this.setClock();
 
 		this.setRenderer();
 		this.renderer.setCamera(this.mainCamera);
-		this.renderer.setScene(this.world);
+		this.renderer.setScene(this.scene);
+
+		this.setWorld();
+	}
+
+	setWorld() {
+		this.world = new World(this);
+	}
+
+	setClock() {
+		this.clock = new Clock();
 	}
 
 	setRenderer() {
@@ -35,6 +51,14 @@ export default class Game {
 
 
 	run() {
-		this.renderer.startRenderLoop();
+		this.clock.start();
+		this.renderer.instance.setAnimationLoop(() => {
+			this.renderLoop();
+		});
+	}
+
+	renderLoop() {
+		this.world.update();
+		this.renderer.render();
 	}
 };
