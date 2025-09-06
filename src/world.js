@@ -1,8 +1,8 @@
-import { BoxGeometry, Mesh, MeshBasicMaterial, ShaderMaterial } from "three";
+import { BoxGeometry, Mesh, ShaderMaterial } from "three";
 import Game from "./game";
 import basicVert from "/shaders/basic/basic.vert?url&raw"
 import redColor from "/shaders/basic/red-color.frag?url&raw"
-
+import Spawner from "./object/spawner";
 
 export default class World {
 	/** @type {Game} */
@@ -14,19 +14,18 @@ export default class World {
 	 */
 	constructor(game) {
 		this.game = game;
-		const geometry = new BoxGeometry(1, 1, 1);
-		const material = new ShaderMaterial({
-			vertexShader: basicVert,
-			fragmentShader: redColor,
-		});
-		this.cube = new Mesh(geometry, material);
-		game.scene.add(this.cube);
+		this.sphere = Spawner.CreateSphereWithShaderMaterial({
+			radius: 1.0,
+			heightSegments: 30,
+			widthSegments: 30,
+		}, basicVert, redColor);
+		game.scene.add(this.sphere.mesh);
 
 		game.mainCamera.instance.position.z = 5;
 	}
 
 	update() {
-		this.cube.position.x = Math.cos(this.game.clock.getElapsedTime());
-		this.cube.position.y = Math.sin(this.game.clock.getElapsedTime());
+		this.sphere.mesh.position.x = Math.cos(this.game.clock.getElapsedTime());
+		this.sphere.mesh.position.y = Math.sin(this.game.clock.getElapsedTime());
 	}
 };
