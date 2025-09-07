@@ -23,7 +23,7 @@ export default class World {
 			fragmentShader: solidColor,
 			uniforms: {
 				color: {
-					value: new Vector3(0.0, 1.0, 0.0),
+					value: new Vector3(0.0, 1.0, 1.0),
 				},
 			},
 		});
