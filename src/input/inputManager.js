@@ -54,8 +54,6 @@ export default class InputManager {
 		const pressedKey = this.keyMap.get(event.key);
 		pressedKey.justPressed = !pressedKey.justPressed && !pressedKey.down;
 		pressedKey.down = true;
-		// this.keyMap[event.key].justPressed = !pressedKey.justPressed && !pressedKey.down;
-		// this.keyMap[event.key].down = true;
 	}
 
 	/**

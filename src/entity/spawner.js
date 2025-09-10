@@ -1,5 +1,5 @@
 import { ShaderMaterial, SphereGeometry } from "three";
-import Object from "./object";
+import Entity from "./entity";
 
 export default class Spawner {
 	static CreateSphereWithShaderMaterial({ radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength }, {
@@ -13,6 +13,6 @@ export default class Spawner {
 			fragmentShader,
 			uniforms,
 		});
-		return new Object(geometry, material);
+		return new Entity(geometry, material);
 	}
 };

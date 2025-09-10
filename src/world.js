@@ -1,19 +1,16 @@
 import Game from "./game";
 import basicVert from "/shaders/basic/basic.vert?url&raw"
 import solidColor from "/shaders/basic/solid-color.frag?url&raw"
-import Spawner from "./object/spawner";
+import Spawner from "./entity/spawner";
 import { Vector3 } from "three/webgpu";
+import Entity from "./entity/entity";
+import Player from "./components/player";
 
 export default class World {
 	/** @type {Game} */
-	game;
+	entities = new Map();
 
-	/**
-	 * description
-	 * @param {Game} game - desc
-	 */
-	constructor(game) {
-		this.game = game;
+	constructor() {
 		this.sphere = Spawner.CreateSphereWithShaderMaterial({
 			radius: 1.0,
 			heightSegments: 30,
@@ -23,17 +20,30 @@ export default class World {
 			fragmentShader: solidColor,
 			uniforms: {
 				color: {
-					value: new Vector3(0.0, 1.0, 1.0),
+					value: new Vector3(1.0, 1.0, 1.0),
 				},
 			},
 		});
-		game.scene.add(this.sphere.mesh);
+		this.sphere.addComponent(new Player());
+		this.addEntity(this.sphere);
 
-		game.mainCamera.instance.position.z = 5;
+		Game.instance.mainCamera.instance.position.z = 5;
+	}
+
+	/**
+	 * Register entity to be updated and rendered
+	 * @param {Entity} entity - 
+	 */
+	addEntity(entity) {
+		this.entities.set(entity.id, entity);
+		Game.instance.scene.add(entity.mesh);
 	}
 
 	update() {
-		this.sphere.mesh.position.x = Math.cos(this.game.clock.getElapsedTime());
-		this.sphere.mesh.position.y = Math.sin(this.game.clock.getElapsedTime());
+		for (const entity of this.entities.values()) {
+			entity.update();
+		}
+		// this.sphere.mesh.position.x = Math.cos(this.game.clock.getElapsedTime());
+		// this.sphere.mesh.position.y = Math.sin(this.game.clock.getElapsedTime());
 	}
 };

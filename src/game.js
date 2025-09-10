@@ -40,7 +40,7 @@ export default class Game {
 	}
 
 	setWorld() {
-		this.world = new World(this);
+		this.world = new World();
 	}
 
 	setClock() {
