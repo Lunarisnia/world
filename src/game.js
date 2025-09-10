@@ -2,10 +2,13 @@ import { Clock, Scene } from "three";
 import Camera from "./camera";
 import Renderer from "./renderer";
 import World from "./world";
+import InputManager from "./input/inputManager";
 
 export default class Game {
 	/** @type {Game} */
 	static instance;
+	/** @type {HTMLCanvasElement} */
+	static window;
 	/** @type {Renderer} */
 	renderer;
 	/** @type {Camera} */
@@ -32,6 +35,8 @@ export default class Game {
 		this.renderer.setScene(this.scene);
 
 		this.setWorld();
+
+		new InputManager();
 	}
 
 	setWorld() {
@@ -46,7 +51,10 @@ export default class Game {
 		this.renderer = new Renderer();
 
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		// This is required for the canvas to properly listen for keyboard input
+		this.renderer.instance.domElement.tabIndex = 0;
 		document.body.appendChild(this.renderer.instance.domElement);
+		Game.window = this.renderer.instance.domElement;
 	}
 
 
@@ -58,6 +66,7 @@ export default class Game {
 	}
 
 	renderLoop() {
+		InputManager.instance.update();
 		this.world.update();
 		this.renderer.render();
 	}
