@@ -13,6 +13,9 @@ export default class InputManager {
 		InputManager.instance = this;
 
 		this.addKey("a");
+		this.addKey("w");
+		this.addKey("s");
+		this.addKey("d");
 
 		Game.window.addEventListener("keydown", (event) => {
 			this.keyDownListener(event)
