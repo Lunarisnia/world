@@ -28,6 +28,7 @@ export default class Entity {
 
 	// NOTE: Maybe it should check for uniqueness later
 	addComponent(component) {
+		component.mesh = this.mesh;
 		this.components.push(component);
 	}
 
