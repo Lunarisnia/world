@@ -11,10 +11,11 @@ export default class World {
 	entities = new Map();
 
 	constructor() {
-		this.sphere = Spawner.CreateSphereWithShaderMaterial({
-			radius: 1.0,
-			heightSegments: 30,
-			widthSegments: 30,
+		this.cube = Spawner.CreateCubeWithShaderMaterial({
+			width: 1.0,
+			height: 1.0,
+			// heightSegments: 30,
+			// widthSegments: 30,
 		}, {
 			vertexShader: basicVert,
 			fragmentShader: solidColor,
@@ -24,8 +25,8 @@ export default class World {
 				},
 			},
 		});
-		this.sphere.addComponent(new Player());
-		this.addEntity(this.sphere);
+		this.cube.addComponent(new Player());
+		this.addEntity(this.cube);
 
 		Game.instance.mainCamera.instance.position.z = 5;
 	}
@@ -39,11 +40,15 @@ export default class World {
 		Game.instance.scene.add(entity.mesh);
 	}
 
+	init() {
+		for (const entity of this.entities.values()) {
+			entity.init();
+		}
+	}
+
 	update() {
 		for (const entity of this.entities.values()) {
 			entity.update();
 		}
-		// this.sphere.mesh.position.x = Math.cos(this.game.clock.getElapsedTime());
-		// this.sphere.mesh.position.y = Math.sin(this.game.clock.getElapsedTime());
 	}
 };

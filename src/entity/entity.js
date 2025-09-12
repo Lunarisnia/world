@@ -32,6 +32,12 @@ export default class Entity {
 		this.components.push(component);
 	}
 
+	init() {
+		for (const component of this.components.values()) {
+			component.init();
+		}
+	}
+
 	update() {
 		for (const component of this.components.values()) {
 			component.update();

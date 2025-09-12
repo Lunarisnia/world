@@ -60,6 +60,7 @@ export default class Game {
 
 	run() {
 		this.clock.start();
+		this.world.init();
 		this.renderer.instance.setAnimationLoop(() => {
 			this.renderLoop();
 		});
