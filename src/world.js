@@ -1,6 +1,6 @@
 import Game from "./game";
 import basicVert from "/shaders/basic/basic.vert?url&raw"
-import solidColor from "/shaders/basic/solid-color.frag?url&raw"
+import solidColor from "/shaders/basic/normal-viz.frag?url&raw"
 import Spawner from "./entity/spawner";
 import { Vector3 } from "three/webgpu";
 import Entity from "./entity/entity";
