@@ -1,4 +1,4 @@
-import { BoxGeometry, ShaderMaterial, SphereGeometry } from "three";
+import { BoxGeometry, MeshBasicMaterial, ShaderMaterial, SphereGeometry } from "three";
 import Entity from "./entity";
 
 export default class Spawner {
@@ -25,6 +25,13 @@ export default class Spawner {
 			fragmentShader,
 			uniforms,
 		});
+
+		return new Entity(geometry, material);
+	}
+
+	static CreateSimpleCube({ width, height, depth, color }) {
+		const geometry = new BoxGeometry(width, height, depth);
+		const material = new MeshBasicMaterial({ color: color });
 
 		return new Entity(geometry, material);
 	}

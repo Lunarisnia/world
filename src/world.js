@@ -1,6 +1,7 @@
 import Game from "./game";
 import basicVert from "/shaders/basic/basic.vert?url&raw"
-import solidColor from "/shaders/basic/normal-viz.frag?url&raw"
+import solidColor from "/shaders/basic/solid-color.frag?url&raw"
+import normalViz from "/shaders/basic/normal-viz.frag?url&raw"
 import Spawner from "./entity/spawner";
 import { Vector3 } from "three/webgpu";
 import Entity from "./entity/entity";
@@ -21,12 +22,41 @@ export default class World {
 			fragmentShader: solidColor,
 			uniforms: {
 				color: {
-					value: new Vector3(1.0, 1.0, 1.0),
+					value: new Vector3(1.0, 1.0, 0.0),
 				},
 			},
 		});
 		this.cube.addComponent(new Player());
 		this.addEntity(this.cube);
+
+		this.floor = Spawner.CreateCubeWithShaderMaterial({
+			width: 100.0,
+			height: 1.0,
+			depth: 100.0,
+		}, {
+			vertexShader: basicVert,
+			fragmentShader: normalViz,
+			uniforms: {
+				color: {
+					value: new Vector3(1.0, 1.0, 1.0),
+				}
+			}
+		})
+		this.floor.mesh.position.y = -1;
+		this.addEntity(this.floor);
+
+		const space = 10;
+		for (let i = 0; i < 5; i++) {
+			const x = Math.floor(Math.random() * space);
+			const z = Math.floor(Math.random() * space);
+
+			const cube = Spawner.CreateSimpleCube({
+				width: 1, depth: 1, height: 1,
+				color: new Vector3(1.0, 0.0, 0.0)
+			});
+			cube.mesh.position.set(x, 0.0, z);
+			this.addEntity(cube);
+		}
 
 		Game.instance.mainCamera.instance.position.z = 5;
 	}
