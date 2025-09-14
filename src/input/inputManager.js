@@ -5,6 +5,7 @@ export default class InputManager {
 	static instance;
 	/** @type {Map} */
 	keyMap = new Map();
+	isAnyKeyPressed = false;
 
 	constructor() {
 		if (InputManager.instance) {
@@ -48,6 +49,7 @@ export default class InputManager {
 	 * @param {KeyboardEvent} event - desc
 	 */
 	keyDownListener(event) {
+		this.isAnyKeyPressed = true;
 		if (!this.keyMap.has(event.key)) {
 			return;
 		}
@@ -61,6 +63,7 @@ export default class InputManager {
 	 * @param {KeyboardEvent} event - desc
 	 */
 	keyUpListener(event) {
+		this.isAnyKeyPressed = false;
 		if (!this.keyMap.has(event.key)) {
 			return;
 		}

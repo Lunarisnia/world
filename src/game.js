@@ -67,8 +67,8 @@ export default class Game {
 	}
 
 	renderLoop() {
-		InputManager.instance.update();
 		this.world.update();
+		InputManager.instance.update();
 		this.renderer.render();
 	}
 };
