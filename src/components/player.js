@@ -13,6 +13,7 @@ export default class Player extends Component {
 	speed;
 
 	angle = 0;
+	turnSpeed = 0.1;
 	direction = new Vector3(0.0, 0.0, -1.0);
 
 	constructor() {
@@ -30,8 +31,11 @@ export default class Player extends Component {
 	}
 
 	update() {
+		this.handleMovement();
+	}
+
+	handleMovement() {
 		const movementDir = new Vector3();
-		const turnSpeed = 0.2;
 
 		if (InputManager.instance.getKey("w").down) {
 			movementDir.z = 1;
@@ -49,10 +53,10 @@ export default class Player extends Component {
 			movementDir.normalize();
 			const angleTo = this.direction.angleTo(movementDir);
 			if (InputManager.instance.getKey("a").down) {
-				this.angle += (-angleTo - this.angle) * turnSpeed;
+				this.angle += (-angleTo - this.angle) * this.turnSpeed;
 			} else {
 
-				this.angle += (angleTo - this.angle) * turnSpeed;
+				this.angle += (angleTo - this.angle) * this.turnSpeed;
 			}
 
 			this.mesh.position.x += Math.sin(this.angle) * this.speed;
