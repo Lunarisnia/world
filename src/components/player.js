@@ -1,4 +1,4 @@
-import { Matrix4, Vector3 } from "three";
+import { ArrowHelper, AxesHelper, Matrix4, Vector3 } from "three";
 import Component from "../component";
 import Game from "../game";
 import { degToRad, radToDeg } from "three/src/math/MathUtils.js";
@@ -28,20 +28,27 @@ export default class Player extends Component {
 	init() {
 		Game.instance.mainCamera.instance.position.y = 2;
 		Game.instance.mainCamera.instance.lookAt(new Vector3(0.0, 0.0, 0.0));
+
+		// TODO: add someway to enable this debug mode real time
+		const axesHelper = new ArrowHelper(this.direction, this.mesh.position, 2.5, 0x00FF00, 0.5, 0.5);
+		this.mesh.add(axesHelper);
 	}
 
+	// TODO: I still don't like the feel when turning to the left
 	update() {
 		this.handleMovement();
 	}
 
 	handleMovement() {
+		this.mesh.getWorldDirection(this.direction);
+		this.direction.negate();
 		const movementDir = new Vector3();
 
 		if (InputManager.instance.getKey("w").down) {
-			movementDir.z = 1;
+			movementDir.z = -1;
 		}
 		if (InputManager.instance.getKey("s").down) {
-			movementDir.z = -1;
+			movementDir.z = 1;
 		}
 		if (InputManager.instance.getKey("a").down) {
 			movementDir.x = -1;
@@ -60,8 +67,12 @@ export default class Player extends Component {
 			}
 
 			this.mesh.position.x += Math.sin(this.angle) * this.speed;
-			this.mesh.position.z += Math.cos(this.angle) * this.speed;
+			this.mesh.position.z -= Math.cos(this.angle) * this.speed;
 		}
+
+		// this.mesh.position.add(this.direction.clone().multiplyScalar(this.speed * 0.5));
+		// this.mesh.rotateY(degToRad(1));
+		// console.log(this.direction);
 	}
 
 	// NOTE: This don't support diagonal

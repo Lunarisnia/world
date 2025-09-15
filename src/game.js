@@ -26,7 +26,7 @@ export default class Game {
 		}
 		Game.instance = this;
 
-		this.mainCamera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 1000);
+		this.mainCamera = new Camera(90, window.innerWidth / window.innerHeight, 0.01, 1000);
 		this.scene = new Scene();
 		this.setClock();
 
