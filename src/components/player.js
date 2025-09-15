@@ -13,7 +13,7 @@ export default class Player extends Component {
 	speed;
 
 	angle = 0;
-	turnSpeed = 0.1;
+	turnSpeed = 3.5;
 	direction = new Vector3(0.0, 0.0, -1.0);
 
 	constructor() {
@@ -26,9 +26,6 @@ export default class Player extends Component {
 	}
 
 	init() {
-		Game.instance.mainCamera.instance.position.y = 2;
-		Game.instance.mainCamera.instance.lookAt(new Vector3(0.0, 0.0, 0.0));
-
 		// TODO: add someway to toggle this debug mode real time
 		const axesHelper = new ArrowHelper(this.direction, this.mesh.position, 2.5, 0x00FF00, 0.5, 0.5);
 		this.mesh.add(axesHelper);
@@ -36,57 +33,27 @@ export default class Player extends Component {
 
 	// TODO: I still don't like the feel when turning to the left
 	update() {
+		this.handleTankMovement();
+	}
+
+	handleTankMovement() {
 		this.mesh.getWorldDirection(this.direction);
 		this.direction.negate();
 
-
 		if (InputManager.instance.getKey("a").down) {
-			this.mesh.rotateY(degToRad(1));
+			this.mesh.rotateY(degToRad(this.turnSpeed));
 		}
 		if (InputManager.instance.getKey("d").down) {
-			this.mesh.rotateY(degToRad(-1));
+			this.mesh.rotateY(degToRad(-this.turnSpeed));
 		}
 		if (InputManager.instance.getKey("w").down) {
 			this.mesh.position.add(this.direction.multiplyScalar(this.speed));
 		}
-	}
-
-
-	handleMovement() {
-		this.mesh.getWorldDirection(this.direction);
-		this.direction.negate();
-		const movementDir = new Vector3();
-
-		if (InputManager.instance.getKey("w").down) {
-			movementDir.z = -1;
-		}
 		if (InputManager.instance.getKey("s").down) {
-			movementDir.z = 1;
+			this.mesh.position.sub(this.direction.multiplyScalar(this.speed));
 		}
-		if (InputManager.instance.getKey("a").down) {
-			movementDir.x = -1;
-		}
-		if (InputManager.instance.getKey("d").down) {
-			movementDir.x = 1;
-		}
-		if (InputManager.instance.getKey("w").down || InputManager.instance.getKey("a").down || InputManager.instance.getKey("s").down || InputManager.instance.getKey("d").down) {
-			movementDir.normalize();
-			const angleTo = this.direction.angleTo(movementDir);
-			if (InputManager.instance.getKey("a").down) {
-				this.angle += (-angleTo - this.angle) * this.turnSpeed;
-			} else {
-
-				this.angle += (angleTo - this.angle) * this.turnSpeed;
-			}
-
-			this.mesh.position.x += Math.sin(this.angle) * this.speed;
-			this.mesh.position.z -= Math.cos(this.angle) * this.speed;
-		}
-
-		// this.mesh.position.add(this.direction.clone().multiplyScalar(this.speed * 0.5));
-		// this.mesh.rotateY(degToRad(1));
-		// console.log(this.direction);
 	}
+
 
 	// NOTE: This don't support diagonal
 	angleMethodSmoothTurning() {
