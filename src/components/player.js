@@ -29,15 +29,28 @@ export default class Player extends Component {
 		Game.instance.mainCamera.instance.position.y = 2;
 		Game.instance.mainCamera.instance.lookAt(new Vector3(0.0, 0.0, 0.0));
 
-		// TODO: add someway to enable this debug mode real time
+		// TODO: add someway to toggle this debug mode real time
 		const axesHelper = new ArrowHelper(this.direction, this.mesh.position, 2.5, 0x00FF00, 0.5, 0.5);
 		this.mesh.add(axesHelper);
 	}
 
 	// TODO: I still don't like the feel when turning to the left
 	update() {
-		this.handleMovement();
+		this.mesh.getWorldDirection(this.direction);
+		this.direction.negate();
+
+
+		if (InputManager.instance.getKey("a").down) {
+			this.mesh.rotateY(degToRad(1));
+		}
+		if (InputManager.instance.getKey("d").down) {
+			this.mesh.rotateY(degToRad(-1));
+		}
+		if (InputManager.instance.getKey("w").down) {
+			this.mesh.position.add(this.direction.multiplyScalar(this.speed));
+		}
 	}
+
 
 	handleMovement() {
 		this.mesh.getWorldDirection(this.direction);
