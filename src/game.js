@@ -60,6 +60,7 @@ export default class Game {
 
 	run() {
 		this.clock.start();
+		this.mainCamera.init();
 		this.world.init();
 		this.renderer.instance.setAnimationLoop(() => {
 			this.renderLoop();
@@ -67,6 +68,7 @@ export default class Game {
 	}
 
 	renderLoop() {
+		this.mainCamera.update();
 		this.world.update();
 		InputManager.instance.update();
 		this.renderer.render();

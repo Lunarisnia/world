@@ -8,11 +8,11 @@ import Entity from "./entity/entity";
 import Player from "./components/player";
 
 export default class World {
-	/** @type {Game} */
+	/** @type {Map} */
 	entities = new Map();
 
 	constructor() {
-		this.cube = Spawner.CreateCubeWithShaderMaterial({
+		this.player = Spawner.CreateCubeWithShaderMaterial({
 			width: 1.0,
 			height: 1.0,
 			// heightSegments: 30,
@@ -26,8 +26,8 @@ export default class World {
 				},
 			},
 		});
-		this.cube.addComponent(new Player());
-		this.addEntity(this.cube);
+		this.player.addComponent(new Player());
+		this.addEntity(this.player);
 
 		this.floor = Spawner.CreateCubeWithShaderMaterial({
 			width: 100.0,
