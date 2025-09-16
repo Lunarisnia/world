@@ -6,12 +6,18 @@ import Spawner from "./entity/spawner";
 import { Vector3 } from "three/webgpu";
 import Entity from "./entity/entity";
 import Player from "./components/player";
+import { Color, LineSegments, WireframeGeometry } from "three";
+import TriggerBox from "./components/trigger-box";
 
 export default class World {
 	/** @type {Map} */
 	entities = new Map();
 
 	constructor() {
+		this.testWorld();
+	}
+
+	testWorld() {
 		this.player = Spawner.CreateCubeWithShaderMaterial({
 			width: 1.0,
 			height: 1.0,
@@ -52,13 +58,34 @@ export default class World {
 
 			const cube = Spawner.CreateSimpleCube({
 				width: 1, depth: 1, height: 1,
-				color: new Vector3(1.0, 0.0, 0.0)
+				color: new Color(1.0, 0.0, 0.0),
 			});
 			cube.mesh.position.set(x, 0.0, z);
 			this.addEntity(cube);
 		}
 
+		// WIP: Somehow make this invisible and only showing its wireframe
+		this.testTriggerBox = Spawner.CreateSimpleCube({
+			width: 3,
+			height: 1,
+			depth: 2,
+			color: new Color(1, 0.5, 0.5),
+		});
+		this.testTriggerBox.addComponent(new TriggerBox());
+		this.testTriggerBox.mesh.position.z = -4;
+		this.testTriggerBox.mesh.visible = false;
+		this.addEntity(this.testTriggerBox);
+		const wireframe = new WireframeGeometry(this.testTriggerBox.geometry);
+		const line = new LineSegments(wireframe);
+		line.material.depthTest = false;
+		line.material.opacity = 0.25;
+		line.material.transparent = true;
+
+		this.testTriggerBox.mesh.add(line);
+
+
 		Game.instance.mainCamera.instance.position.z = 5;
+
 	}
 
 	/**

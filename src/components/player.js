@@ -31,11 +31,11 @@ export default class Player extends Component {
 		this.mesh.add(axesHelper);
 	}
 
-	// TODO: I still don't like the feel when turning to the left
 	update() {
 		this.handleTankMovement();
 	}
 
+	// TODO: make acceleration gradual 
 	handleTankMovement() {
 		this.mesh.getWorldDirection(this.direction);
 		this.direction.negate();
