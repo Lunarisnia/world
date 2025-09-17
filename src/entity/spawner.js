@@ -16,6 +16,12 @@ export default class Spawner {
 		return new Entity(geometry, material);
 	}
 
+	static CreateSimpleSphere({ radius, widthSegments, heightSegments, color }) {
+		const geometry = new SphereGeometry(radius, widthSegments, heightSegments);
+		const material = new MeshBasicMaterial({ color: color });
+		return new Entity(geometry, material);
+	}
+
 	static CreateCubeWithShaderMaterial({ width, height, depth, widthSegments, heightSegments, depthSegments }, {
 		vertexShader, fragmentShader, uniforms,
 	}) {

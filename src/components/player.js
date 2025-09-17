@@ -1,8 +1,9 @@
-import { ArrowHelper, AxesHelper, Matrix4, Vector3 } from "three";
+import { ArrowHelper, Color, Vector3 } from "three";
 import Component from "../component";
-import Game from "../game";
-import { degToRad, radToDeg } from "three/src/math/MathUtils.js";
+import { degToRad, } from "three/src/math/MathUtils.js";
 import InputManager from "../input/inputManager";
+import Spawner from "../entity/spawner";
+import Game from "../game";
 
 export default class Player extends Component {
 	/** @type {Vector3} */
@@ -29,6 +30,16 @@ export default class Player extends Component {
 		// TODO: add someway to toggle this debug mode real time
 		const axesHelper = new ArrowHelper(this.direction, this.mesh.position, 2.5, 0x00FF00, 0.5, 0.5);
 		this.mesh.add(axesHelper);
+
+		const sphere = Spawner.CreateSimpleSphere({
+			radius: 0.1,
+			// widthSegments: 16,
+			// heightSegments: 16,
+			color: new Color(1.0, 0.0, 0.0),
+		});
+		sphere.material.depthTest = false;
+		// console.log(sphere);
+		this.mesh.add(sphere.mesh);
 	}
 
 	update() {

@@ -64,18 +64,27 @@ export default class World {
 			this.addEntity(cube);
 		}
 
+		const width = 3;
+		const height = 1;
+		const depth = 2;
 		this.testTriggerBox = Spawner.CreateSimpleCube({
-			width: 3,
-			height: 1,
-			depth: 2,
+			width,
+			height,
+			depth,
 		});
-		this.testTriggerBox.addComponent(new TriggerBox());
-		this.testTriggerBox.mesh.position.z = -4;
+		const trigger = new TriggerBox(width, height, depth);
+		trigger.onTriggerEnter = () => {
+			console.log("Enter");
+		}
+		trigger.onTriggerExit = () => {
+			console.log("Exit");
+		}
+		this.testTriggerBox.addComponent(trigger);
+		this.testTriggerBox.mesh.position.z = 0;
 		this.testTriggerBox.material.wireframe = true;
 		this.addEntity(this.testTriggerBox);
 
 		Game.instance.mainCamera.instance.position.z = 5;
-
 	}
 
 	/**

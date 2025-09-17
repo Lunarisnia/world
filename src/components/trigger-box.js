@@ -3,6 +3,12 @@ import Component from "../component";
 import Game from "../game";
 
 export default class TriggerBox extends Component {
+	intersecting = false;
+	/** @type {Function} */
+	onTriggerEnter = () => { }
+	/** @type {Function} */
+	onTriggerExit = () => { }
+
 	constructor(width, height, depth) {
 		super();
 		this.width = width;
@@ -21,15 +27,24 @@ export default class TriggerBox extends Component {
 		const pPos = new Vector3();
 		this.player.mesh.getWorldPosition(pPos);
 		if (pPos.x >= this.bottomLeft.x && pPos.x <= this.topRight.x && pPos.z <= this.bottomLeft.y && pPos.z >= this.topRight.y) {
-			console.log("Inside");
+			if (!this.intersecting) {
+				this.onTriggerEnter();
+			}
+			this.intersecting = true;
+			return;
 		}
+
+		if (this.intersecting) {
+			this.onTriggerExit();
+		}
+		this.intersecting = false;
 	}
 
 	updateTriggerPosition() {
 		const wPos = new Vector3();
 		this.mesh.getWorldPosition(wPos);
 
-		this.bottomLeft = new Vector2(wPos.x - (this.width / 2), wPos.z + (this.height / 2));
-		this.topRight = new Vector2(wPos.x + (this.width / 2), wPos.z - (this.height / 2));
+		this.bottomLeft = new Vector2(wPos.x - (this.width), wPos.z + (this.height));
+		this.topRight = new Vector2(wPos.x + (this.width), wPos.z - (this.height));
 	}
 }
