@@ -38,7 +38,6 @@ export default class Player extends Component {
 			color: new Color(1.0, 0.0, 0.0),
 		});
 		sphere.material.depthTest = false;
-		// console.log(sphere);
 		this.mesh.add(sphere.mesh);
 	}
 
