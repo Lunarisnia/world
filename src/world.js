@@ -64,25 +64,15 @@ export default class World {
 			this.addEntity(cube);
 		}
 
-		// WIP: Somehow make this invisible and only showing its wireframe
 		this.testTriggerBox = Spawner.CreateSimpleCube({
 			width: 3,
 			height: 1,
 			depth: 2,
-			color: new Color(1, 0.5, 0.5),
 		});
 		this.testTriggerBox.addComponent(new TriggerBox());
 		this.testTriggerBox.mesh.position.z = -4;
-		this.testTriggerBox.mesh.visible = false;
+		this.testTriggerBox.material.wireframe = true;
 		this.addEntity(this.testTriggerBox);
-		const wireframe = new WireframeGeometry(this.testTriggerBox.geometry);
-		const line = new LineSegments(wireframe);
-		line.material.depthTest = false;
-		line.material.opacity = 0.25;
-		line.material.transparent = true;
-
-		this.testTriggerBox.mesh.add(line);
-
 
 		Game.instance.mainCamera.instance.position.z = 5;
 
