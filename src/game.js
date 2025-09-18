@@ -3,6 +3,7 @@ import Camera from "./camera";
 import Renderer from "./renderer";
 import World from "./world";
 import InputManager from "./input/inputManager";
+import Physics from "./physics";
 
 export default class Game {
 	/** @type {Game} */
@@ -37,6 +38,7 @@ export default class Game {
 		this.setWorld();
 
 		new InputManager();
+		new Physics();
 	}
 
 	setWorld() {
@@ -58,9 +60,10 @@ export default class Game {
 	}
 
 
-	run() {
+	async run() {
 		this.clock.start();
 		this.mainCamera.init();
+		await Physics.instance.init();
 		this.world.init();
 		this.renderer.instance.setAnimationLoop(() => {
 			this.renderLoop();
@@ -69,6 +72,7 @@ export default class Game {
 
 	renderLoop() {
 		this.mainCamera.update();
+		Physics.instance.update();
 		this.world.update();
 		InputManager.instance.update();
 		this.renderer.render();
