@@ -39,6 +39,7 @@ export default class Game {
 
 		new InputManager();
 		new Physics();
+
 	}
 
 	setWorld() {
@@ -62,9 +63,9 @@ export default class Game {
 
 	async run() {
 		this.clock.start();
-		this.mainCamera.init();
 		await Physics.instance.init();
 		this.world.init();
+		this.mainCamera.init();
 		this.renderer.instance.setAnimationLoop(() => {
 			this.renderLoop();
 		});

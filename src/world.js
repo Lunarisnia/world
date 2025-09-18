@@ -8,13 +8,35 @@ import Entity from "./entity/entity";
 import Player from "./components/player";
 import { Color, LineSegments, WireframeGeometry } from "three";
 import TriggerBox from "./components/trigger-box";
+import BoxCollider from "./components/box-collider";
 
 export default class World {
 	/** @type {Map} */
 	entities = new Map();
 
 	constructor() {
+	}
+
+	/**
+	 * Register entity to be updated and rendered
+	 * @param {Entity} entity - 
+	 */
+	addEntity(entity) {
+		this.entities.set(entity.id, entity);
+		Game.instance.scene.add(entity.mesh);
+	}
+
+	init() {
 		this.testWorld();
+		for (const entity of this.entities.values()) {
+			entity.init();
+		}
+	}
+
+	update() {
+		for (const entity of this.entities.values()) {
+			entity.update();
+		}
 	}
 
 	testWorld() {
@@ -82,29 +104,9 @@ export default class World {
 		this.testTriggerBox.addComponent(trigger);
 		this.testTriggerBox.mesh.position.z = 0;
 		this.testTriggerBox.material.wireframe = true;
+		this.testTriggerBox.addComponent(new BoxCollider(0, 0, 0));
 		this.addEntity(this.testTriggerBox);
 
 		Game.instance.mainCamera.instance.position.z = 5;
-	}
-
-	/**
-	 * Register entity to be updated and rendered
-	 * @param {Entity} entity - 
-	 */
-	addEntity(entity) {
-		this.entities.set(entity.id, entity);
-		Game.instance.scene.add(entity.mesh);
-	}
-
-	init() {
-		for (const entity of this.entities.values()) {
-			entity.init();
-		}
-	}
-
-	update() {
-		for (const entity of this.entities.values()) {
-			entity.update();
-		}
 	}
 };

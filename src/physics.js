@@ -31,6 +31,16 @@ export default class Physics {
 		// this.world.createCollider(colliderDesc, this.rigidBody);
 	}
 
+	// TODO: Finish the attachment of the physics collider to the object, right not it just attached as a component and nothing else
+	createPhysicsEntity(descriptor) {
+		if (descriptor instanceof ColliderDesc) {
+			return this.createCollider(descriptor);
+		}
+		if (descriptor instanceof RigidBodyDesc) {
+			return this.createRigidBody(descriptor);
+		}
+	}
+
 	/**
 	 * Add Collider
 	 * @param {ColliderDesc} descriptor - desc
@@ -53,7 +63,7 @@ export default class Physics {
 	update() {
 		this.world.step();
 
-		const position = this.rigidBody.translation();
-		console.log("RBPos:", position.x, position.y);
+		// const position = this.rigidBody.translation();
+		// console.log("RBPos:", position.x, position.y);
 	}
 };
