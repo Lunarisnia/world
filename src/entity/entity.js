@@ -1,8 +1,6 @@
 import { BufferGeometry, Material, Mesh } from "three";
 import Component from "../component";
 import { generateUUID } from "three/src/math/MathUtils.js";
-import PhysicsComponent from "../physics-component";
-import Physics from "../physics";
 
 export default class Entity {
 	/** @type {string} */
@@ -37,9 +35,7 @@ export default class Entity {
 		component.mesh = this.mesh;
 		this.components.push(component);
 
-		if (component instanceof PhysicsComponent) {
-			return Physics.instance.createPhysicsEntity(component.descriptor);
-		}
+
 		return component;
 	}
 

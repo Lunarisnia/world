@@ -6,7 +6,7 @@ import Spawner from "./entity/spawner";
 import { Vector3 } from "three/webgpu";
 import Entity from "./entity/entity";
 import Player from "./components/player";
-import { Color, LineSegments, WireframeGeometry } from "three";
+import { Color } from "three";
 import TriggerBox from "./components/trigger-box";
 import BoxCollider from "./components/box-collider";
 
@@ -28,6 +28,7 @@ export default class World {
 
 	init() {
 		this.testWorld();
+
 		for (const entity of this.entities.values()) {
 			entity.init();
 		}
@@ -40,6 +41,15 @@ export default class World {
 	}
 
 	testWorld() {
+		const cube = Spawner.CreateSimpleCube({
+			width: 1,
+			height: 1,
+			color: new Color(1.0, 0.5, 1.0),
+		});
+		cube.mesh.position.y = 4;
+		cube.addComponent(new BoxCollider(1, 1, 1));
+		this.addEntity(cube);
+
 		this.player = Spawner.CreateCubeWithShaderMaterial({
 			width: 1.0,
 			height: 1.0,
@@ -104,7 +114,6 @@ export default class World {
 		this.testTriggerBox.addComponent(trigger);
 		this.testTriggerBox.mesh.position.z = 0;
 		this.testTriggerBox.material.wireframe = true;
-		this.testTriggerBox.addComponent(new BoxCollider(0, 0, 0));
 		this.addEntity(this.testTriggerBox);
 
 		Game.instance.mainCamera.instance.position.z = 5;

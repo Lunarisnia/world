@@ -17,10 +17,10 @@ export default class Physics {
 		await RAPIER.init();
 		this.world = new RAPIER.World(this.gravity);
 
-		// // Create the ground
-		// const groundColliderDesc = RAPIER.ColliderDesc.cuboid(10.0, 0.1, 10.0);
-		// this.world.createCollider(groundColliderDesc);
-		//
+		// Create the ground
+		// this.groundColliderDesc = RAPIER.ColliderDesc.cuboid(10.0, 0.1, 10.0).setTranslation(1, 0, 0);
+		// this.world.createCollider(this.groundColliderDesc);
+
 		// // Create a dynamic rigid-body.
 		// const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic()
 		// 	.setTranslation(0.0, 1.0, 0.0);
@@ -32,14 +32,6 @@ export default class Physics {
 	}
 
 	// TODO: Finish the attachment of the physics collider to the object, right not it just attached as a component and nothing else
-	createPhysicsEntity(descriptor) {
-		if (descriptor instanceof ColliderDesc) {
-			return this.createCollider(descriptor);
-		}
-		if (descriptor instanceof RigidBodyDesc) {
-			return this.createRigidBody(descriptor);
-		}
-	}
 
 	/**
 	 * Add Collider
@@ -63,7 +55,7 @@ export default class Physics {
 	update() {
 		this.world.step();
 
-		// const position = this.rigidBody.translation();
+		// const position = this.groundColliderDesc.translation;
 		// console.log("RBPos:", position.x, position.y);
 	}
 };
