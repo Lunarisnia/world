@@ -1,6 +1,8 @@
 import { BufferGeometry, Material, Mesh } from "three";
 import Component from "../component";
 import { generateUUID } from "three/src/math/MathUtils.js";
+import PhysicsCollider from "../components/physics-collider";
+import Physics from "../physics";
 
 export default class Entity {
 	/** @type {string} */
@@ -34,7 +36,6 @@ export default class Entity {
 	addComponent(component) {
 		component.mesh = this.mesh;
 		this.components.push(component);
-
 
 		return component;
 	}

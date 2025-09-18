@@ -46,6 +46,7 @@ export default class Player extends Component {
 	}
 
 	// TODO: make acceleration gradual 
+	// TODO: refactor this to work with the physics engine
 	handleTankMovement() {
 		this.mesh.getWorldDirection(this.direction);
 		this.direction.negate();

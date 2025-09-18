@@ -72,8 +72,8 @@ export default class Game {
 	}
 
 	renderLoop() {
-		this.mainCamera.update();
 		Physics.instance.update();
+		this.mainCamera.update();
 		this.world.update();
 		InputManager.instance.update();
 		this.renderer.render();

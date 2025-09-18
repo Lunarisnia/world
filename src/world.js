@@ -3,12 +3,12 @@ import basicVert from "/shaders/basic/basic.vert?url&raw"
 import solidColor from "/shaders/basic/solid-color.frag?url&raw"
 import normalViz from "/shaders/basic/normal-viz.frag?url&raw"
 import Spawner from "./entity/spawner";
-import { Vector3 } from "three/webgpu";
 import Entity from "./entity/entity";
 import Player from "./components/player";
-import { Color } from "three";
+import { Color, Vector3 } from "three";
 import TriggerBox from "./components/trigger-box";
 import BoxCollider from "./components/box-collider";
+import RigidBody from "./components/rigidbody";
 
 export default class World {
 	/** @type {Map} */
@@ -46,9 +46,20 @@ export default class World {
 			height: 1,
 			color: new Color(1.0, 0.5, 1.0),
 		});
-		cube.mesh.position.y = 4;
-		cube.addComponent(new BoxCollider(1, 1, 1));
+		cube.mesh.position.y = 2;
+		cube.addComponent(new BoxCollider(0.5, 0.5, 0.5));
 		this.addEntity(cube);
+
+		this.cube2 = Spawner.CreateSimpleCube({
+			width: 1,
+			height: 1,
+			color: new Color(1.0, 0.5, 0.2),
+		});
+		this.cube2.mesh.position.y = 9;
+		const rb = new RigidBody();
+		rb.boxCollider(0.5, 0.5, 0.5);
+		this.cube2.addComponent(rb);
+		this.addEntity(this.cube2);
 
 		this.player = Spawner.CreateCubeWithShaderMaterial({
 			width: 1.0,
