@@ -1,0 +1,36 @@
+import Work from "./work/work";
+
+export default class Databank {
+	static baseURL = "https://raw.githubusercontent.com"
+	static streamPath = "/refs/heads/main"
+	static githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
+	static publicDataRepoName = import.meta.env.VITE_PUBLIC_DATA_REPO_NAME;
+
+	/**
+	 * Get Full URL
+	 * @returns {String}
+	 */
+	static getFullURL() {
+		return `${this.baseURL}/${this.githubUsername}/${this.publicDataRepoName}/${this.streamPath}`
+	}
+
+	/**
+	 * Fetch work histories
+	 * @async
+	 */
+	static async getWorkHistories() {
+		const workHistories = [];
+		try {
+			const response = await fetch(`${this.getFullURL()}/work-history.json`);
+			const body = await response.json();
+			for (const w of body.workplaces) {
+				const work = new Work(w);
+				workHistories.push(work);
+			}
+
+			return workHistories;
+		} catch (err) {
+			return workHistories;
+		}
+	}
+};
