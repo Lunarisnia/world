@@ -4,6 +4,7 @@ import { degToRad, } from "three/src/math/MathUtils.js";
 import InputManager from "../input/inputManager";
 import Spawner from "../entity/spawner";
 import Game from "../game";
+import RigidBody from "./rigidbody";
 
 export default class Player extends Component {
 	/** @type {Vector3} */
@@ -16,6 +17,9 @@ export default class Player extends Component {
 	angle = 0;
 	turnSpeed = 3.5;
 	direction = new Vector3(0.0, 0.0, -1.0);
+
+	/** @type {RigidBody} */
+	rigidBody;
 
 	constructor() {
 		super();
@@ -39,6 +43,12 @@ export default class Player extends Component {
 		});
 		sphere.material.depthTest = false;
 		this.mesh.add(sphere.mesh);
+
+		// WIP: Movement still not working
+		this.rigidBody = new RigidBody();
+		this.owner.addComponent(this.rigidBody);
+		this.rigidBody.init();
+		this.rigidBody.boxCollider(0.5, 0.5, 0.5);
 	}
 
 	update() {

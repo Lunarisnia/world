@@ -1,6 +1,9 @@
 import { Mesh } from "three";
+import Entity from "./entity/entity";
 
 export default class Component {
+	/** @type {Entity} */
+	owner;
 	/** @type {Mesh} */
 	mesh;
 

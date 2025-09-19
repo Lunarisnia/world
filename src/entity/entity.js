@@ -35,6 +35,7 @@ export default class Entity {
 	 */
 	addComponent(component) {
 		component.mesh = this.mesh;
+		component.owner = this;
 		this.components.push(component);
 
 		return component;
