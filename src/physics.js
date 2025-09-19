@@ -18,8 +18,6 @@ export default class Physics {
 		this.world = new RAPIER.World(this.gravity);
 	}
 
-	// TODO: Finish the attachment of the physics collider to the object, right not it just attached as a component and nothing else
-
 	/**
 	 * Add Collider
 	 * @param {ColliderDesc} descriptor - desc

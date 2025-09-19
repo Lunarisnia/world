@@ -41,25 +41,16 @@ export default class World {
 	}
 
 	testWorld() {
-		const cube = Spawner.CreateSimpleCube({
-			width: 1,
-			height: 1,
-			color: new Color(1.0, 0.5, 1.0),
-		});
-		cube.mesh.position.y = 2;
-		cube.addComponent(new BoxCollider(0.5, 0.5, 0.5));
-		this.addEntity(cube);
-
-		this.cube2 = Spawner.CreateSimpleCube({
+		this.cube = Spawner.CreateSimpleCube({
 			width: 1,
 			height: 1,
 			color: new Color(1.0, 0.5, 0.2),
 		});
-		this.cube2.mesh.position.y = 9;
+		this.cube.mesh.position.y = 9;
 		const rb = new RigidBody();
 		rb.boxCollider(0.5, 0.5, 0.5);
-		this.cube2.addComponent(rb);
-		this.addEntity(this.cube2);
+		this.cube.addComponent(rb);
+		this.addEntity(this.cube);
 
 		this.player = Spawner.CreateCubeWithShaderMaterial({
 			width: 1.0,
@@ -92,6 +83,7 @@ export default class World {
 			}
 		})
 		this.floor.mesh.position.y = -1;
+		this.floor.addComponent(new BoxCollider(50, 0.5, 50));
 		this.addEntity(this.floor);
 
 		const space = 10;
