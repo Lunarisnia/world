@@ -1,6 +1,8 @@
 import RAPIER, { Collider, RigidBodyDesc } from "@dimforge/rapier3d-compat";
 import { RigidBody } from "@dimforge/rapier3d-compat";
 import { ColliderDesc } from "@dimforge/rapier3d-compat";
+import { BufferAttribute, BufferGeometry, LineBasicMaterial, LineSegments } from "three";
+import Game from "./game";
 export default class Physics {
 	/** @type {Physics} */
 	static instance;
@@ -16,6 +18,21 @@ export default class Physics {
 	async init() {
 		await RAPIER.init();
 		this.world = new RAPIER.World(this.gravity);
+	}
+
+	// NOTE: Add toggle for this
+	createDebugGizmo() {
+		this.geometry = new BufferGeometry()
+		const material = new LineBasicMaterial({ vertexColors: true });
+		const lineSegment = new LineSegments(this.geometry, material);
+
+		Game.instance.scene.add(lineSegment);
+	}
+
+	updateDebugGizmo() {
+		const debugData = this.world.debugRender();
+		this.geometry.setAttribute("position", new BufferAttribute(debugData.vertices, 3));
+		this.geometry.setAttribute("color", new BufferAttribute(debugData.colors, 4));
 	}
 
 	/**

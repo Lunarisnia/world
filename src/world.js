@@ -5,10 +5,11 @@ import normalViz from "/shaders/basic/normal-viz.frag?url&raw"
 import Spawner from "./entity/spawner";
 import Entity from "./entity/entity";
 import Player from "./components/player";
-import { Color, Vector3 } from "three";
+import { BufferAttribute, BufferGeometry, Color, LineBasicMaterial, LineSegments, Vector3 } from "three";
 import TriggerBox from "./components/trigger-box";
 import BoxCollider from "./components/box-collider";
 import RigidBody from "./components/rigidbody";
+import Physics from "./physics";
 
 export default class World {
 	/** @type {Map} */
@@ -28,13 +29,14 @@ export default class World {
 
 	init() {
 		this.testWorld();
-
+		Physics.instance.createDebugGizmo();
 		for (const entity of this.entities.values()) {
 			entity.init();
 		}
 	}
 
 	update() {
+		Physics.instance.updateDebugGizmo();
 		for (const entity of this.entities.values()) {
 			entity.update();
 		}
@@ -46,7 +48,7 @@ export default class World {
 			height: 1,
 			color: new Color(1.0, 0.5, 0.2),
 		});
-		this.cube.mesh.position.y = 9;
+		this.cube.mesh.position.y = 2;
 		this.cube.mesh.position.z = -2;
 		const rb = new RigidBody();
 		rb.boxCollider(0.5, 0.5, 0.5);
