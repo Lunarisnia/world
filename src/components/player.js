@@ -1,4 +1,4 @@
-import { ArrowHelper, Color, Vector3 } from "three";
+import { ArrowHelper, Color, Quaternion, Vector3 } from "three";
 import Component from "../component";
 import { degToRad, } from "three/src/math/MathUtils.js";
 import InputManager from "../input/inputManager";
@@ -44,7 +44,6 @@ export default class Player extends Component {
 		this.mesh.add(sphere.mesh);
 
 
-		// WIP: Movement still not working
 		this.rigidBody = new RigidBody();
 		this.owner.addComponent(this.rigidBody);
 		this.rigidBody.init();
@@ -57,25 +56,30 @@ export default class Player extends Component {
 	}
 
 	// TODO: make acceleration gradual 
-	// TODO: Support rotation for physics collider
 	handleTankMovement() {
 		this.mesh.getWorldDirection(this.direction);
 		this.direction.negate();
+		const r = this.rigidBody.instance.rotation();
+		const rotation = new Quaternion(r.x, r.y, r.z, r.w);
 
 		if (InputManager.instance.getKey("a").down) {
-			this.mesh.rotateY(degToRad(this.turnSpeed));
+			rotation.setFromAxisAngle(new Vector3(0, 1, 0), degToRad(this.turnSpeed));
+			const rotate = new Quaternion(r.x, r.y, r.z, r.w).multiply(rotation);
+			this.rigidBody.instance.setRotation(rotate, true);
 		}
 		if (InputManager.instance.getKey("d").down) {
-			this.mesh.rotateY(degToRad(-this.turnSpeed));
+			rotation.setFromAxisAngle(new Vector3(0, 1, 0), degToRad(-this.turnSpeed));
+			const rotate = new Quaternion(r.x, r.y, r.z, r.w).multiply(rotation);
+			this.rigidBody.instance.setRotation(rotate, true);
 		}
 		if (InputManager.instance.getKey("w").down) {
 			const forceDir = this.direction.multiplyScalar(this.speed);
-			this.rigidBody.instance.setLinvel(new Vector3(forceDir.x, this.rigidBody.instance.linvel().y, forceDir.z));
+			this.rigidBody.instance.setLinvel(new Vector3(forceDir.x, this.rigidBody.instance.linvel().y, forceDir.z), true);
 		} else if (InputManager.instance.getKey("s").down) {
 			const forceDir = this.direction.multiplyScalar(this.speed);
-			this.rigidBody.instance.setLinvel(new Vector3(-forceDir.x, this.rigidBody.instance.linvel().y, -forceDir.z));
+			this.rigidBody.instance.setLinvel(new Vector3(-forceDir.x, this.rigidBody.instance.linvel().y, -forceDir.z), true);
 		} else {
-			this.rigidBody.instance.setLinvel(new Vector3(0, this.rigidBody.instance.linvel().y, 0));
+			this.rigidBody.instance.setLinvel(new Vector3(0, this.rigidBody.instance.linvel().y, 0), true);
 
 		}
 	}

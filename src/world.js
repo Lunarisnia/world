@@ -5,11 +5,12 @@ import normalViz from "/shaders/basic/normal-viz.frag?url&raw"
 import Spawner from "./entity/spawner";
 import Entity from "./entity/entity";
 import Player from "./components/player";
-import { BufferAttribute, BufferGeometry, Color, LineBasicMaterial, LineSegments, Vector3 } from "three";
+import { Color, Vector3 } from "three";
 import TriggerBox from "./components/trigger-box";
 import BoxCollider from "./components/box-collider";
 import RigidBody from "./components/rigidbody";
 import Physics from "./physics";
+import { CoefficientCombineRule } from "@dimforge/rapier3d-compat";
 
 export default class World {
 	/** @type {Map} */
@@ -86,7 +87,8 @@ export default class World {
 			}
 		})
 		this.floor.mesh.position.y = -1;
-		this.floor.addComponent(new BoxCollider(50, 0.5, 50));
+		const bc = new BoxCollider(50, 0.5, 50);
+		this.floor.addComponent(bc);
 		this.addEntity(this.floor);
 
 		const space = 10;

@@ -3,7 +3,7 @@ import Component from "../component";
 import Physics from "../physics";
 import RAPIER from "@dimforge/rapier3d-compat";
 import { ColliderDesc } from "@dimforge/rapier3d-compat";
-import { Vector3 } from "three";
+import { Quaternion, Vector3 } from "three";
 
 export default class RigidBody extends Component {
 	/** @type {RigidBodyDesc} */
@@ -34,5 +34,8 @@ export default class RigidBody extends Component {
 	update() {
 		const position = this.instance.translation();
 		this.mesh.position.set(position.x, position.y, position.z);
+
+		const rotation = this.instance.rotation();
+		this.mesh.setRotationFromQuaternion(new Quaternion(rotation.x, rotation.y, rotation.z, rotation.w));
 	}
 }
