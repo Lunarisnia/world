@@ -47,6 +47,7 @@ export default class World {
 			color: new Color(1.0, 0.5, 0.2),
 		});
 		this.cube.mesh.position.y = 9;
+		this.cube.mesh.position.z = -2;
 		const rb = new RigidBody();
 		rb.boxCollider(0.5, 0.5, 0.5);
 		this.cube.addComponent(rb);

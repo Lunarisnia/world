@@ -3,7 +3,6 @@ import Component from "../component";
 import { degToRad, } from "three/src/math/MathUtils.js";
 import InputManager from "../input/inputManager";
 import Spawner from "../entity/spawner";
-import Game from "../game";
 import RigidBody from "./rigidbody";
 
 export default class Player extends Component {
@@ -27,7 +26,7 @@ export default class Player extends Component {
 		this.forward = new Vector3(0.0, 0.0, -1.0);
 		this.up = new Vector3(0.0, 1.0, 0.0);
 
-		this.speed = 0.1;
+		this.speed = 4.0;
 	}
 
 	init() {
@@ -44,11 +43,13 @@ export default class Player extends Component {
 		sphere.material.depthTest = false;
 		this.mesh.add(sphere.mesh);
 
+
 		// WIP: Movement still not working
 		this.rigidBody = new RigidBody();
 		this.owner.addComponent(this.rigidBody);
 		this.rigidBody.init();
 		this.rigidBody.boxCollider(0.5, 0.5, 0.5);
+
 	}
 
 	update() {
@@ -56,7 +57,7 @@ export default class Player extends Component {
 	}
 
 	// TODO: make acceleration gradual 
-	// TODO: refactor this to work with the physics engine
+	// TODO: Support rotation for physics collider
 	handleTankMovement() {
 		this.mesh.getWorldDirection(this.direction);
 		this.direction.negate();
@@ -68,10 +69,14 @@ export default class Player extends Component {
 			this.mesh.rotateY(degToRad(-this.turnSpeed));
 		}
 		if (InputManager.instance.getKey("w").down) {
-			this.mesh.position.add(this.direction.multiplyScalar(this.speed));
-		}
-		if (InputManager.instance.getKey("s").down) {
-			this.mesh.position.sub(this.direction.multiplyScalar(this.speed));
+			const forceDir = this.direction.multiplyScalar(this.speed);
+			this.rigidBody.instance.setLinvel(new Vector3(forceDir.x, this.rigidBody.instance.linvel().y, forceDir.z));
+		} else if (InputManager.instance.getKey("s").down) {
+			const forceDir = this.direction.multiplyScalar(this.speed);
+			this.rigidBody.instance.setLinvel(new Vector3(-forceDir.x, this.rigidBody.instance.linvel().y, -forceDir.z));
+		} else {
+			this.rigidBody.instance.setLinvel(new Vector3(0, this.rigidBody.instance.linvel().y, 0));
+
 		}
 	}
 
