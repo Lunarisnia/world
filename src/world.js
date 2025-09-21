@@ -66,23 +66,9 @@ export default class World {
 		this.cube.addComponent(rb);
 		this.addEntity(this.cube);
 
-		this.player = Spawner.CreateCubeWithShaderMaterial({
-			width: 1.0,
-			height: 1.0,
-			// heightSegments: 30,
-			// widthSegments: 30,
-		}, {
-			vertexShader: basicVert,
-			fragmentShader: solidColor,
-			uniforms: {
-				uTime: {
-					value: 0.0,
-				},
-				color: {
-					value: new Vector3(1.0, 1.0, 0.0),
-				},
-			},
-		});
+		const playerGeom = new SimpleCubeGeometry(1, 1, 1);
+		const playerMaterial = new SimpleCubeMaterial(1, 1, 1);
+		this.player = new Entity(playerGeom, playerMaterial);
 		this.player.addComponent(new Player());
 		this.addEntity(this.player);
 

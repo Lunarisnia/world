@@ -53,7 +53,6 @@ export default class Player extends Component {
 	}
 
 	update() {
-		this.mesh.material.uniforms.uTime = { value: Game.instance.clock.getElapsedTime() };
 		this.handleTankMovement();
 	}
 
