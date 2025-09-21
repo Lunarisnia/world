@@ -4,6 +4,7 @@ import { degToRad, } from "three/src/math/MathUtils.js";
 import InputManager from "../input/inputManager";
 import Spawner from "../entity/spawner";
 import RigidBody from "./rigidbody";
+import Game from "../game";
 
 export default class Player extends Component {
 	/** @type {Vector3} */
@@ -52,6 +53,7 @@ export default class Player extends Component {
 	}
 
 	update() {
+		this.mesh.material.uniforms.uTime = { value: Game.instance.clock.getElapsedTime() };
 		this.handleTankMovement();
 	}
 

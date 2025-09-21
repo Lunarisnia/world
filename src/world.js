@@ -10,7 +10,8 @@ import TriggerBox from "./components/trigger-box";
 import BoxCollider from "./components/box-collider";
 import RigidBody from "./components/rigidbody";
 import Physics from "./physics";
-import { CoefficientCombineRule } from "@dimforge/rapier3d-compat";
+import GroundBorderGeometry from "./geometry/GroundBorderGeometry";
+import GroundBorderMaterial from "./material/GroundBorderMaterial";
 
 export default class World {
 	/** @type {Map} */
@@ -44,10 +45,17 @@ export default class World {
 	}
 
 	testWorld() {
+		// NOTE: Ideally it should all look like this
+		const geom = new GroundBorderGeometry(5, 5, 2.5);
+		const material = new GroundBorderMaterial();
+		this.en = new Entity(geom, material);
+		this.en.mesh.position.y = 3;
+		this.addEntity(this.en);
+
 		this.cube = Spawner.CreateSimpleCube({
 			width: 1,
 			height: 1,
-			color: new Color(1.0, 0.5, 0.2),
+			color: new Color(0, 1, 0),
 		});
 		this.cube.mesh.position.y = 2;
 		this.cube.mesh.position.z = -2;
@@ -65,6 +73,9 @@ export default class World {
 			vertexShader: basicVert,
 			fragmentShader: solidColor,
 			uniforms: {
+				uTime: {
+					value: 0.0,
+				},
 				color: {
 					value: new Vector3(1.0, 1.0, 0.0),
 				},
@@ -90,19 +101,6 @@ export default class World {
 		const bc = new BoxCollider(50, 0.5, 50);
 		this.floor.addComponent(bc);
 		this.addEntity(this.floor);
-
-		const space = 10;
-		for (let i = 0; i < 5; i++) {
-			const x = Math.floor(Math.random() * space);
-			const z = Math.floor(Math.random() * space);
-
-			const cube = Spawner.CreateSimpleCube({
-				width: 1, depth: 1, height: 1,
-				color: new Color(1.0, 0.0, 0.0),
-			});
-			cube.mesh.position.set(x, 0.0, z);
-			this.addEntity(cube);
-		}
 
 		const width = 3;
 		const height = 1;

@@ -23,13 +23,17 @@ export default class Spawner {
 	}
 
 	static CreateCubeWithShaderMaterial({ width, height, depth, widthSegments, heightSegments, depthSegments }, {
-		vertexShader, fragmentShader, uniforms,
+		vertexShader, fragmentShader, uniforms, blending, transparent, depthWrite, side
 	}) {
 		const geometry = new BoxGeometry(width, height, depth, widthSegments, heightSegments, depthSegments);
 		const material = new ShaderMaterial({
 			vertexShader,
 			fragmentShader,
 			uniforms,
+			blending,
+			transparent,
+			side,
+			depthWrite
 		});
 
 		return new Entity(geometry, material);
