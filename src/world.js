@@ -14,6 +14,8 @@ import GroundBorderGeometry from "./geometry/GroundBorderGeometry";
 import GroundBorderMaterial from "./material/GroundBorderMaterial";
 import SimpleCubeMaterial from "./material/SimpleCubeMaterial";
 import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
+import FloorGeometry from "./geometry/FloorGeometry";
+import FloorMaterial from "./material/FloorMaterial";
 
 export default class World {
 	/** @type {Map} */
@@ -84,19 +86,9 @@ export default class World {
 		this.player.addComponent(new Player());
 		this.addEntity(this.player);
 
-		this.floor = Spawner.CreateCubeWithShaderMaterial({
-			width: 100.0,
-			height: 1.0,
-			depth: 100.0,
-		}, {
-			vertexShader: basicVert,
-			fragmentShader: normalViz,
-			uniforms: {
-				color: {
-					value: new Vector3(1.0, 1.0, 1.0),
-				}
-			}
-		})
+		const floorGeom = new FloorGeometry(100, 1, 100);
+		const floorMaterial = new FloorMaterial();
+		this.floor = new Entity(floorGeom, floorMaterial);
 		this.floor.mesh.position.y = -1;
 		const bc = new BoxCollider(50, 0.5, 50);
 		this.floor.addComponent(bc);
@@ -105,11 +97,9 @@ export default class World {
 		const width = 3;
 		const height = 1;
 		const depth = 2;
-		this.testTriggerBox = Spawner.CreateSimpleCube({
-			width,
-			height,
-			depth,
-		});
+		const triggerGeom = new SimpleCubeGeometry(width, height, depth);
+		const triggerMaterial = new SimpleCubeMaterial(1, 0, 1);
+		this.testTriggerBox = new Entity(triggerGeom, triggerMaterial);
 		const trigger = new TriggerBox(width, height, depth);
 		trigger.onTriggerEnter = () => {
 			console.log("Enter");
