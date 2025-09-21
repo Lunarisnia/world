@@ -1,4 +1,4 @@
-import { DoubleSide, ShaderMaterial } from "three";
+import { ShaderMaterial } from "three";
 
 import vertexShader from "/shaders/groundborder/groundborder.vert?url&raw"
 import fragmentShader from "/shaders/groundborder/groundborder.frag?url&raw"

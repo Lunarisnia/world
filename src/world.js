@@ -12,6 +12,8 @@ import RigidBody from "./components/rigidbody";
 import Physics from "./physics";
 import GroundBorderGeometry from "./geometry/GroundBorderGeometry";
 import GroundBorderMaterial from "./material/GroundBorderMaterial";
+import SimpleCubeMaterial from "./material/SimpleCubeMaterial";
+import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
 
 export default class World {
 	/** @type {Map} */
@@ -52,15 +54,13 @@ export default class World {
 		this.en.mesh.position.y = 3;
 		this.addEntity(this.en);
 
-		this.cube = Spawner.CreateSimpleCube({
-			width: 1,
-			height: 1,
-			color: new Color(0, 1, 0),
-		});
-		this.cube.mesh.position.y = 2;
-		this.cube.mesh.position.z = -2;
+		const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
+		const cubeMaterial = new SimpleCubeMaterial(0, 0, 1);
+		this.cube = new Entity(cubeGeom, cubeMaterial);
 		const rb = new RigidBody();
 		rb.boxCollider(0.5, 0.5, 0.5);
+		this.cube.mesh.position.y = 2;
+		this.cube.mesh.position.z = -2;
 		this.cube.addComponent(rb);
 		this.addEntity(this.cube);
 
