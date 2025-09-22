@@ -11,7 +11,8 @@ export default class Renderer {
 	camera;
 
 	constructor() {
-		this.instance = new WebGLRenderer();
+		const canvas = document.querySelector("#mainCanvas")
+		this.instance = new WebGLRenderer({ antialias: true, canvas });
 	}
 
 	/**

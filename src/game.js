@@ -58,6 +58,11 @@ export default class Game {
 		this.renderer.instance.domElement.tabIndex = 0;
 		document.body.appendChild(this.renderer.instance.domElement);
 		Game.window = this.renderer.instance.domElement;
+		window.addEventListener("resize", () => {
+			this.renderer.setSize(window.innerWidth, window.innerHeight);
+			this.mainCamera.instance.aspect = window.innerWidth / window.innerHeight;
+			this.mainCamera.instance.updateProjectionMatrix();
+		})
 	}
 
 
