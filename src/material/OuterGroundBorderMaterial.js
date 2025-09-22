@@ -3,7 +3,7 @@ import { DoubleSide, ShaderMaterial } from "three";
 import vertexShader from "/shaders/groundborder/groundborder.vert?url&raw"
 import fragmentShader from "/shaders/groundborder/groundborder.frag?url&raw"
 
-export default class GroundBorderMaterial {
+export default class OuterGroundBorderMaterial {
 	constructor() {
 		const uniforms = {
 			uTime: { value: 0.0 },

@@ -1,6 +1,8 @@
-import { Vector2, Vector3 } from "three";
+import { Mesh, Vector2, Vector3 } from "three";
 import Component from "../component";
 import Game from "../game";
+import SimpleCubeGeometry from "../geometry/SimpleCubeGeometry";
+import SimpleCubeMaterial from "../material/SimpleCubeMaterial";
 
 export default class TriggerBox extends Component {
 	intersecting = false;
@@ -9,17 +11,23 @@ export default class TriggerBox extends Component {
 	/** @type {Function} */
 	onTriggerExit = () => { }
 
-	constructor(width, height, depth) {
+	constructor(hx, hy, hz) {
 		super();
-		this.width = width;
-		this.height = height;
-		this.depth = depth;
+		this.halfWidth = hx;
+		this.halfHeight = hy;
+		this.halfDepth = hz;
 
 	}
 
 	init() {
 		this.player = Game.instance.world.player;
 		this.mesh.position.z = -4;
+
+		// TODO: add toggle for this
+		const cubeGeom = new SimpleCubeGeometry(this.halfWidth * 2.0, this.halfHeight * 2.0, this.halfDepth * 2.0);
+		const cubeMaterial = new SimpleCubeMaterial(0.0, 1.0, 0.0);
+		cubeMaterial.wireframe = true;
+		this.mesh.add(new Mesh(cubeGeom, cubeMaterial));
 	}
 
 	update() {
@@ -44,7 +52,7 @@ export default class TriggerBox extends Component {
 		const wPos = new Vector3();
 		this.mesh.getWorldPosition(wPos);
 
-		this.bottomLeft = new Vector2(wPos.x - (this.width), wPos.z + (this.height));
-		this.topRight = new Vector2(wPos.x + (this.width), wPos.z - (this.height));
+		this.bottomLeft = new Vector2(wPos.x - (this.halfWidth), wPos.z + (this.halfHeight));
+		this.topRight = new Vector2(wPos.x + (this.halfWidth), wPos.z - (this.halfHeight));
 	}
 }

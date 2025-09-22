@@ -1,12 +1,6 @@
 import Game from "./game";
-import basicVert from "/shaders/basic/basic.vert?url&raw"
-import solidColor from "/shaders/basic/solid-color.frag?url&raw"
-import normalViz from "/shaders/basic/normal-viz.frag?url&raw"
-import Spawner from "./entity/spawner";
 import Entity from "./entity/entity";
 import Player from "./components/player";
-import { Color, Vector3 } from "three";
-import TriggerBox from "./components/trigger-box";
 import BoxCollider from "./components/box-collider";
 import RigidBody from "./components/rigidbody";
 import Physics from "./physics";
@@ -16,6 +10,8 @@ import SimpleCubeMaterial from "./material/SimpleCubeMaterial";
 import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
 import FloorGeometry from "./geometry/FloorGeometry";
 import FloorMaterial from "./material/FloorMaterial";
+import GroundBorder from "./components/GroundBorder";
+import TriggerBox from "./components/TriggerBox";
 
 export default class World {
 	/** @type {Map} */
@@ -43,6 +39,7 @@ export default class World {
 
 	update() {
 		Physics.instance.updateDebugGizmo();
+		this.en.material.uniforms.uTime.value = Game.instance.clock.getElapsedTime();
 		for (const entity of this.entities.values()) {
 			entity.update();
 		}
@@ -50,10 +47,10 @@ export default class World {
 
 	testWorld() {
 		// NOTE: Ideally it should all look like this
-		const geom = new GroundBorderGeometry(5, 5, 2.5);
+		const geom = new GroundBorderGeometry(7, 4, 0.25);
 		const material = new GroundBorderMaterial();
 		this.en = new Entity(geom, material);
-		this.en.mesh.position.y = 3;
+		this.en.addComponent(new GroundBorder());
 		this.addEntity(this.en);
 
 		const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
@@ -67,7 +64,7 @@ export default class World {
 		this.addEntity(this.cube);
 
 		const playerGeom = new SimpleCubeGeometry(1, 1, 1);
-		const playerMaterial = new SimpleCubeMaterial(1, 1, 1);
+		const playerMaterial = new SimpleCubeMaterial(0, 1, 1);
 		this.player = new Entity(playerGeom, playerMaterial);
 		this.player.addComponent(new Player());
 		this.addEntity(this.player);

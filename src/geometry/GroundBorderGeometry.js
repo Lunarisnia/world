@@ -14,11 +14,11 @@ export default class GroundBorderGeometry {
 		const outerWidth = this.width;
 		const outerHeight = this.height;
 
-		const innerWidth = outerWidth - this.thickness;
-		const innerHeight = outerHeight - this.thickness;
-
 		const outerWidthHalf = outerWidth * 0.5;
 		const outerHeightHalf = outerHeight * 0.5;
+
+		const innerWidth = outerWidth - this.thickness;
+		const innerHeight = outerHeight - this.thickness;
 
 		const innerWidthHalf = innerWidth * 0.5;
 		const innerHeightHalf = innerHeight * 0.5;
@@ -73,6 +73,7 @@ export default class GroundBorderGeometry {
 		indices[1 * 3 + 0] = 0;
 		indices[1 * 3 + 1] = 5;
 		indices[1 * 3 + 2] = 1;
+
 		indices[2 * 3 + 0] = 1;
 		indices[2 * 3 + 1] = 5;
 		indices[2 * 3 + 2] = 3;
@@ -99,8 +100,8 @@ export default class GroundBorderGeometry {
 
 
 		const uvs = new Float32Array(length * 2);
-		const innerUMin = innerWidthHalf / this.width;
-		const innerVMin = innerHeightHalf / this.height;
+		const innerUMin = this.thickness / this.width;
+		const innerVMin = this.thickness / this.height;
 
 		const innerUMax = 1.0 - innerUMin;
 		const innerVMax = 1.0 - innerVMin;
@@ -123,8 +124,13 @@ export default class GroundBorderGeometry {
 		geometry.setIndex(new BufferAttribute(indices, 1, false));
 
 		geometry.setAttribute("position", new Float32BufferAttribute(vertices, 3));
-
 		geometry.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
+
+		geometry.parameters = {
+			width: this.width,
+			height: this.height,
+			thickness: this.thickness,
+		}
 
 		return geometry;
 	}
