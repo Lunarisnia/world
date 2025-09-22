@@ -39,7 +39,6 @@ export default class World {
 
 	update() {
 		Physics.instance.updateDebugGizmo();
-		this.en.material.uniforms.uTime.value = Game.instance.clock.getElapsedTime();
 		for (const entity of this.entities.values()) {
 			entity.update();
 		}
@@ -47,11 +46,7 @@ export default class World {
 
 	testWorld() {
 		// NOTE: Ideally it should all look like this
-		const geom = new GroundBorderGeometry(7, 4, 0.25);
-		const material = new GroundBorderMaterial();
-		this.en = new Entity(geom, material);
-		this.en.addComponent(new GroundBorder());
-		this.addEntity(this.en);
+		this.addEntity(new GroundBorder());
 
 		const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
 		const cubeMaterial = new SimpleCubeMaterial(0, 0, 1);
