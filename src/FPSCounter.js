@@ -16,7 +16,6 @@ export default class FPSCounter {
 			this.fps = this.frames;
 			this.frames = 0;
 			this.lastTime = now;
-			console.log("FPS: ", this.fps);
 		}
 	}
 }
