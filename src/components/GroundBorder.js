@@ -12,6 +12,7 @@ import IconPlaneMaterial from "../material/IconPlaneMaterial";
 import InputManager from "../input/inputManager";
 
 export default class GroundBorder extends Component {
+	onInteract = () => { };
 	constructor() {
 		super();
 		this.width = 7;
@@ -110,7 +111,7 @@ export default class GroundBorder extends Component {
 		this.iconPlane.material.uniforms.uAspectRatio.value = this.iconPlane.geometry.parameters.width / this.iconPlane.geometry.parameters.height;
 
 		if (InputManager.instance.getKey("f").justPressed && this.isIn) {
-			console.log("TODO: Open new page or whatever");
+			this.onInteract();
 		}
 	}
 
