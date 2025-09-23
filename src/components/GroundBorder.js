@@ -6,7 +6,7 @@ import OuterGroundBorderMaterial from "../material/OuterGroundBorderMaterial";
 import Entity from "../entity/entity";
 import Game from "../game";
 import GroundBorderMaterial from "../material/GroundBorderMaterial";
-import { Color, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
+import { Color, DoubleSide, LinearFilter, LinearMipMapLinearFilter, Mesh, MeshBasicMaterial, NearestFilter, PlaneGeometry, SRGBColorSpace, TextureLoader } from "three";
 import gsap from "gsap";
 
 export default class GroundBorder extends Component {
@@ -28,8 +28,28 @@ export default class GroundBorder extends Component {
 		this.createSpinner();
 		this.createTrigger();
 		this.createIconPlane();
+		this.createOpenPlane();
 
 		return entity;
+	}
+
+	createOpenPlane() {
+		// NOTE: maybe we could make a centralized loader that inform if all texture are loaded for loading screen
+		const loader = new TextureLoader();
+		const openTexture = loader.load("/textures/open.png");
+		openTexture.magFilter = NearestFilter;
+		openTexture.minFilter = NearestFilter;
+		openTexture.generateMipmaps = false;
+
+		const geom = new PlaneGeometry(10, 10);
+		const material = new MeshBasicMaterial({
+			map: openTexture,
+			transparent: true,
+			alphaTest: 0.5,
+		});
+		this.openPlane = new Mesh(geom, material);
+
+		this.owner.mesh.add(this.openPlane);
 	}
 
 	createIconPlane() {
@@ -77,20 +97,22 @@ export default class GroundBorder extends Component {
 	async onTriggerEnter() {
 		gsap.killTweensOf(this.spinner.scale);
 		gsap.killTweensOf(this.spinner.position);
+		gsap.killTweensOf(this.iconPlane.position);
 
-		gsap.fromTo(this.spinner.scale, { x: 1.0 * 0.9, y: 1.0 * 0.9 }, { y: 1.05, x: 1.05, ease: "back.out(4)", duration: 0.8 });
-		await gsap.fromTo(this.spinner.position, { z: 0.1 }, { z: 0.5, ease: "power1.inOut", duration: 0.4 });
+		gsap.to(this.spinner.scale, { y: 1.05, x: 1.05, ease: "back.out(4)", duration: 0.8 });
+		await gsap.to(this.spinner.position, { z: 0.5, ease: "power1.inOut", duration: 0.4 });
 
-		gsap.fromTo(this.iconPlane.position, { z: -1 }, { z: 2, ease: "back.out(2)", duration: 0.5 });
+		gsap.to(this.iconPlane.position, { z: 2, ease: "back.out(2)", duration: 0.5 });
 	}
 
 	async onTriggerExit() {
 		gsap.killTweensOf(this.spinner.scale);
 		gsap.killTweensOf(this.spinner.position);
+		gsap.killTweensOf(this.iconPlane.position);
 
-		gsap.fromTo(this.spinner.scale, { x: 1.05, y: 1.05 }, { y: 1.0 * 0.9, x: 1.0 * 0.9, ease: "back.out(4)", duration: 0.8 });
+		gsap.to(this.spinner.scale, { y: 1.0 * 0.9, x: 1.0 * 0.9, ease: "back.out(4)", duration: 0.8 });
 		await gsap.to(this.spinner.position, { z: 0.1, ease: "back.in(4)", duration: 0.4 });
 
-		gsap.fromTo(this.iconPlane.position, { z: 2 }, { z: -1, ease: "back.in(2)", duration: 0.5 });
+		gsap.to(this.iconPlane.position, { z: -1, ease: "back.in(2)", duration: 0.5 });
 	}
 }

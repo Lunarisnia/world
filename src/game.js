@@ -54,6 +54,7 @@ export default class Game {
 		this.renderer = new Renderer();
 
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.renderer.instance.setPixelRatio(window.devicePixelRatio);
 		// This is required for the canvas to properly listen for keyboard input
 		this.renderer.instance.domElement.tabIndex = 0;
 		document.body.appendChild(this.renderer.instance.domElement);
@@ -61,6 +62,7 @@ export default class Game {
 		window.addEventListener("resize", () => {
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
 			this.mainCamera.instance.aspect = window.innerWidth / window.innerHeight;
+			this.renderer.instance.setPixelRatio(window.devicePixelRatio);
 			this.mainCamera.instance.updateProjectionMatrix();
 		})
 	}
