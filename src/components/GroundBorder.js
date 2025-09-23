@@ -9,6 +9,7 @@ import GroundBorderMaterial from "../material/GroundBorderMaterial";
 import { DoubleSide, Mesh, MeshBasicMaterial, NearestFilter, PlaneGeometry, TextureLoader } from "three";
 import gsap from "gsap";
 import IconPlaneMaterial from "../material/IconPlaneMaterial";
+import InputManager from "../input/inputManager";
 
 export default class GroundBorder extends Component {
 	constructor() {
@@ -107,9 +108,15 @@ export default class GroundBorder extends Component {
 		this.mesh.material.uniforms.uTime.value = Game.instance.clock.getElapsedTime();
 		this.spinner.material.uniforms.uTime.value = Game.instance.clock.getElapsedTime();
 		this.iconPlane.material.uniforms.uAspectRatio.value = this.iconPlane.geometry.parameters.width / this.iconPlane.geometry.parameters.height;
+
+		if (InputManager.instance.getKey("f").justPressed && this.isIn) {
+			console.log("TODO: Open new page or whatever");
+		}
 	}
 
 	onTriggerEnter() {
+		this.isIn = true;
+
 		gsap.killTweensOf(this.spinner.scale);
 		gsap.killTweensOf(this.spinner.position);
 		gsap.killTweensOf(this.iconPlane.position);
@@ -121,9 +128,12 @@ export default class GroundBorder extends Component {
 		gsap.to(this.iconPlane.position, { z: 3, ease: "back.out(2)", duration: 0.4 }).delay(0.2).then(() => {
 			gsap.to(this.iconPlane.position, { z: 3.3, ease: "power1.inOut", duration: 2.5 }).yoyo(true).repeat(-1);
 		})
+
 	}
 
 	onTriggerExit() {
+		this.isIn = false;
+
 		gsap.killTweensOf(this.spinner.scale);
 		gsap.killTweensOf(this.spinner.position);
 		gsap.killTweensOf(this.iconPlane.position);
