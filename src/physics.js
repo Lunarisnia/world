@@ -57,7 +57,6 @@ export default class Physics {
 	}
 
 	update() {
-		console.log(this.world.timestep, 1 / 60);
 		this.world.step();
 	}
 };

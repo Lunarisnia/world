@@ -21,6 +21,10 @@ export default class Game {
 	/** @type {World} */
 	world;
 
+	lastTime = 0;
+	frames = 0;
+	fps = 0;
+
 	constructor() {
 		if (Game.instance) {
 			return Game.instance;
@@ -73,6 +77,8 @@ export default class Game {
 		await Physics.instance.init();
 		this.world.init();
 		this.mainCamera.init();
+
+		this.lastTime = performance.now();
 		this.renderer.instance.setAnimationLoop(() => {
 			this.renderLoop();
 		});
@@ -83,6 +89,19 @@ export default class Game {
 		this.mainCamera.update();
 		this.world.update();
 		InputManager.instance.update();
+		this.calculateFPS();
 		this.renderer.render();
+	}
+
+	calculateFPS() {
+		const now = performance.now();
+		this.frames++;
+
+		if (now - this.lastTime >= 1000) {
+			this.fps = this.frames;
+			this.frames = 0;
+			this.lastTime = now;
+			console.log("FPS:", this.fps);
+		}
 	}
 };
