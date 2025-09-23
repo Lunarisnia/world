@@ -4,6 +4,7 @@ import Renderer from "./renderer";
 import World from "./world";
 import InputManager from "./input/inputManager";
 import Physics from "./physics";
+import FPSCounter from "./FPSCounter";
 
 export default class Game {
 	/** @type {Game} */
@@ -20,16 +21,20 @@ export default class Game {
 	clock;
 	/** @type {World} */
 	world;
+	/** @type {FPSCounter} */
+	framerate;
 
 	lastTime = 0;
-	frames = 0;
-	fps = 0;
+	designatedFPS = 60.0;
+	frameDuration = 1000.0 / this.designatedFPS;
 
 	constructor() {
 		if (Game.instance) {
 			return Game.instance;
 		}
 		Game.instance = this;
+
+		this.framerate = new FPSCounter();
 
 		this.mainCamera = new Camera(90, window.innerWidth / window.innerHeight, 0.01, 1000);
 		this.scene = new Scene();
@@ -78,6 +83,7 @@ export default class Game {
 		this.world.init();
 		this.mainCamera.init();
 
+		this.framerate.init();
 		this.lastTime = performance.now();
 		this.renderer.instance.setAnimationLoop(() => {
 			this.renderLoop();
@@ -85,23 +91,17 @@ export default class Game {
 	}
 
 	renderLoop() {
+		const now = performance.now();
+		const delta = now - this.lastTime;
+		if (delta < this.frameDuration) {
+			this.lastTime = now;
+			return;
+		};
 		Physics.instance.update();
 		this.mainCamera.update();
 		this.world.update();
 		InputManager.instance.update();
-		this.calculateFPS();
+		this.framerate.tick();
 		this.renderer.render();
-	}
-
-	calculateFPS() {
-		const now = performance.now();
-		this.frames++;
-
-		if (now - this.lastTime >= 1000) {
-			this.fps = this.frames;
-			this.frames = 0;
-			this.lastTime = now;
-			console.log("FPS:", this.fps);
-		}
 	}
 };
