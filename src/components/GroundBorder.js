@@ -25,7 +25,8 @@ export default class GroundBorder extends Component {
 		const innerGeom = new GroundBorderGeometry(this.width - 1.0, this.height - 1.0, this.thickness);
 		const innerMaterial = new GroundBorderMaterial();
 		this.spinner = new Mesh(innerGeom, innerMaterial)
-		this.spinner.position.z = -1;
+		this.spinner.position.z = 0.1;
+		this.spinner.scale.multiplyScalar(0.9);
 		entity.mesh.add(this.spinner);
 
 		entity.mesh.position.y = -0.49;
@@ -54,15 +55,18 @@ export default class GroundBorder extends Component {
 	}
 
 	async onTriggerEnter() {
-		gsap.fromTo(this.spinner.scale, { x: -1.0, y: -1.0 }, { y: 1.0, x: 1.0, ease: "power1.out", duration: 0.5 });
-		gsap.fromTo(this.spinner.position, { z: -1 }, { z: 0.5, ease: "power1.inOut", duration: 0.5 });
+		gsap.killTweensOf(this.spinner.scale);
+		gsap.killTweensOf(this.spinner.position);
+
+		gsap.fromTo(this.spinner.scale, { x: 1.0 * 0.9, y: 1.0 * 0.9 }, { y: 1.05, x: 1.05, ease: "back.out(4)", duration: 0.8 });
+		gsap.fromTo(this.spinner.position, { z: 0.1 }, { z: 0.5, ease: "power1.inOut", duration: 0.4 });
 	}
 
 	async onTriggerExit() {
-		const timeline = gsap.timeline();
-		await gsap.fromTo(this.spinner.position, { z: 0.5 }, { z: 1.0, ease: "power1.inOut", duration: 0.4 })
-		gsap.to(this.spinner.position, { z: -1.0, ease: "power1.out", duration: 0.8 });
-		timeline.fromTo(this.spinner.scale, { x: 1.0, y: 1.0 }, { y: -1.0, x: -1.0, ease: "power1.out", duration: 0.8 })
-			.to(this.spinner.scale, { y: 1.0, x: 1.0, ease: "power1.out", duration: 0.1 });
+		gsap.killTweensOf(this.spinner.scale);
+		gsap.killTweensOf(this.spinner.position);
+
+		gsap.fromTo(this.spinner.scale, { x: 1.05, y: 1.05 }, { y: 1.0 * 0.9, x: 1.0 * 0.9, ease: "back.out(4)", duration: 0.8 });
+		gsap.to(this.spinner.position, { z: 0.1, ease: "back.in(4)", duration: 0.4 });
 	}
 }
