@@ -6,6 +6,8 @@ import Game from "./game";
 export default class Physics {
 	/** @type {Physics} */
 	static instance;
+	timeStep = 1.0 / 60.0;
+	accumulator = 0.0;
 
 	constructor() {
 		if (Physics.instance) {
@@ -55,7 +57,7 @@ export default class Physics {
 	}
 
 	update() {
-		this.world.timestep = 1.0 / 60.0;
+		console.log(this.world.timestep, 1 / 60);
 		this.world.step();
 	}
 };
