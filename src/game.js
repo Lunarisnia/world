@@ -94,9 +94,10 @@ export default class Game {
 		const now = performance.now();
 		const delta = now - this.lastTime;
 		if (delta < this.frameDuration) {
-			this.lastTime = now;
 			return;
 		};
+		this.lastTime = now;
+
 		Physics.instance.update();
 		this.mainCamera.update();
 		this.world.update();
