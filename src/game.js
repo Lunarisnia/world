@@ -24,9 +24,9 @@ export default class Game {
 	/** @type {FPSCounter} */
 	framerate;
 
-	lastTime = 0;
 	designatedFPS = 60.0;
-	frameDuration = 1000.0 / this.designatedFPS;
+	frameDuration = 1.0 / this.designatedFPS;
+	delta = 0;
 
 	constructor() {
 		if (Game.instance) {
@@ -91,12 +91,10 @@ export default class Game {
 	}
 
 	renderLoop() {
-		const now = performance.now();
-		const delta = now - this.lastTime;
-		if (delta < this.frameDuration) {
-			return;
+		this.delta += this.clock.getDelta();
+		if (this.delta < this.frameDuration) {
+			return
 		};
-		this.lastTime = now;
 
 		Physics.instance.update();
 		this.mainCamera.update();
@@ -104,5 +102,7 @@ export default class Game {
 		InputManager.instance.update();
 		this.framerate.tick();
 		this.renderer.render();
+
+		this.delta = this.delta % this.frameDuration;
 	}
 };
