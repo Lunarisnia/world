@@ -6,8 +6,9 @@ import OuterGroundBorderMaterial from "../material/OuterGroundBorderMaterial";
 import Entity from "../entity/entity";
 import Game from "../game";
 import GroundBorderMaterial from "../material/GroundBorderMaterial";
-import { Color, DoubleSide, LinearFilter, LinearMipMapLinearFilter, Mesh, MeshBasicMaterial, NearestFilter, PlaneGeometry, SRGBColorSpace, TextureLoader } from "three";
+import { DoubleSide, Mesh, MeshBasicMaterial, NearestFilter, PlaneGeometry, TextureLoader } from "three";
 import gsap from "gsap";
+import IconPlaneMaterial from "../material/IconPlaneMaterial";
 
 export default class GroundBorder extends Component {
 	constructor() {
@@ -53,13 +54,28 @@ export default class GroundBorder extends Component {
 	}
 
 	createIconPlane() {
-		const geom = new PlaneGeometry(1, 1);
-		const material = new MeshBasicMaterial({
-			color: new Color(1, 1, 1),
-		});
+		const geom = new PlaneGeometry(3, 1);
+		const material = new IconPlaneMaterial();
 		this.iconPlane = new Mesh(geom, material);
 		this.iconPlane.rotateX(degToRad(90));
 		this.iconPlane.position.z = -1;
+		this.iconPlane.scale.x = 0;
+
+		const loader = new TextureLoader();
+		const enterTexture = loader.load("/textures/enter.png");
+		enterTexture.magFilter = NearestFilter;
+		enterTexture.minFilter = NearestFilter;
+		enterTexture.generateMipmaps = false;
+
+		const innerGeom = new PlaneGeometry(6, 6);
+		const innerMaterial = new MeshBasicMaterial({
+			map: enterTexture,
+			transparent: true,
+			side: DoubleSide,
+		});
+		const innerPlane = new Mesh(innerGeom, innerMaterial);
+		innerPlane.position.z = 0.01;
+		this.iconPlane.add(innerPlane);
 
 		this.owner.mesh.add(this.iconPlane);
 	}
@@ -87,32 +103,35 @@ export default class GroundBorder extends Component {
 	init() {
 	}
 
-	// TODO: I want the word open in the middle
-	// TODO: add the "Enter" key texture
 	update() {
 		this.mesh.material.uniforms.uTime.value = Game.instance.clock.getElapsedTime();
 		this.spinner.material.uniforms.uTime.value = Game.instance.clock.getElapsedTime();
+		this.iconPlane.material.uniforms.uAspectRatio.value = this.iconPlane.geometry.parameters.width / this.iconPlane.geometry.parameters.height;
 	}
 
-	async onTriggerEnter() {
+	onTriggerEnter() {
 		gsap.killTweensOf(this.spinner.scale);
 		gsap.killTweensOf(this.spinner.position);
 		gsap.killTweensOf(this.iconPlane.position);
 
 		gsap.to(this.spinner.scale, { y: 1.05, x: 1.05, ease: "back.out(4)", duration: 0.8 });
-		await gsap.to(this.spinner.position, { z: 0.5, ease: "power1.inOut", duration: 0.4 });
+		gsap.to(this.spinner.position, { z: 0.5, ease: "power1.inOut", duration: 0.4 });
 
-		gsap.to(this.iconPlane.position, { z: 2, ease: "back.out(2)", duration: 0.5 });
+		gsap.to(this.iconPlane.scale, { x: 1.0, ease: "back.out(2)", duration: 0.4 }).delay(0.2);
+		gsap.to(this.iconPlane.position, { z: 3, ease: "back.out(2)", duration: 0.4 }).delay(0.2).then(() => {
+			gsap.to(this.iconPlane.position, { z: 3.3, ease: "power1.inOut", duration: 2.5 }).yoyo(true).repeat(-1);
+		})
 	}
 
-	async onTriggerExit() {
+	onTriggerExit() {
 		gsap.killTweensOf(this.spinner.scale);
 		gsap.killTweensOf(this.spinner.position);
 		gsap.killTweensOf(this.iconPlane.position);
 
 		gsap.to(this.spinner.scale, { y: 1.0 * 0.9, x: 1.0 * 0.9, ease: "back.out(4)", duration: 0.8 });
-		await gsap.to(this.spinner.position, { z: 0.1, ease: "back.in(4)", duration: 0.4 });
+		gsap.to(this.spinner.position, { z: 0.1, ease: "back.in(4)", duration: 0.4 });
 
-		gsap.to(this.iconPlane.position, { z: -1, ease: "back.in(2)", duration: 0.5 });
+		gsap.to(this.iconPlane.scale, { x: 0.0, ease: "back.in(2)", duration: 0.4 }).delay(0.2);
+		gsap.to(this.iconPlane.position, { z: -1, ease: "back.in(2)", duration: 0.4 }).delay(0.2);
 	}
 }

@@ -27,7 +27,9 @@ export default class TriggerBox extends Component {
 		const cubeGeom = new SimpleCubeGeometry(this.halfWidth * 2.0, this.halfHeight * 2.0, this.halfDepth * 2.0);
 		const cubeMaterial = new SimpleCubeMaterial(0.0, 1.0, 0.0);
 		cubeMaterial.wireframe = true;
-		this.mesh.add(new Mesh(cubeGeom, cubeMaterial));
+		const gizmo = new Mesh(cubeGeom, cubeMaterial);
+		//gizmo.visible = false;
+		this.mesh.add(gizmo);
 	}
 
 	update() {

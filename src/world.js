@@ -4,14 +4,14 @@ import Player from "./components/player";
 import BoxCollider from "./components/box-collider";
 import RigidBody from "./components/rigidbody";
 import Physics from "./physics";
-import GroundBorderGeometry from "./geometry/GroundBorderGeometry";
-import GroundBorderMaterial from "./material/GroundBorderMaterial";
 import SimpleCubeMaterial from "./material/SimpleCubeMaterial";
 import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
 import FloorGeometry from "./geometry/FloorGeometry";
 import FloorMaterial from "./material/FloorMaterial";
 import GroundBorder from "./components/GroundBorder";
 import TriggerBox from "./components/TriggerBox";
+import { PlaneGeometry } from "three";
+import IconPlaneMaterial from "./material/IconPlaneMaterial";
 
 export default class World {
 	/** @type {Map} */
@@ -39,12 +39,19 @@ export default class World {
 
 	update() {
 		Physics.instance.updateDebugGizmo();
+		//this.testBed.material.uniforms.uAspectRatio.value = this.testBed.mesh.geometry.parameters.width / this.testBed.mesh.geometry.parameters.height;
 		for (const entity of this.entities.values()) {
 			entity.update();
 		}
 	}
 
 	testWorld() {
+		//const testBedGeom = new PlaneGeometry(6, 4);
+		//const testBedMaterial = new IconPlaneMaterial();
+		//this.testBed = new Entity(testBedGeom, testBedMaterial);
+		//this.testBed.mesh.position.y = 4;
+		//this.addEntity(this.testBed);
+
 		// NOTE: Ideally it should all look like this
 		this.addEntity(new GroundBorder());
 

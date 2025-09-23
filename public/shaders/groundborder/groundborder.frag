@@ -39,8 +39,6 @@ vec2 calculatePositionInverted(float t) {
 float drawSquare(vec2 uv, vec2 position, float t) {
     vec2 d = abs(uv - position);
 
-    float phase = mod(t, 4.0f);
-
     float square = step(max(d.x, d.y), 0.2f);
     return square;
 }
