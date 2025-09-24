@@ -6,6 +6,7 @@ import ViewportGeometry from "./geometry/ViewportGeometry";
 import ViewportMaterial from "./material/ViewportMaterial";
 import DebugController from "./DebugController";
 import Spawner from "./entity/spawner";
+import TestBedViewportMaterial from "./material/TestBedViewportMaterial";
 
 export default class Renderer {
 	/** @type {WebGLRenderer} */
@@ -47,7 +48,7 @@ export default class Renderer {
 		Game.instance.scene.add(this.viewport);
 
 		const testBedGeom = new ViewportGeometry();
-		const testBedMaterial = new ViewportMaterial(this.testBedRenderTarget);
+		const testBedMaterial = new TestBedViewportMaterial(this.testBedRenderTarget);
 		this.testBedViewport = new Mesh(testBedGeom, testBedMaterial);
 		Game.instance.testRealmViewportScene.add(this.testBedViewport);
 		const sphere = Spawner.CreateSimpleSphere({ radius: 1 });
@@ -79,10 +80,11 @@ export default class Renderer {
 	render() {
 		if (Game.instance.debug.shaderTestBed) {
 			this.instance.setRenderTarget(this.testBedRenderTarget);
+			// NOTE: Might need to replace this with an independent camera
 			this.instance.render(Game.instance.testRealmScene, Game.instance.mainCamera.instance);
 
 			this.instance.setRenderTarget(null);
-			this.instance.render(Game.instance.testRealmViewportScene, Game.instance.mainCamera.instance);
+			this.instance.render(Game.instance.testRealmViewportScene, Game.instance.viewportCamera);
 			return;
 		}
 
