@@ -21,6 +21,10 @@ export default class Game {
 	viewportCamera;
 	/** @type {Scene} */
 	scene;
+	/** @type {Scene} */
+	testRealmViewportScene;
+	/** @type {Scene} */
+	testRealmScene;
 	/** @type {Clock} */
 	clock;
 	/** @type {World} */
@@ -39,12 +43,15 @@ export default class Game {
 			return Game.instance;
 		}
 		Game.instance = this;
+		this.debug = new DebugController();
 
 		this.framerate = new FPSCounter();
 
 		this.mainCamera = new Camera(90, window.innerWidth / window.innerHeight, 0.01, 1000);
 		this.viewportCamera = new ViewportCamera(0.1, 1000);
 		this.scene = new Scene();
+		this.testRealmViewportScene = new Scene();
+		this.testRealmScene = new Scene();
 		this.setClock();
 
 		this.setRenderer();
@@ -55,7 +62,6 @@ export default class Game {
 		new InputManager();
 		new Physics();
 
-		this.debug = new DebugController();
 	}
 
 	setWorld() {
@@ -90,6 +96,7 @@ export default class Game {
 		this.world.init();
 		this.mainCamera.init();
 
+		this.debug.init();
 		this.framerate.init();
 		this.lastTime = performance.now();
 		this.renderer.instance.setAnimationLoop(() => {
