@@ -10,14 +10,16 @@ import FloorGeometry from "./geometry/FloorGeometry";
 import FloorMaterial from "./material/FloorMaterial";
 import GroundBorder from "./components/GroundBorder";
 import TriggerBox from "./components/TriggerBox";
-import { PlaneGeometry } from "three";
-import IconPlaneMaterial from "./material/IconPlaneMaterial";
+import { MeshBasicMaterial, PlaneGeometry, Scene } from "three";
 
 export default class World {
 	/** @type {Map} */
 	entities = new Map();
+	/** @type {Scene} */
+	scene;
 
 	constructor() {
+		this.scene = new Scene();
 	}
 
 	/**
@@ -26,7 +28,8 @@ export default class World {
 	 */
 	addEntity(entity) {
 		this.entities.set(entity.id, entity);
-		Game.instance.scene.add(entity.mesh);
+		//Game.instance.scene.add(entity.mesh);
+		this.scene.add(entity.mesh);
 	}
 
 	init() {
@@ -46,11 +49,13 @@ export default class World {
 	}
 
 	testWorld() {
-		//const testBedGeom = new PlaneGeometry(6, 4);
-		//const testBedMaterial = new IconPlaneMaterial();
-		//this.testBed = new Entity(testBedGeom, testBedMaterial);
-		//this.testBed.mesh.position.y = 4;
-		//this.addEntity(this.testBed);
+		const testBedGeom = new PlaneGeometry(4, 4);
+		const testBedMaterial = new MeshBasicMaterial({
+			map: Game.instance.renderer.mainRenderTarget.texture,
+		});
+		this.testBed = new Entity(testBedGeom, testBedMaterial);
+		this.testBed.mesh.position.y = 4;
+		this.addEntity(this.testBed);
 
 		// NOTE: Ideally it should all look like this
 		this.addEntity(new GroundBorder());

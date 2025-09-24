@@ -1,10 +1,11 @@
-import { Clock, Scene } from "three";
+import { Clock, OrthographicCamera, Scene } from "three";
 import Camera from "./camera";
 import Renderer from "./renderer";
 import World from "./world";
 import InputManager from "./input/inputManager";
 import Physics from "./physics";
 import FPSCounter from "./FPSCounter";
+import ViewportCamera from "./ViewportCamera";
 
 export default class Game {
 	/** @type {Game} */
@@ -15,6 +16,8 @@ export default class Game {
 	renderer;
 	/** @type {Camera} */
 	mainCamera;
+	/** @type {OrthographicCamera} */
+	viewportCamera;
 	/** @type {Scene} */
 	scene;
 	/** @type {Clock} */
@@ -37,12 +40,12 @@ export default class Game {
 		this.framerate = new FPSCounter();
 
 		this.mainCamera = new Camera(90, window.innerWidth / window.innerHeight, 0.01, 1000);
+		this.viewportCamera = new ViewportCamera(0.1, 1000);
 		this.scene = new Scene();
 		this.setClock();
 
 		this.setRenderer();
-		this.renderer.setCamera(this.mainCamera);
-		this.renderer.setScene(this.scene);
+		this.renderer.setViewport();
 
 		this.setWorld();
 

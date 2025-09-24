@@ -28,7 +28,7 @@ export default class Physics {
 		const material = new LineBasicMaterial({ vertexColors: true });
 		const lineSegment = new LineSegments(this.geometry, material);
 
-		Game.instance.scene.add(lineSegment);
+		Game.instance.world.scene.add(lineSegment);
 	}
 
 	updateDebugGizmo() {
