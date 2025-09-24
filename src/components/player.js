@@ -31,18 +31,15 @@ export default class Player extends Component {
 	}
 
 	init() {
-		// TODO: add someway to toggle this debug mode real time
-		const axesHelper = new ArrowHelper(this.direction, this.mesh.position, 2.5, 0x00FF00, 0.5, 0.5);
-		this.mesh.add(axesHelper);
+		this.axesHelper = new ArrowHelper(this.direction, this.mesh.position, 2.5, 0x00FF00, 0.5, 0.5);
+		this.mesh.add(this.axesHelper);
 
-		const sphere = Spawner.CreateSimpleSphere({
+		this.midSphere = Spawner.CreateSimpleSphere({
 			radius: 0.1,
-			// widthSegments: 16,
-			// heightSegments: 16,
 			color: new Color(1.0, 0.0, 0.0),
 		});
-		sphere.material.depthTest = false;
-		this.mesh.add(sphere.mesh);
+		this.midSphere.material.depthTest = false;
+		this.mesh.add(this.midSphere.mesh);
 
 
 		this.rigidBody = new RigidBody();
@@ -53,6 +50,8 @@ export default class Player extends Component {
 	}
 
 	update() {
+		this.axesHelper.visible = Game.instance.debug.gizmo;
+		this.midSphere.mesh.visible = Game.instance.debug.gizmo;
 		this.handleTankMovement();
 	}
 

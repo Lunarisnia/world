@@ -23,16 +23,15 @@ export default class TriggerBox extends Component {
 		this.player = Game.instance.world.player;
 		this.mesh.position.z = -4;
 
-		// TODO: add toggle for this
 		const cubeGeom = new SimpleCubeGeometry(this.halfWidth * 2.0, this.halfHeight * 2.0, this.halfDepth * 2.0);
 		const cubeMaterial = new SimpleCubeMaterial(0.0, 1.0, 0.0);
 		cubeMaterial.wireframe = true;
-		const gizmo = new Mesh(cubeGeom, cubeMaterial);
-		//gizmo.visible = false;
-		this.mesh.add(gizmo);
+		this.gizmo = new Mesh(cubeGeom, cubeMaterial);
+		this.mesh.add(this.gizmo);
 	}
 
 	update() {
+		this.gizmo.visible = Game.instance.debug.gizmo;
 		this.updateTriggerPosition();
 		const pPos = new Vector3();
 		this.player.mesh.getWorldPosition(pPos);

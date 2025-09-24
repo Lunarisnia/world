@@ -22,19 +22,21 @@ export default class Physics {
 		this.world = new RAPIER.World(this.gravity);
 	}
 
-	// NOTE: Add toggle for this
 	createDebugGizmo() {
 		this.geometry = new BufferGeometry()
 		const material = new LineBasicMaterial({ vertexColors: true });
-		const lineSegment = new LineSegments(this.geometry, material);
+		this.lineSegment = new LineSegments(this.geometry, material);
 
-		Game.instance.world.scene.add(lineSegment);
+		Game.instance.world.scene.add(this.lineSegment);
 	}
 
 	updateDebugGizmo() {
-		const debugData = this.world.debugRender();
-		this.geometry.setAttribute("position", new BufferAttribute(debugData.vertices, 3));
-		this.geometry.setAttribute("color", new BufferAttribute(debugData.colors, 4));
+		this.lineSegment.visible = Game.instance.debug.gizmo;
+		if (Game.instance.debug.gizmo) {
+			const debugData = this.world.debugRender();
+			this.geometry.setAttribute("position", new BufferAttribute(debugData.vertices, 3));
+			this.geometry.setAttribute("color", new BufferAttribute(debugData.colors, 4));
+		}
 	}
 
 	/**

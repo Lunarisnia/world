@@ -6,6 +6,7 @@ import InputManager from "./input/inputManager";
 import Physics from "./physics";
 import FPSCounter from "./FPSCounter";
 import ViewportCamera from "./ViewportCamera";
+import DebugController from "./DebugController";
 
 export default class Game {
 	/** @type {Game} */
@@ -26,6 +27,8 @@ export default class Game {
 	world;
 	/** @type {FPSCounter} */
 	framerate;
+	/** @type {DebugController} */
+	debug;
 
 	designatedFPS = 60.0;
 	frameDuration = 1.0 / this.designatedFPS;
@@ -52,6 +55,7 @@ export default class Game {
 		new InputManager();
 		new Physics();
 
+		this.debug = new DebugController();
 	}
 
 	setWorld() {
@@ -102,6 +106,9 @@ export default class Game {
 		Physics.instance.update();
 		this.mainCamera.update();
 		this.world.update();
+		this.debug.update();
+
+		// NOTE: For input to work properly all that require it should be placed before this
 		InputManager.instance.update();
 		this.framerate.tick();
 		this.renderer.render();

@@ -21,8 +21,9 @@ export default class Renderer {
 		this.mainRenderTarget = new WebGLRenderTarget(512, 512, {
 			minFilter: NearestFilter,
 			magFilter: NearestFilter,
-			samples: 2,
 			generateMipmaps: false,
+			// MSAA sample
+			samples: 2,
 		});
 	}
 
