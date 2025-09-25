@@ -11,6 +11,7 @@ import FloorMaterial from "./material/FloorMaterial";
 import GroundBorder from "./components/GroundBorder";
 import TriggerBox from "./components/TriggerBox";
 import { MeshBasicMaterial, PlaneGeometry, Scene } from "three";
+import CenterPiece from "./components/CenterPiece";
 
 export default class World {
 	/** @type {Map} */
@@ -58,6 +59,7 @@ export default class World {
 		this.addEntity(this.testBed);
 
 		// NOTE: Ideally it should all look like this
+		this.addEntity(new CenterPiece());
 		this.addEntity(new GroundBorder());
 
 		const cubeGeom = new SimpleCubeGeometry(1, 1, 1);

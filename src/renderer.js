@@ -51,8 +51,6 @@ export default class Renderer {
 		const testBedMaterial = new TestBedViewportMaterial(this.testBedRenderTarget);
 		this.testBedViewport = new Mesh(testBedGeom, testBedMaterial);
 		Game.instance.testRealmViewportScene.add(this.testBedViewport);
-		const sphere = Spawner.CreateSimpleSphere({ radius: 1 });
-		Game.instance.testRealmScene.add(sphere.mesh);
 	}
 
 	/**
