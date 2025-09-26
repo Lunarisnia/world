@@ -4,9 +4,10 @@ import { Scene } from "three";
 import Game from "./game";
 import ViewportGeometry from "./geometry/ViewportGeometry";
 import ViewportMaterial from "./material/ViewportMaterial";
-import DebugController from "./DebugController";
-import Spawner from "./entity/spawner";
 import TestBedViewportMaterial from "./material/TestBedViewportMaterial";
+import RenderPipeline from "./RenderPipeline";
+import ViewportPipe from "./pipeline/ViewportPipe";
+import WorldPipe from "./pipeline/WorldPipe";
 
 export default class Renderer {
 	/** @type {WebGLRenderer} */
@@ -20,6 +21,8 @@ export default class Renderer {
 
 	viewport;
 
+	// TODO: Create render pipeline abstraction
+
 	constructor() {
 		const canvas = document.querySelector("#mainCanvas")
 		this.instance = new WebGLRenderer({ antialias: false, canvas });
@@ -28,6 +31,7 @@ export default class Renderer {
 			minFilter: NearestFilter,
 			magFilter: NearestFilter,
 			generateMipmaps: false,
+			count: 2,
 			// MSAA sample
 			samples: 2,
 		});
@@ -39,6 +43,13 @@ export default class Renderer {
 			// MSAA sample
 			samples: 2,
 		});
+
+
+		// TODO: This should be put in a map to differentiate between the debug pipeline and the main pipeline
+		this.pipeline = new RenderPipeline(this.instance,
+			new WorldPipe(),
+			new ViewportPipe(),
+		);
 	}
 
 	setViewport() {
@@ -76,20 +87,21 @@ export default class Renderer {
 	}
 
 	render() {
-		if (Game.instance.debug.shaderTestBed) {
-			this.instance.setRenderTarget(this.testBedRenderTarget);
-			// NOTE: Might need to replace this with an independent camera
-			this.instance.render(Game.instance.testRealmScene, Game.instance.mainCamera.instance);
-
-			this.instance.setRenderTarget(null);
-			this.instance.render(Game.instance.testRealmViewportScene, Game.instance.viewportCamera);
-			return;
-		}
-
-		this.instance.setRenderTarget(this.mainRenderTarget);
-		this.instance.render(Game.instance.world.scene, Game.instance.mainCamera.instance);
-
-		this.instance.setRenderTarget(null);
-		this.instance.render(Game.instance.scene, Game.instance.viewportCamera);
+		this.pipeline.run();
+		//if (Game.instance.debug.shaderTestBed) {
+		//	this.instance.setRenderTarget(this.testBedRenderTarget);
+		//	// NOTE: Might need to replace this with an independent camera
+		//	this.instance.render(Game.instance.testRealmScene, Game.instance.mainCamera.instance);
+		//
+		//	this.instance.setRenderTarget(null);
+		//	this.instance.render(Game.instance.testRealmViewportScene, Game.instance.viewportCamera);
+		//	return;
+		//}
+		//
+		//this.instance.setRenderTarget(this.mainRenderTarget);
+		//this.instance.render(Game.instance.world.scene, Game.instance.mainCamera.instance);
+		//
+		//this.instance.setRenderTarget(null);
+		//this.instance.render(Game.instance.scene, Game.instance.viewportCamera);
 	}
 };
