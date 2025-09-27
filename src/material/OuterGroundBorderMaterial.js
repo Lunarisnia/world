@@ -1,4 +1,4 @@
-import { DoubleSide, ShaderMaterial } from "three";
+import { DoubleSide, GLSL3, ShaderMaterial } from "three";
 
 import vertexShader from "/shaders/groundborder/groundborder.vert?url&raw"
 import fragmentShader from "/shaders/groundborder/outergroundborder.frag?url&raw"
@@ -19,6 +19,8 @@ export default class OuterGroundBorderMaterial {
 
 			vertexShader: vertexShader,
 			fragmentShader: fragmentShader,
+
+			glslVersion: GLSL3,
 		});
 
 		return material;

@@ -12,6 +12,8 @@ import GroundBorder from "./components/GroundBorder";
 import TriggerBox from "./components/TriggerBox";
 import { MeshBasicMaterial, PlaneGeometry, Scene } from "three";
 import CenterPiece from "./components/CenterPiece";
+import DimensionAreaGeometry from "./geometry/DimensionAreaGeometry";
+import DimensionAreaMaterial from "./material/DimensionAreaMaterial";
 
 export default class World {
 	/** @type {Map} */
@@ -29,7 +31,6 @@ export default class World {
 	 */
 	addEntity(entity) {
 		this.entities.set(entity.id, entity);
-		//Game.instance.scene.add(entity.mesh);
 		this.scene.add(entity.mesh);
 	}
 
@@ -43,24 +44,22 @@ export default class World {
 
 	update() {
 		Physics.instance.updateDebugGizmo();
-		//this.testBed.material.uniforms.uAspectRatio.value = this.testBed.mesh.geometry.parameters.width / this.testBed.mesh.geometry.parameters.height;
 		for (const entity of this.entities.values()) {
 			entity.update();
 		}
 	}
 
 	testWorld() {
-		const testBedGeom = new PlaneGeometry(4, 4);
-		const testBedMaterial = new MeshBasicMaterial({
-			map: Game.instance.renderer.mainRenderTarget.texture,
-		});
-		this.testBed = new Entity(testBedGeom, testBedMaterial);
-		this.testBed.mesh.position.y = 4;
-		this.addEntity(this.testBed);
-
 		// NOTE: Ideally it should all look like this
 		this.addEntity(new CenterPiece());
 		this.addEntity(new GroundBorder());
+
+		//const dimensionGeom = new DimensionAreaGeometry(4, 4, 4);
+		//const dimensionMaterial = new DimensionAreaMaterial(Game.instance.renderer.mainRenderTarget);
+		//this.dimensionArea = new Entity(dimensionGeom, dimensionMaterial);
+		//this.dimensionArea.mesh.position.x = 8;
+		//this.dimensionArea.mesh.position.y = 0.5;
+		//this.addEntity(this.dimensionArea);
 
 		const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
 		const cubeMaterial = new SimpleCubeMaterial(0, 0, 1);

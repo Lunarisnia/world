@@ -15,7 +15,7 @@ export default class WorldPipe extends Pipe {
 			minFilter: NearestFilter,
 			magFilter: NearestFilter,
 			generateMipmaps: false,
-			count: 1,
+			count: 2,
 			// MSAA sample
 			samples: 2,
 		});

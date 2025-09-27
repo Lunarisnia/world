@@ -1,4 +1,4 @@
-import { ShaderMaterial, Vector3 } from "three";
+import { GLSL3, ShaderMaterial, Vector3 } from "three";
 
 import vertexShader from "/shaders/center/center.vert?url&raw";
 import fragmentShader from "/shaders/center/center.frag?url&raw";
@@ -19,6 +19,8 @@ export default class CenterPieceMaterial {
 			uniforms: uniforms,
 			vertexShader: vertexShader,
 			fragmentShader: fragmentShader,
+
+			glslVersion: GLSL3,
 		});
 
 		return material;

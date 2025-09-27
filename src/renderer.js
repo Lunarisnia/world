@@ -18,6 +18,7 @@ export default class Renderer {
 
 	viewport;
 
+	/** @type {{main: RenderPipeline, testBed: RenderPipeline}} */
 	pipelines = {
 		main: null,
 		testBed: null,
@@ -39,14 +40,13 @@ export default class Renderer {
 		});
 
 
-		// TODO: This should be put in a map to differentiate between the debug pipeline and the main pipeline
 		this.pipelines.main = new RenderPipeline(this,
 			new WorldPipe(Game.instance.world.scene, Game.instance.mainCamera.instance),
-			new ViewportPipe(),
+			new ViewportPipe(Game.instance.scene, Game.instance.viewportCamera),
 		);
 		this.pipelines.testBed = new RenderPipeline(this,
 			new WorldPipe(Game.instance.testRealmScene, Game.instance.mainCamera.instance),
-			new ViewportPipe(),
+			new ViewportPipe(Game.instance.testRealmViewportScene, Game.instance.viewportCamera),
 		);
 	}
 

@@ -1,4 +1,4 @@
-import { DoubleSide, ShaderMaterial } from "three";
+import { DoubleSide, GLSL3, ShaderMaterial } from "three";
 
 import vertexShader from "/shaders/icon-plane/icon-plane.vert?url&raw"
 import fragmentShader from "/shaders/icon-plane/icon-plane.frag?url&raw"
@@ -20,6 +20,8 @@ export default class IconPlaneMaterial {
 
 			vertexShader: vertexShader,
 			fragmentShader: fragmentShader,
+
+			glslVersion: GLSL3,
 		});
 
 

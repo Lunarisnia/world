@@ -1,4 +1,4 @@
-import { ShaderMaterial } from "three";
+import { GLSL3, ShaderMaterial } from "three";
 
 import vertexShader from "/shaders/viewport/viewport.vert?url&raw";
 import fragmentShader from "/shaders/viewport/viewport.frag?url&raw";
@@ -18,6 +18,8 @@ export default class ViewportMaterial {
 
 			vertexShader: vertexShader,
 			fragmentShader: fragmentShader,
+
+			glslVersion: GLSL3,
 		});
 
 		return material;

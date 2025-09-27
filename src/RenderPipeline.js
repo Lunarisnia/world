@@ -19,7 +19,6 @@ export default class RenderPipeline {
 			pipe.init();
 			this.pipeline.set(pipe.type, pipe);
 		}
-		//console.log(this.pipeline);
 	}
 
 	/**

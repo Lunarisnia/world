@@ -1,4 +1,4 @@
-import { ShaderMaterial } from "three";
+import { GLSL3, ShaderMaterial } from "three";
 
 import vertexShader from "/shaders/testbed/testbed.vert?url&raw";
 import fragmentShader from "/shaders/testbed/testbed.frag?url&raw";
@@ -18,6 +18,8 @@ export default class TestBedViewportMaterial {
 
 			vertexShader: vertexShader,
 			fragmentShader: fragmentShader,
+
+			glslVersion: GLSL3,
 		});
 
 		return material;

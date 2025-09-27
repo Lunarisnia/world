@@ -1,3 +1,5 @@
+layout(location = 0) out vec4 FragColor;
+layout(location = 1) out vec4 BrightColor;
 in vec2 vUv;
 
 uniform float uAspectRatio;
@@ -25,5 +27,7 @@ void main() {
 
     float halfTone = tone * gradient;
     vec3 color = vec3(0.0f);
-    gl_FragColor = vec4(color, halfTone);
+    FragColor = vec4(color, halfTone);
+
+    BrightColor = vec4(0.0f);
 }

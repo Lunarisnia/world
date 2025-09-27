@@ -1,3 +1,6 @@
+layout(location = 0) out vec4 FragColor;
+layout(location = 1) out vec4 BrightColor;
+
 in vec2 vUv;
 in vec3 vNormal;
 in vec3 vFragPos;
@@ -113,5 +116,7 @@ void main() {
     vec3 specular = vec3(1.0f) * spec;
 
     vec3 color = diffuse + specular;
-    gl_FragColor = vec4(color, 1.0f);
+    FragColor = vec4(color, 1.0f);
+
+    BrightColor = vec4(vec3(0.0f), 0.0f);
 }

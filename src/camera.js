@@ -37,6 +37,7 @@ export default class Camera {
 	}
 
 	update() {
+		// TODO: Make sure the player exist first later
 		this.player.mesh.getWorldPosition(this.playerWorldPos);
 		const offset = this.cameraPosition.clone().add(this.playerWorldPos);
 

@@ -1,3 +1,5 @@
+layout(location = 0) out vec4 FragColor;
+layout(location = 1) out vec4 BrightColor;
 in vec2 vUv;
 
 uniform float uTime;
@@ -49,5 +51,6 @@ void main() {
     float square2 = drawSquare(vUv, calculatePositionInverted(t), t);
 
     vec3 color = vec3(1.0f);
-    gl_FragColor = vec4(color, (square + square2) * 0.7f);
+    FragColor = vec4(color, (square + square2) * 0.7f);
+    BrightColor = vec4(0.0f);
 }
