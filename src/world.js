@@ -4,7 +4,6 @@ import Player from "./components/player";
 import BoxCollider from "./components/box-collider";
 import RigidBody from "./components/rigidbody";
 import Physics from "./physics";
-import SimpleCubeMaterial from "./material/SimpleCubeMaterial";
 import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
 import FloorGeometry from "./geometry/FloorGeometry";
 import FloorMaterial from "./material/FloorMaterial";
@@ -14,6 +13,7 @@ import { MeshBasicMaterial, PlaneGeometry, Scene } from "three";
 import CenterPiece from "./components/CenterPiece";
 import DimensionAreaGeometry from "./geometry/DimensionAreaGeometry";
 import DimensionAreaMaterial from "./material/DimensionAreaMaterial";
+import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
 
 export default class World {
 	/** @type {Map} */
@@ -62,7 +62,7 @@ export default class World {
 		//this.addEntity(this.dimensionArea);
 
 		const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
-		const cubeMaterial = new SimpleCubeMaterial(0, 0, 1);
+		const cubeMaterial = new SimpleMeshMaterial(0, 0, 1);
 		this.cube = new Entity(cubeGeom, cubeMaterial);
 		const rb = new RigidBody();
 		rb.boxCollider(0.5, 0.5, 0.5);
@@ -72,7 +72,7 @@ export default class World {
 		this.addEntity(this.cube);
 
 		const playerGeom = new SimpleCubeGeometry(1, 1, 1);
-		const playerMaterial = new SimpleCubeMaterial(0, 1, 1);
+		const playerMaterial = new SimpleMeshMaterial(0, 1, 1);
 		this.player = new Entity(playerGeom, playerMaterial);
 		this.player.addComponent(new Player());
 		this.addEntity(this.player);
@@ -89,7 +89,7 @@ export default class World {
 		const height = 1;
 		const depth = 2;
 		const triggerGeom = new SimpleCubeGeometry(width, height, depth);
-		const triggerMaterial = new SimpleCubeMaterial(1, 0, 1);
+		const triggerMaterial = new SimpleMeshMaterial(1, 0, 1);
 		this.testTriggerBox = new Entity(triggerGeom, triggerMaterial);
 		const trigger = new TriggerBox(width, height, depth);
 		trigger.onTriggerEnter = () => {

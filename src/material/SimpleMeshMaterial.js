@@ -1,9 +1,9 @@
 import { Color, GLSL3, ShaderMaterial } from "three";
 
-import vertexShader from "/shaders/simple-cube/simple-cube.vert?url&raw";
-import fragmentShader from "/shaders/simple-cube/simple-cube.frag?url&raw";
+import vertexShader from "/shaders/simple-mesh/simple-mesh.vert?url&raw";
+import fragmentShader from "/shaders/simple-mesh/simple-mesh.frag?url&raw";
 
-export default class SimpleCubeMaterial {
+export default class SimpleMeshMaterial {
 	constructor(red, green, blue) {
 		const color = new Color(red, green, blue);
 		const uniforms = {

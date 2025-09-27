@@ -1,10 +1,12 @@
-import { ArrowHelper, Color, Quaternion, Vector3 } from "three";
+import { ArrowHelper, Color, Mesh, Quaternion, SphereGeometry, Vector3 } from "three";
 import Component from "../component";
 import { degToRad, } from "three/src/math/MathUtils.js";
 import InputManager from "../input/inputManager";
 import Spawner from "../entity/spawner";
 import RigidBody from "./rigidbody";
 import Game from "../game";
+import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
+import Entity from "../entity/entity";
 
 export default class Player extends Component {
 	/** @type {Vector3} */
@@ -31,13 +33,15 @@ export default class Player extends Component {
 	}
 
 	init() {
+		const sphereMaterial = new SimpleMeshMaterial(1.0, 0.0, 0.0);
+
 		this.axesHelper = new ArrowHelper(this.direction, this.mesh.position, 2.5, 0x00FF00, 0.5, 0.5);
+		this.axesHelper.cone.material = sphereMaterial;
+		this.axesHelper.line.material = sphereMaterial;
 		this.mesh.add(this.axesHelper);
 
-		this.midSphere = Spawner.CreateSimpleSphere({
-			radius: 0.1,
-			color: new Color(1.0, 0.0, 0.0),
-		});
+		const geom = new SphereGeometry(0.1);
+		this.midSphere = new Entity(geom, sphereMaterial);
 		this.midSphere.material.depthTest = false;
 		this.mesh.add(this.midSphere.mesh);
 
