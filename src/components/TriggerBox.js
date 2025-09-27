@@ -1,4 +1,4 @@
-import { Mesh, Vector2, Vector3 } from "three";
+import { Color, Mesh, Vector2, Vector3 } from "three";
 import Component from "../component";
 import Game from "../game";
 import SimpleCubeGeometry from "../geometry/SimpleCubeGeometry";
@@ -24,7 +24,9 @@ export default class TriggerBox extends Component {
 		this.mesh.position.z = -4;
 
 		const cubeGeom = new SimpleCubeGeometry(this.halfWidth * 2.0, this.halfHeight * 2.0, this.halfDepth * 2.0);
-		const cubeMaterial = new SimpleMeshMaterial(0.0, 1.0, 0.0);
+		const cubeMaterial = new SimpleMeshMaterial({
+			color: new Color(0.0, 1.0, 0.0),
+		});
 		cubeMaterial.wireframe = true;
 		this.gizmo = new Mesh(cubeGeom, cubeMaterial);
 		this.mesh.add(this.gizmo);

@@ -6,10 +6,11 @@ import OuterGroundBorderMaterial from "../material/OuterGroundBorderMaterial";
 import Entity from "../entity/entity";
 import Game from "../game";
 import GroundBorderMaterial from "../material/GroundBorderMaterial";
-import { DoubleSide, Mesh, MeshBasicMaterial, NearestFilter, PlaneGeometry, TextureLoader } from "three";
+import { DoubleSide, Mesh, NearestFilter, PlaneGeometry, TextureLoader } from "three";
 import gsap from "gsap";
 import IconPlaneMaterial from "../material/IconPlaneMaterial";
 import InputManager from "../input/inputManager";
+import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
 
 export default class GroundBorder extends Component {
 	onInteract = () => { };
@@ -45,7 +46,7 @@ export default class GroundBorder extends Component {
 		openTexture.generateMipmaps = false;
 
 		const geom = new PlaneGeometry(10, 10);
-		const material = new MeshBasicMaterial({
+		const material = new SimpleMeshMaterial({
 			map: openTexture,
 			transparent: true,
 			alphaTest: 0.5,
@@ -70,7 +71,7 @@ export default class GroundBorder extends Component {
 		enterTexture.generateMipmaps = false;
 
 		const innerGeom = new PlaneGeometry(6, 6);
-		const innerMaterial = new MeshBasicMaterial({
+		const innerMaterial = new SimpleMeshMaterial({
 			map: enterTexture,
 			transparent: true,
 			side: DoubleSide,

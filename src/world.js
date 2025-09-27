@@ -9,10 +9,8 @@ import FloorGeometry from "./geometry/FloorGeometry";
 import FloorMaterial from "./material/FloorMaterial";
 import GroundBorder from "./components/GroundBorder";
 import TriggerBox from "./components/TriggerBox";
-import { MeshBasicMaterial, PlaneGeometry, Scene } from "three";
+import { Color, Scene } from "three";
 import CenterPiece from "./components/CenterPiece";
-import DimensionAreaGeometry from "./geometry/DimensionAreaGeometry";
-import DimensionAreaMaterial from "./material/DimensionAreaMaterial";
 import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
 
 export default class World {
@@ -36,14 +34,14 @@ export default class World {
 
 	init() {
 		this.testWorld();
-		Physics.instance.createDebugGizmo();
+		//Physics.instance.createDebugGizmo();
 		for (const entity of this.entities.values()) {
 			entity.init();
 		}
 	}
 
 	update() {
-		Physics.instance.updateDebugGizmo();
+		//Physics.instance.updateDebugGizmo();
 		for (const entity of this.entities.values()) {
 			entity.update();
 		}
@@ -54,15 +52,10 @@ export default class World {
 		this.addEntity(new CenterPiece());
 		this.addEntity(new GroundBorder());
 
-		//const dimensionGeom = new DimensionAreaGeometry(4, 4, 4);
-		//const dimensionMaterial = new DimensionAreaMaterial(Game.instance.renderer.mainRenderTarget);
-		//this.dimensionArea = new Entity(dimensionGeom, dimensionMaterial);
-		//this.dimensionArea.mesh.position.x = 8;
-		//this.dimensionArea.mesh.position.y = 0.5;
-		//this.addEntity(this.dimensionArea);
-
 		const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
-		const cubeMaterial = new SimpleMeshMaterial(0, 0, 1);
+		const cubeMaterial = new SimpleMeshMaterial({
+			color: new Color(0, 0, 1),
+		});
 		this.cube = new Entity(cubeGeom, cubeMaterial);
 		const rb = new RigidBody();
 		rb.boxCollider(0.5, 0.5, 0.5);
@@ -72,7 +65,9 @@ export default class World {
 		this.addEntity(this.cube);
 
 		const playerGeom = new SimpleCubeGeometry(1, 1, 1);
-		const playerMaterial = new SimpleMeshMaterial(0, 1, 1);
+		const playerMaterial = new SimpleMeshMaterial({
+			color: new Color(0, 1, 1),
+		});
 		this.player = new Entity(playerGeom, playerMaterial);
 		this.player.addComponent(new Player());
 		this.addEntity(this.player);
@@ -89,7 +84,9 @@ export default class World {
 		const height = 1;
 		const depth = 2;
 		const triggerGeom = new SimpleCubeGeometry(width, height, depth);
-		const triggerMaterial = new SimpleMeshMaterial(1, 0, 1);
+		const triggerMaterial = new SimpleMeshMaterial({
+			color: new Color(1, 0, 1),
+		});
 		this.testTriggerBox = new Entity(triggerGeom, triggerMaterial);
 		const trigger = new TriggerBox(width, height, depth);
 		trigger.onTriggerEnter = () => {

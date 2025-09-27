@@ -1,8 +1,9 @@
 import RAPIER, { Collider, RigidBodyDesc } from "@dimforge/rapier3d-compat";
 import { RigidBody } from "@dimforge/rapier3d-compat";
 import { ColliderDesc } from "@dimforge/rapier3d-compat";
-import { BufferAttribute, BufferGeometry, LineBasicMaterial, LineSegments } from "three";
+import { BufferAttribute, BufferGeometry, Color, LineSegments } from "three";
 import Game from "./game";
+import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
 export default class Physics {
 	/** @type {Physics} */
 	static instance;
@@ -24,7 +25,9 @@ export default class Physics {
 
 	createDebugGizmo() {
 		this.geometry = new BufferGeometry()
-		const material = new LineBasicMaterial({ vertexColors: true });
+		const material = new SimpleMeshMaterial({
+			color: new Color(1.0, 0.0, 1.0),
+		});
 		this.lineSegment = new LineSegments(this.geometry, material);
 
 		Game.instance.world.scene.add(this.lineSegment);

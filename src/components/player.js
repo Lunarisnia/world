@@ -33,7 +33,9 @@ export default class Player extends Component {
 	}
 
 	init() {
-		const sphereMaterial = new SimpleMeshMaterial(1.0, 0.0, 0.0);
+		const sphereMaterial = new SimpleMeshMaterial({
+			color: new Color(1.0, 0.0, 0.0),
+		});
 
 		this.axesHelper = new ArrowHelper(this.direction, this.mesh.position, 2.5, 0x00FF00, 0.5, 0.5);
 		this.axesHelper.cone.material = sphereMaterial;
