@@ -54,10 +54,10 @@ export default class Game {
 		this.testRealmScene = new Scene();
 		this.setClock();
 
+		this.setWorld();
+
 		this.setRenderer();
 		this.renderer.setViewport();
-
-		this.setWorld();
 
 		new InputManager();
 		new Physics();

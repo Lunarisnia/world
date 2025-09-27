@@ -1,15 +1,32 @@
-import Game from "../game";
+import { NearestFilter, WebGLRenderer, WebGLRenderTarget } from "three";
 import Pipe from "./pipe";
 
 export default class WorldPipe extends Pipe {
-	constructor() {
+	/** @type {WebGLRenderer} */
+	renderTarget;
+
+	constructor(scene, camera) {
 		super();
 
 		this.type = "WorldPipe";
+		this.scene = scene;
+		this.camera = camera;
+		this.renderTarget = new WebGLRenderTarget(512, 512, {
+			minFilter: NearestFilter,
+			magFilter: NearestFilter,
+			generateMipmaps: false,
+			count: 1,
+			// MSAA sample
+			samples: 2,
+		});
+	}
+
+	init() {
+		this.renderer.registerRenderTargetToBeResized(this.renderTarget);
 	}
 
 	draw() {
-		this.renderer.setRenderTarget(Game.instance.renderer.mainRenderTarget);
-		this.renderer.render(Game.instance.world.scene, Game.instance.mainCamera.instance);
+		this.renderer.instance.setRenderTarget(this.renderTarget);
+		this.renderer.instance.render(this.scene, this.camera);
 	}
 }

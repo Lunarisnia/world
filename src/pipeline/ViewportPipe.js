@@ -9,7 +9,7 @@ export default class ViewportPipe extends Pipe {
 	}
 
 	draw() {
-		this.renderer.setRenderTarget(null);
-		this.renderer.render(Game.instance.scene, Game.instance.viewportCamera);
+		this.renderer.instance.setRenderTarget(null);
+		this.renderer.instance.render(Game.instance.scene, Game.instance.viewportCamera);
 	}
 }

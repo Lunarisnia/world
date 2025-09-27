@@ -13,13 +13,15 @@ export default class Renderer {
 	/** @type {WebGLRenderer} */
 	instance;
 
-	/** @type {WebGLRenderTarget} */
-	mainRenderTarget;
-
-	/** @type {WebGLRenderTarget} */
-	testBedRenderTarget;
+	/** @type {[WebGLRenderTarget]} */
+	resizedRenderTarget = new Array();
 
 	viewport;
+
+	pipelines = {
+		main: null,
+		testBed: null,
+	};
 
 	// TODO: Create render pipeline abstraction
 
@@ -27,14 +29,6 @@ export default class Renderer {
 		const canvas = document.querySelector("#mainCanvas")
 		this.instance = new WebGLRenderer({ antialias: false, canvas });
 
-		this.mainRenderTarget = new WebGLRenderTarget(512, 512, {
-			minFilter: NearestFilter,
-			magFilter: NearestFilter,
-			generateMipmaps: false,
-			count: 2,
-			// MSAA sample
-			samples: 2,
-		});
 
 		this.testBedRenderTarget = new WebGLRenderTarget(512, 512, {
 			minFilter: NearestFilter,
@@ -46,20 +40,28 @@ export default class Renderer {
 
 
 		// TODO: This should be put in a map to differentiate between the debug pipeline and the main pipeline
-		this.pipeline = new RenderPipeline(this.instance,
-			new WorldPipe(),
+		this.pipelines.main = new RenderPipeline(this,
+			new WorldPipe(Game.instance.world.scene, Game.instance.mainCamera.instance),
+			new ViewportPipe(),
+		);
+		this.pipelines.testBed = new RenderPipeline(this,
+			new WorldPipe(Game.instance.testRealmScene, Game.instance.mainCamera.instance),
 			new ViewportPipe(),
 		);
 	}
 
+	registerRenderTargetToBeResized(renderTarget) {
+		this.resizedRenderTarget.push(renderTarget);
+	}
+
 	setViewport() {
 		const geom = new ViewportGeometry();
-		const material = new ViewportMaterial(this.mainRenderTarget);
+		const material = new ViewportMaterial(this.pipelines.main.getPipe("WorldPipe").renderTarget);
 		this.viewport = new Mesh(geom, material);
 		Game.instance.scene.add(this.viewport);
 
 		const testBedGeom = new ViewportGeometry();
-		const testBedMaterial = new TestBedViewportMaterial(this.testBedRenderTarget);
+		const testBedMaterial = new TestBedViewportMaterial(this.pipelines.testBed.getPipe("WorldPipe").renderTarget);
 		this.testBedViewport = new Mesh(testBedGeom, testBedMaterial);
 		Game.instance.testRealmViewportScene.add(this.testBedViewport);
 	}
@@ -82,26 +84,16 @@ export default class Renderer {
 
 	setSize(width, height) {
 		this.instance.setSize(width, height);
-		this.mainRenderTarget.setSize(width * window.devicePixelRatio, height * window.devicePixelRatio);
-		this.testBedRenderTarget.setSize(width * window.devicePixelRatio, height * window.devicePixelRatio);
+		for (const rt of this.resizedRenderTarget) {
+			rt.setSize(width * window.devicePixelRatio, height * window.devicePixelRatio);
+		}
 	}
 
 	render() {
-		this.pipeline.run();
-		//if (Game.instance.debug.shaderTestBed) {
-		//	this.instance.setRenderTarget(this.testBedRenderTarget);
-		//	// NOTE: Might need to replace this with an independent camera
-		//	this.instance.render(Game.instance.testRealmScene, Game.instance.mainCamera.instance);
-		//
-		//	this.instance.setRenderTarget(null);
-		//	this.instance.render(Game.instance.testRealmViewportScene, Game.instance.viewportCamera);
-		//	return;
-		//}
-		//
-		//this.instance.setRenderTarget(this.mainRenderTarget);
-		//this.instance.render(Game.instance.world.scene, Game.instance.mainCamera.instance);
-		//
-		//this.instance.setRenderTarget(null);
-		//this.instance.render(Game.instance.scene, Game.instance.viewportCamera);
+		if (Game.instance.debug.shaderTestBed) {
+			this.pipelines.testBed.run();
+			return;
+		}
+		this.pipelines.main.run();
 	}
 };
