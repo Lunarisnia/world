@@ -1,5 +1,5 @@
 import { Mesh, NearestFilter, WebGLRenderTarget } from "three";
-import Pipe from "./pipe";
+import Pipe from "./Pipe";
 import BlurPlaneMaterial from "../material/BlurPlaneMaterial";
 
 export default class PingPongPipe extends Pipe {

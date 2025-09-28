@@ -1,5 +1,5 @@
 import { NearestFilter, WebGLRenderer, WebGLRenderTarget } from "three";
-import Pipe from "./pipe";
+import Pipe from "./Pipe";
 
 export default class WorldPipe extends Pipe {
 	/** @type {WebGLRenderer} */
