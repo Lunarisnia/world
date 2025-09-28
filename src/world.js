@@ -3,7 +3,6 @@ import Entity from "./entity/entity";
 import Player from "./components/player";
 import BoxCollider from "./components/box-collider";
 import RigidBody from "./components/rigidbody";
-import Physics from "./physics";
 import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
 import FloorGeometry from "./geometry/FloorGeometry";
 import FloorMaterial from "./material/FloorMaterial";
@@ -12,6 +11,7 @@ import TriggerBox from "./components/TriggerBox";
 import { Color, Scene } from "three";
 import CenterPiece from "./components/CenterPiece";
 import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
+import Physics from "./physics";
 
 export default class World {
 	/** @type {Map} */
@@ -34,14 +34,14 @@ export default class World {
 
 	init() {
 		this.testWorld();
-		//Physics.instance.createDebugGizmo();
+		Physics.instance.createDebugGizmo();
 		for (const entity of this.entities.values()) {
 			entity.init();
 		}
 	}
 
 	update() {
-		//Physics.instance.updateDebugGizmo();
+		Physics.instance.updateDebugGizmo();
 		for (const entity of this.entities.values()) {
 			entity.update();
 		}

@@ -8,6 +8,8 @@ import TestBedViewportMaterial from "./material/TestBedViewportMaterial";
 import RenderPipeline from "./RenderPipeline";
 import ViewportPipe from "./pipeline/ViewportPipe";
 import WorldPipe from "./pipeline/WorldPipe";
+import PostProcessPlaneGeometry from "./geometry/PostProcessPlaneGeometry";
+import PingPongPipe from "./pipeline/PingPongPipe";
 
 export default class Renderer {
 	/** @type {WebGLRenderer} */
@@ -16,7 +18,12 @@ export default class Renderer {
 	/** @type {[WebGLRenderTarget]} */
 	resizedRenderTarget = new Array();
 
+	/** @type {Mesh} */
 	viewport;
+	/** @type {Mesh} */
+	testRealmViewport;
+	/** @type {Mesh} */
+	postProcessViewport;
 
 	/** @type {{main: RenderPipeline, testBed: RenderPipeline}} */
 	pipelines = {
@@ -39,13 +46,19 @@ export default class Renderer {
 			samples: 2,
 		});
 
+		const postProcessGeom = new PostProcessPlaneGeometry();
+		this.postProcessViewport = new Mesh(postProcessGeom, null);
+		Game.instance.postProcessScene.add(this.postProcessViewport);
 
 		this.pipelines.main = new RenderPipeline(this,
 			new WorldPipe(Game.instance.world.scene, Game.instance.mainCamera.instance),
+			new PingPongPipe(Game.instance.postProcessScene, Game.instance.viewportCamera, this.postProcessViewport),
 			new ViewportPipe(Game.instance.scene, Game.instance.viewportCamera),
 		);
+		// FIXME: test bed is broken
 		this.pipelines.testBed = new RenderPipeline(this,
 			new WorldPipe(Game.instance.testRealmScene, Game.instance.mainCamera.instance),
+			// TODO: This should have its own viewport pipe
 			new ViewportPipe(Game.instance.testRealmViewportScene, Game.instance.viewportCamera),
 		);
 	}
@@ -56,7 +69,7 @@ export default class Renderer {
 
 	setViewport() {
 		const geom = new ViewportGeometry();
-		const material = new ViewportMaterial(this.pipelines.main.getPipe("WorldPipe").renderTarget);
+		const material = new ViewportMaterial();
 		this.viewport = new Mesh(geom, material);
 		Game.instance.scene.add(this.viewport);
 
@@ -89,7 +102,7 @@ export default class Renderer {
 		}
 	}
 
-	render() {
+	draw() {
 		if (Game.instance.debug.shaderTestBed) {
 			this.pipelines.testBed.run();
 			return;

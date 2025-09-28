@@ -4,10 +4,10 @@ import vertexShader from "/shaders/viewport/viewport.vert?url&raw";
 import fragmentShader from "/shaders/viewport/viewport.frag?url&raw";
 
 export default class ViewportMaterial {
-	constructor(worldRenderTarget) {
+	constructor(image) {
 		const uniforms = {
 			uWorldTexture: {
-				value: worldRenderTarget.texture,
+				value: image,
 			},
 		}
 

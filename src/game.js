@@ -19,12 +19,16 @@ export default class Game {
 	mainCamera;
 	/** @type {OrthographicCamera} */
 	viewportCamera;
+
 	/** @type {Scene} */
 	scene;
 	/** @type {Scene} */
 	testRealmViewportScene;
 	/** @type {Scene} */
 	testRealmScene;
+	/** @type {Scene} */
+	postProcessScene;
+
 	/** @type {Clock} */
 	clock;
 	/** @type {World} */
@@ -52,6 +56,7 @@ export default class Game {
 		this.scene = new Scene();
 		this.testRealmViewportScene = new Scene();
 		this.testRealmScene = new Scene();
+		this.postProcessScene = new Scene();
 		this.setClock();
 
 		this.setWorld();
@@ -118,7 +123,7 @@ export default class Game {
 		// NOTE: For input to work properly all that require it should be placed before this
 		InputManager.instance.update();
 		this.framerate.tick();
-		this.renderer.render();
+		this.renderer.draw();
 
 		this.delta = this.delta % this.frameDuration;
 	}

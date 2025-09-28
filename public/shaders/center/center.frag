@@ -112,11 +112,11 @@ void main() {
 
     vec3 cameraDir = normalize(uCameraPosition - pos);
     vec3 halfDir = normalize(dNormal + cameraDir);
-    float spec = pow(1.0f - max(0.0f, dot(halfDir, dNormal)), 0.22f);
+    float spec = pow(1.0f - max(0.0f, dot(halfDir, dNormal)), 0.52f);
     vec3 specular = vec3(1.0f) * spec;
 
     vec3 color = diffuse + specular;
     FragColor = vec4(color, 1.0f);
 
-    BrightColor = vec4(vec3(0.0f), 0.0f);
+    BrightColor = vec4(color, 1.0f);
 }

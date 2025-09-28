@@ -7,5 +7,5 @@ in vec3 vNormal;
 void main() {
     FragColor = vec4(vNormal, 1.0f);
 
-    BrightColor = vec4(1.0f);
+    BrightColor = vec4(0.0f);
 }
