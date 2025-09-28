@@ -1,4 +1,4 @@
-import Pipe from "./pipeline/pipe";
+import Pipe from "./pipeline/Pipe";
 import Renderer from "./renderer";
 
 export default class RenderPipeline {
