@@ -1,4 +1,4 @@
-import Pipe from "./pipe";
+import Pipe from "./Pipe";
 
 export default class ViewportPipe extends Pipe {
 	constructor(scene, camera) {
