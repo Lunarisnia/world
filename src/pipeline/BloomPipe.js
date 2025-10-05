@@ -1,8 +1,9 @@
-import { Mesh, NearestFilter, WebGLRenderTarget } from "three";
+import { Mesh, NearestFilter, Scene, WebGLRenderTarget } from "three";
 import Pipe from "./Pipe";
 import BlurPlaneMaterial from "../material/BlurPlaneMaterial";
+import PostProcessPlaneGeometry from "../geometry/PostProcessPlaneGeometry";
 
-export default class PingPongPipe extends Pipe {
+export default class BloomPipe extends Pipe {
 	/** @type {WebGLRenderTarget} */
 	renderTargetA;
 	renderTargetB
@@ -13,9 +14,8 @@ export default class PingPongPipe extends Pipe {
 	 * @param {any} camera - desc
 	 * @param {Mesh} postProcessPlane - desc
 	 */
-	constructor(scene, camera, postProcessPlane) {
+	constructor(camera) {
 		super();
-		this.scene = scene;
 		this.camera = camera;
 		this.renderTargetA = new WebGLRenderTarget(512, 512, {
 			minFilter: NearestFilter,
@@ -35,21 +35,24 @@ export default class PingPongPipe extends Pipe {
 		});
 		this.renderTarget = this.renderTargetA;
 
-		this.type = "PingPongPipe";
+		this.type = "BloomPipe";
 
-		this.postProcessPlane = postProcessPlane;
+		this.scene = new Scene();
+		const geometry = new PostProcessPlaneGeometry();
+		const material = new BlurPlaneMaterial();
+		this.viewport = new Mesh(geometry, material);
+		this.scene.add(this.viewport);
 	}
 
 	init() {
 		this.renderer.registerRenderTargetToBeResized(this.renderTargetA);
 		this.renderer.registerRenderTargetToBeResized(this.renderTargetB);
-		this.postProcessPlane.material = new BlurPlaneMaterial();
 	}
 
 	draw() {
 		const prevIndex = Math.max(this.index - 1, 0);
 		const prevPipe = this.pipeline.getPipe(this.pipeline.pipelineIndice[prevIndex]);
-		this.postProcessPlane.material.uniforms.uImage.value = prevPipe.renderTarget.textures[1];
+		this.viewport.material.uniforms.uImage.value = prevPipe.renderTarget.textures[1];
 		this.renderer.instance.setRenderTarget(this.renderTargetA);
 		this.renderer.instance.render(this.scene, this.camera);
 		this.renderTarget = this.renderTargetA;
@@ -61,15 +64,15 @@ export default class PingPongPipe extends Pipe {
 			if (i % 2 == 0) {
 				input = this.renderTargetA;
 				rt = this.renderTargetB;
-				this.postProcessPlane.material.uniforms.uHorizontal.value = true;
+				this.viewport.material.uniforms.uHorizontal.value = true;
 				this.renderTarget = this.renderTargetB;
 			} else {
 				input = this.renderTargetB;
 				rt = this.renderTargetA;
-				this.postProcessPlane.material.uniforms.uHorizontal.value = false;
+				this.viewport.material.uniforms.uHorizontal.value = false;
 				this.renderTarget = this.renderTargetA;
 			}
-			this.postProcessPlane.material.uniforms.uImage.value = input.texture;
+			this.viewport.material.uniforms.uImage.value = input.texture;
 
 			this.renderer.instance.setRenderTarget(rt);
 			this.renderer.instance.render(this.scene, this.camera);

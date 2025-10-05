@@ -9,7 +9,8 @@ import RenderPipeline from "./RenderPipeline";
 import ViewportPipe from "./pipeline/ViewportPipe";
 import WorldPipe from "./pipeline/WorldPipe";
 import PostProcessPlaneGeometry from "./geometry/PostProcessPlaneGeometry";
-import PingPongPipe from "./pipeline/PingPongPipe";
+import CircleMaskPipe from "./pipeline/CircleMaskPipe";
+import BloomPipe from "./pipeline/BloomPipe";
 
 export default class Renderer {
 	/** @type {WebGLRenderer} */
@@ -44,13 +45,11 @@ export default class Renderer {
 			samples: 2,
 		});
 
-		const postProcessGeom = new PostProcessPlaneGeometry();
-		this.postProcessViewport = new Mesh(postProcessGeom, null);
-		Game.instance.postProcessScene.add(this.postProcessViewport);
 
 		this.pipelines.main = new RenderPipeline(this,
 			new WorldPipe(Game.instance.world.scene, Game.instance.mainCamera.instance),
-			new PingPongPipe(Game.instance.postProcessScene, Game.instance.viewportCamera, this.postProcessViewport),
+			new BloomPipe(Game.instance.viewportCamera),
+			new CircleMaskPipe(Game.instance.viewportCamera),
 			new ViewportPipe(Game.instance.scene, Game.instance.viewportCamera),
 		);
 		// FIXME: test bed is broken
