@@ -1,4 +1,4 @@
-import { NearestFilter, WebGLRenderer, WebGLRenderTarget } from "three";
+import { DepthTexture, NearestFilter, WebGLRenderer, WebGLRenderTarget } from "three";
 import Pipe from "./Pipe";
 
 export default class WorldPipe extends Pipe {
@@ -18,6 +18,7 @@ export default class WorldPipe extends Pipe {
 			count: 2,
 			// MSAA sample
 			samples: 2,
+			depthTexture: new DepthTexture(),
 		});
 	}
 

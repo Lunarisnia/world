@@ -9,6 +9,7 @@ export default class TestBedViewportMaterial {
 			uWorldTexture: {
 				value: worldRenderTarget.texture,
 			},
+
 		}
 
 		const material = new ShaderMaterial({

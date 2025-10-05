@@ -12,6 +12,7 @@ import { Color, Scene } from "three";
 import CenterPiece from "./components/CenterPiece";
 import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
 import Physics from "./physics";
+import PlayerMaterial from "./material/PlayerMaterial";
 
 export default class World {
 	/** @type {Map} */
@@ -65,9 +66,7 @@ export default class World {
 		this.addEntity(this.cube);
 
 		const playerGeom = new SimpleCubeGeometry(1, 1, 1);
-		const playerMaterial = new SimpleMeshMaterial({
-			color: new Color(0, 1, 1),
-		});
+		const playerMaterial = new PlayerMaterial();
 		this.player = new Entity(playerGeom, playerMaterial);
 		this.player.addComponent(new Player());
 		this.addEntity(this.player);

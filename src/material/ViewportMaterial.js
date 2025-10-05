@@ -9,9 +9,19 @@ export default class ViewportMaterial {
 			uWorldTexture: {
 				value: image,
 			},
+			uDepthTexture: {
+				value: null,
+			},
+			uInverseProjectionMatrix: {
+				value: null,
+			},
+			uInverseViewMatrix: {
+				value: null,
+			},
 		}
 
 		const material = new ShaderMaterial({
+			//wireframe: true,
 			depthTest: false,
 			depthWrite: false,
 			uniforms: uniforms,

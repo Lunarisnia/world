@@ -31,8 +31,6 @@ export default class Renderer {
 		testBed: null,
 	};
 
-	// TODO: Create render pipeline abstraction
-
 	constructor() {
 		const canvas = document.querySelector("#mainCanvas")
 		this.instance = new WebGLRenderer({ antialias: false, canvas });

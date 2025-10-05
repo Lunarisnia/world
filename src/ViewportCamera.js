@@ -15,6 +15,7 @@ export default class ViewportCamera {
 		this.near = near;
 		this.far = far;
 		const camera = new OrthographicCamera();
+		//const camera = new PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.01, 1000);
 
 		return camera;
 	}
