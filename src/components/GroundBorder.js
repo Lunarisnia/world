@@ -74,6 +74,7 @@ export default class GroundBorder extends Component {
 		const innerMaterial = new SimpleMeshMaterial({
 			map: enterTexture,
 			transparent: true,
+			depthWrite: false,
 			side: DoubleSide,
 		});
 		const innerPlane = new Mesh(innerGeom, innerMaterial);
