@@ -7,6 +7,9 @@ uniform mat4 uInverseProjectionMatrix;
 uniform mat4 uInverseViewMatrix;
 uniform float uTime;
 
+uniform vec3 uPointPosition;
+uniform float uRadius;
+
 vec3 reconstructWorldPos(vec2 uv, float depth) {
     // Convert from NDC to Clip Space
     float z = depth * 2.0f - 1.0f;
@@ -26,8 +29,7 @@ void main() {
     float rawDepth = texture2D(uDepthTexture, vUv).x;
     vec3 worldPosition = reconstructWorldPos(vUv, rawDepth);
 
-    float radius = 8.0f;
-    float dist = step(length(worldPosition - vec3(sin(uTime), 0.0f, 0.0f)), radius);
+    float dist = step(length(worldPosition - uPointPosition), uRadius);
 
     vec3 color = vec3(dist);
     FragColor = vec4(color, 1.0f);

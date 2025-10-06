@@ -1,4 +1,4 @@
-import { Mesh, NearestFilter, Scene, WebGLRenderTarget } from "three";
+import { Mesh, NearestFilter, Scene, Vector3, WebGLRenderTarget } from "three";
 import Game from "../game";
 import Pipe from "./Pipe";
 import CircleMaskMaterial from "../material/CircleMaskMaterial";
@@ -12,6 +12,11 @@ export default class CircleMaskPipe extends Pipe {
 	/** @type {Mesh} */
 	viewport;
 
+	/**
+	 * description
+	 * @param {any} camera - desc
+	 * @param {Mesh} point - desc
+	 */
 	constructor(camera) {
 		super();
 		this.camera = camera;
@@ -31,6 +36,9 @@ export default class CircleMaskPipe extends Pipe {
 		this.viewport = new Mesh(postProcessGeom, circleMaskMaterial);
 		this.scene.add(this.viewport);
 
+		this.point = new Vector3(0.0, 0.0, 0.0);
+		this.radius = 8.0;
+
 		this.type = "CircleMaskPipe";
 	}
 
@@ -40,6 +48,9 @@ export default class CircleMaskPipe extends Pipe {
 
 	draw() {
 		const worldPipe = this.pipeline.getPipe("WorldPipe");
+		this.viewport.material.uniforms.uPointPosition = { value: this.point };
+		this.viewport.material.uniforms.uRadius = { value: this.radius };
+
 		this.viewport.material.uniforms.uWorldTexture = { value: worldPipe.renderTarget.texture };
 		this.viewport.material.uniforms.uDepthTexture = { value: worldPipe.renderTarget.depthTexture };
 		this.viewport.material.uniforms.uTime = { value: Game.instance.clock.getElapsedTime() };
