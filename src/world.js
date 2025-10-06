@@ -13,6 +13,7 @@ import CenterPiece from "./components/CenterPiece";
 import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
 import Physics from "./physics";
 import PlayerMaterial from "./material/PlayerMaterial";
+import WorkDisplay from "./components/WorkDisplay";
 
 export default class World {
 	/** @type {Map} */
@@ -52,6 +53,7 @@ export default class World {
 		// NOTE: Ideally it should all look like this
 		this.addEntity(new CenterPiece());
 		this.addEntity(new GroundBorder());
+		this.addEntity(new WorkDisplay());
 
 		const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
 		const cubeMaterial = new SimpleMeshMaterial({
