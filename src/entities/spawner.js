@@ -1,5 +1,5 @@
 import { BoxGeometry, MeshBasicMaterial, ShaderMaterial, SphereGeometry } from "three";
-import Entity from "./entity";
+import Entity from "../entity";
 
 export default class Spawner {
 	static CreateSphereWithShaderMaterial({ radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength }, {

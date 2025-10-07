@@ -2,11 +2,10 @@ import { ArrowHelper, Color, Mesh, Quaternion, SphereGeometry, Vector3 } from "t
 import Component from "../component";
 import { degToRad, } from "three/src/math/MathUtils.js";
 import InputManager from "../input/inputManager";
-import Spawner from "../entity/spawner";
 import RigidBody from "./rigidbody";
 import Game from "../game";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
-import Entity from "../entity/entity";
+import Entity from "../entity";
 
 export default class Player extends Component {
 	/** @type {Vector3} */
@@ -33,6 +32,8 @@ export default class Player extends Component {
 	}
 
 	init() {
+		this.mesh.position.z = 15;
+
 		const sphereMaterial = new SimpleMeshMaterial({
 			color: new Color(1.0, 0.0, 0.0),
 		});

@@ -1,19 +1,20 @@
 import Game from "./game";
-import Entity from "./entity/entity";
 import Player from "./components/player";
 import BoxCollider from "./components/box-collider";
 import RigidBody from "./components/rigidbody";
 import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
 import FloorGeometry from "./geometry/FloorGeometry";
 import FloorMaterial from "./material/FloorMaterial";
-import GroundBorder from "./components/GroundBorder";
 import TriggerBox from "./components/TriggerBox";
 import { Color, Scene } from "three";
-import CenterPiece from "./components/CenterPiece";
 import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
 import Physics from "./physics";
 import PlayerMaterial from "./material/PlayerMaterial";
-import WorkDisplay from "./components/WorkDisplay";
+import WorkZone from "./components/WorkZone";
+import CenterPieceEntity from "./entities/CenterPieceEntity";
+import WorkZoneEntity from "./entities/WorkZoneEntity";
+import CenterPiece from "./components/CenterPiece";
+import Entity from "./entity";
 
 export default class World {
 	/** @type {Map} */
@@ -51,9 +52,13 @@ export default class World {
 
 	testWorld() {
 		// NOTE: Ideally it should all look like this
-		this.addEntity(new CenterPiece());
-		this.addEntity(new GroundBorder());
-		this.addEntity(new WorkDisplay());
+		const centerPiece = new CenterPieceEntity();
+		centerPiece.addComponent(new CenterPiece());
+		this.addEntity(centerPiece);
+
+		const workZone = new WorkZoneEntity();
+		workZone.addComponent(new WorkZone());
+		this.addEntity(workZone);
 
 		const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
 		const cubeMaterial = new SimpleMeshMaterial({
@@ -80,7 +85,6 @@ export default class World {
 		const bc = new BoxCollider(50, 0.5, 50);
 		this.floor.addComponent(bc);
 		this.addEntity(this.floor);
-
 		const width = 3;
 		const height = 1;
 		const depth = 2;

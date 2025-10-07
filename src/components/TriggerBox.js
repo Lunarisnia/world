@@ -21,7 +21,6 @@ export default class TriggerBox extends Component {
 
 	init() {
 		this.player = Game.instance.world.player;
-		this.mesh.position.z = -4;
 
 		const cubeGeom = new SimpleCubeGeometry(this.halfWidth * 2.0, this.halfHeight * 2.0, this.halfDepth * 2.0);
 		const cubeMaterial = new SimpleMeshMaterial({

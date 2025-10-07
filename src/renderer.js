@@ -8,7 +8,6 @@ import TestBedViewportMaterial from "./material/TestBedViewportMaterial";
 import RenderPipeline from "./RenderPipeline";
 import ViewportPipe from "./pipeline/ViewportPipe";
 import WorldPipe from "./pipeline/WorldPipe";
-import PostProcessPlaneGeometry from "./geometry/PostProcessPlaneGeometry";
 import CircleMaskPipe from "./pipeline/CircleMaskPipe";
 import BloomPipe from "./pipeline/BloomPipe";
 

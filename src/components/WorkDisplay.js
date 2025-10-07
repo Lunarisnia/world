@@ -1,9 +1,6 @@
 import Component from "../component";
-import Entity from "../entity/entity";
-import WorkDisplayGeometry from "../geometry/WorkdDisplayGeometry";
 import WorkDisplayMaterial from "../material/WorkDisplayMaterial";
 import { Color } from "three";
-import InvisibleMaterial from "../material/InvisibleMaterial";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
 import BoxCollider from "./box-collider";
 import MeshLoader from "../loaders/MeshLoader";
@@ -11,22 +8,13 @@ import MeshLoader from "../loaders/MeshLoader";
 export default class WorkDisplay extends Component {
 	constructor() {
 		super();
+	}
 
-		const geom = new WorkDisplayGeometry();
-		const material = new InvisibleMaterial({
-			color: new Color(0.0, 0.0, 0.0),
-			transparent: true,
-		});
-		const entity = new Entity(geom, material);
-		entity.addComponent(this);
-		entity.mesh.position.y = -0.6;
-		entity.mesh.scale.setScalar(0.5);
-
-		entity.mesh.position.x = 8;
-		entity.mesh.position.z = -6;
+	init() {
+		this.owner.mesh.scale.setScalar(0.5);
 
 		this.boxCollider = new BoxCollider(3, 4, 0.5);
-		entity.addComponent(this.boxCollider);
+		this.owner.addComponent(this.boxCollider);
 
 		const workDisplayMaterial = new WorkDisplayMaterial();
 		// TODO: Load texture
@@ -42,17 +30,10 @@ export default class WorkDisplay extends Component {
 					}
 				}
 			});
-			entity.mesh.add(root);
+			this.owner.mesh.add(root);
 		});
-
-		return entity;
-	}
-
-	init() {
-
 	}
 
 	update() {
-
 	}
 }

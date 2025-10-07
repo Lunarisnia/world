@@ -2,18 +2,16 @@ import { degToRad } from "three/src/math/MathUtils";
 import Component from "../component";
 import TriggerBox from "./TriggerBox";
 import GroundBorderGeometry from "../geometry/GroundBorderGeometry";
-import OuterGroundBorderMaterial from "../material/OuterGroundBorderMaterial";
-import Entity from "../entity/entity";
 import Game from "../game";
 import GroundBorderMaterial from "../material/GroundBorderMaterial";
-import { DoubleSide, Mesh, NearestFilter, PlaneGeometry, TextureLoader } from "three";
+import { DoubleSide, Mesh, NearestFilter, PlaneGeometry } from "three";
 import gsap from "gsap";
 import IconPlaneMaterial from "../material/IconPlaneMaterial";
 import InputManager from "../input/inputManager";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
 import TLoader from "../loaders/TLoader";
 
-export default class GroundBorder extends Component {
+export default class GroundBorderZone extends Component {
 	onInteract = () => { };
 	constructor() {
 		super();
@@ -21,21 +19,6 @@ export default class GroundBorder extends Component {
 		this.height = 4;
 		this.thickness = 0.25;
 
-		const geom = new GroundBorderGeometry(this.width, this.height, this.thickness);
-		const material = new OuterGroundBorderMaterial();
-		const entity = new Entity(geom, material);
-		entity.addComponent(this);
-		entity.mesh.position.y = -0.49;
-		entity.mesh.position.z = -4;
-		entity.mesh.position.x = -8;
-		entity.mesh.rotateX(degToRad(-90));
-
-		this.createSpinner();
-		this.createTrigger();
-		this.createIconPlane();
-		this.createOpenPlane();
-
-		return entity;
 	}
 
 	createOpenPlane() {
@@ -103,6 +86,10 @@ export default class GroundBorder extends Component {
 	}
 
 	init() {
+		this.createSpinner();
+		this.createTrigger();
+		this.createIconPlane();
+		this.createOpenPlane();
 	}
 
 	update() {

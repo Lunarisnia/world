@@ -1,8 +1,6 @@
 import { BufferGeometry, Material, Mesh } from "three";
-import Component from "../component";
 import { generateUUID } from "three/src/math/MathUtils.js";
-import PhysicsCollider from "../components/physics-collider";
-import Physics from "../physics";
+import Component from "./component";
 
 export default class Entity {
 	/** @type {string} */
@@ -15,6 +13,8 @@ export default class Entity {
 	mesh;
 	/** @type {[Component]} */
 	components = new Array();
+	/** @type {[Entity]} */
+	children = new Array();
 
 	/**
 	 * Create Object
@@ -41,15 +41,31 @@ export default class Entity {
 		return component;
 	}
 
+	/**
+	 * Add child
+	 * @param {Entity} child - desc
+	 */
+	addChild(child) {
+		this.mesh.add(child.mesh);
+		this.children.push(child);
+	}
+
 	init() {
 		for (const component of this.components.values()) {
 			component.init();
+		}
+		for (const child of this.children.values()) {
+			child.init();
 		}
 	}
 
 	update() {
 		for (const component of this.components.values()) {
 			component.update();
+		}
+
+		for (const child of this.children.values()) {
+			child.update();
 		}
 	}
 };

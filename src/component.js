@@ -1,5 +1,5 @@
 import { Mesh } from "three";
-import Entity from "./entity/entity";
+import Entity from "./entity";
 
 export default class Component {
 	/** @type {Entity} */
