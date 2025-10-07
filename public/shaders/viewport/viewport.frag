@@ -29,5 +29,7 @@ void main() {
 
     vec3 color = worldTexture.xyz + bloomTexture.xyz;
 
+    float gamma = 2.2f;
+    color = pow(color, vec3(1.0f / gamma));
     FragColor = vec4(color, 1.0f);
 }
