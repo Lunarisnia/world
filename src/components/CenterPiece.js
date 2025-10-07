@@ -6,6 +6,7 @@ import MeshLoader from "../loaders/MeshLoader";
 import CenterPieceMaterial from "../material/CenterPieceMaterial";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
 import { Color } from "three";
+import BoxCollider from "./box-collider";
 
 export default class CenterPiece extends Component {
 	constructor() {
@@ -15,6 +16,8 @@ export default class CenterPiece extends Component {
 		const material = new CenterPieceMaterial();
 		const entity = new Entity(geom, material);
 		entity.addComponent(this);
+		this.boxCollider = new BoxCollider(2.5, 3.5, 2.5);
+		entity.addComponent(this.boxCollider);
 
 		const podiumMaterial = new SimpleMeshMaterial({
 			color: new Color(0.9, 0.9, 0.9),
