@@ -11,6 +11,7 @@ import gsap from "gsap";
 import IconPlaneMaterial from "../material/IconPlaneMaterial";
 import InputManager from "../input/inputManager";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
+import TLoader from "../loaders/TLoader";
 
 export default class GroundBorder extends Component {
 	onInteract = () => { };
@@ -38,9 +39,7 @@ export default class GroundBorder extends Component {
 	}
 
 	createOpenPlane() {
-		// NOTE: maybe we could make a centralized loader that inform if all texture are loaded for loading screen
-		const loader = new TextureLoader();
-		const openTexture = loader.load("/textures/open.png");
+		const openTexture = TLoader.load("/textures/open.png");
 		openTexture.magFilter = NearestFilter;
 		openTexture.minFilter = NearestFilter;
 		openTexture.generateMipmaps = false;
@@ -64,8 +63,7 @@ export default class GroundBorder extends Component {
 		this.iconPlane.position.z = -1;
 		this.iconPlane.scale.x = 0;
 
-		const loader = new TextureLoader();
-		const enterTexture = loader.load("/textures/enter.png");
+		const enterTexture = TLoader.load("/textures/enter.png");
 		enterTexture.magFilter = NearestFilter;
 		enterTexture.minFilter = NearestFilter;
 		enterTexture.generateMipmaps = false;

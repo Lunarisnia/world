@@ -5,6 +5,7 @@ import { CustomEase } from "gsap/CustomEase";
 
 gsap.registerPlugin(CustomEase);
 
+
 const game = new Game();
 game.run();
 

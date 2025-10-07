@@ -1,8 +1,8 @@
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import Component from "../component";
 import Entity from "../entity/entity";
 import Game from "../game";
 import CenterPieceGeometry from "../geometry/CenterPieceGeometry";
+import MeshLoader from "../loaders/MeshLoader";
 import CenterPieceMaterial from "../material/CenterPieceMaterial";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
 import { Color } from "three";
@@ -16,11 +16,10 @@ export default class CenterPiece extends Component {
 		const entity = new Entity(geom, material);
 		entity.addComponent(this);
 
-		const objLoader = new OBJLoader();
 		const podiumMaterial = new SimpleMeshMaterial({
 			color: new Color(0.9, 0.9, 0.9),
 		});
-		objLoader.load("/models/CenterPiecePodium/CenterPiecePodium.obj", (root) => {
+		MeshLoader.load("/models/CenterPiecePodium/CenterPiecePodium.obj", (root) => {
 			root.scale.setScalar(0.5);
 			root.position.y = -3;
 			root.traverse((child) => {

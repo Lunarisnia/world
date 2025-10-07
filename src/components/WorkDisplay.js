@@ -1,4 +1,3 @@
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import Component from "../component";
 import Entity from "../entity/entity";
 import WorkDisplayGeometry from "../geometry/WorkdDisplayGeometry";
@@ -7,6 +6,7 @@ import { Color } from "three";
 import InvisibleMaterial from "../material/InvisibleMaterial";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
 import BoxCollider from "./box-collider";
+import MeshLoader from "../loaders/MeshLoader";
 
 export default class WorkDisplay extends Component {
 	constructor() {
@@ -28,23 +28,20 @@ export default class WorkDisplay extends Component {
 		this.boxCollider = new BoxCollider(3, 4, 0.5);
 		entity.addComponent(this.boxCollider);
 
-		// TODO: Centralized loader system
+		const workDisplayMaterial = new WorkDisplayMaterial();
 		// TODO: Load texture
 		const mat = new SimpleMeshMaterial({
 			color: new Color(1.0, 0.0, 0.0),
 		});
-		const objLoader = new OBJLoader();
-		objLoader.load("/models/WorkDisplay/WorkDisplay.obj", (root) => {
-			const material = new WorkDisplayMaterial();
+		MeshLoader.load("/models/WorkDisplay/WorkDisplay.obj", (root) => {
 			root.traverse((child) => {
 				if (child.isMesh) {
-					child.material = material;
+					child.material = workDisplayMaterial;
 					if (child.name === "Cube.001") {
 						child.material = mat;
 					}
 				}
 			});
-
 			entity.mesh.add(root);
 		});
 
