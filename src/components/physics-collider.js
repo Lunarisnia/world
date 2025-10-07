@@ -1,6 +1,6 @@
 import { ColliderDesc } from "@dimforge/rapier3d-compat";
 import Component from "../component";
-import { Vector3 } from "three";
+import { Quaternion, Vector3 } from "three";
 import Physics from "../physics";
 
 export default class PhysicsCollider extends Component {
@@ -27,6 +27,9 @@ export default class PhysicsCollider extends Component {
 	setMeshPosition() {
 		const wPos = new Vector3();
 		this.mesh.getWorldPosition(wPos);
+		const wQuat = new Quaternion();
+		this.mesh.getWorldQuaternion(wQuat);
+		this.descriptor.setRotation({ x: wQuat.x, y: wQuat.y, z: wQuat.z, w: wQuat.w });
 		this.descriptor.setTranslation(wPos.x, wPos.y, wPos.z);
 	}
 }
