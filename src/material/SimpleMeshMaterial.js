@@ -5,9 +5,10 @@ import fragmentShader from "/shaders/simple-mesh/simple-mesh.frag?url&raw";
 import fragmentTextureShader from "/shaders/simple-mesh/simple-mesh-texture.frag?url&raw";
 
 export default class SimpleMeshMaterial {
-	constructor({ color, map, side = FrontSide, depthTest = true, depthWrite = true, alphaTest = 0.0, transparent = false }) {
+	constructor({ color, map, side = FrontSide, depthTest = true, depthWrite = true, alphaTest = 0.0, transparent = false, wireframe = false }) {
 		const uniforms = {};
 		const material = new ShaderMaterial({
+			wireframe,
 			depthTest,
 			depthWrite,
 			alphaTest,
