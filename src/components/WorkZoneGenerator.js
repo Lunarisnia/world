@@ -1,4 +1,3 @@
-import { Color } from "three";
 import Component from "../component";
 import WorkZoneEntity from "../entities/WorkZoneEntity";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
@@ -29,19 +28,20 @@ export default class WorkZoneGenerator extends Component {
 		for (let i = 0; i < this.count; i++) {
 			this.offset = i * this.shift;
 			const zoneEntity = new WorkZoneEntity();
-			const zone = new WorkZone();
+			const zone = new WorkZone(Databank.workHistories[i].role);
 			zoneEntity.addComponent(zone);
 			zoneEntity.mesh.position.x = this.offset;
+
+			const image = TLoader.load(Databank.workHistories[i].thumbnail);
+			zone.workDisplay.displayMaterial = new SimpleMeshMaterial({
+				map: image,
+			})
 
 			this.owner.addChild(zoneEntity);
 			this.zones.push(zone);
 		}
 
 		for (let i = 0; i < this.count; i++) {
-			const image = TLoader.load(Databank.workHistories[i].thumbnail);
-			this.zones[i].workDisplay.displayMaterial = new SimpleMeshMaterial({
-				map: image,
-			})
 		}
 	}
 
