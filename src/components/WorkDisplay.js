@@ -1,13 +1,20 @@
 import Component from "../component";
 import WorkDisplayMaterial from "../material/WorkDisplayMaterial";
-import { Color } from "three";
+import { Color, DoubleSide, Material } from "three";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
 import BoxCollider from "./box-collider";
 import MeshLoader from "../loaders/MeshLoader";
 
 export default class WorkDisplay extends Component {
+	/** @type {Material} */
+	displayMaterial;
+
 	constructor() {
 		super();
+		this.displayMaterial = new SimpleMeshMaterial({
+			color: new Color(1.0, 1.0, 0.0),
+			side: DoubleSide,
+		});
 	}
 
 	init() {
@@ -18,20 +25,18 @@ export default class WorkDisplay extends Component {
 
 		const workDisplayMaterial = new WorkDisplayMaterial();
 		// TODO: Load texture
-		const mat = new SimpleMeshMaterial({
-			color: new Color(1.0, 0.0, 0.0),
-		});
 		MeshLoader.load("/models/WorkDisplay/WorkDisplay.obj", (root) => {
 			root.traverse((child) => {
 				if (child.isMesh) {
 					child.material = workDisplayMaterial;
 					if (child.name === "Cube.001") {
-						child.material = mat;
+						child.material = this.displayMaterial;
 					}
 				}
 			});
 			this.owner.mesh.add(root);
 		});
+
 	}
 
 	update() {

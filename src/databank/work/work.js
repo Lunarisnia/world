@@ -3,6 +3,7 @@ export default class Work {
 	start;
 	end;
 	role;
+	thumbnail;
 
 	constructor(w) {
 		Object.assign(this, w);

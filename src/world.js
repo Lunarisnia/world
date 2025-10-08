@@ -1,20 +1,16 @@
-import Game from "./game";
 import Player from "./components/player";
 import BoxCollider from "./components/box-collider";
-import RigidBody from "./components/rigidbody";
 import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
 import FloorGeometry from "./geometry/FloorGeometry";
 import FloorMaterial from "./material/FloorMaterial";
-import TriggerBox from "./components/TriggerBox";
-import { Color, Scene } from "three";
-import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
+import { Scene } from "three";
 import Physics from "./physics";
 import PlayerMaterial from "./material/PlayerMaterial";
-import WorkZone from "./components/WorkZone";
-import CenterPieceEntity from "./entities/CenterPieceEntity";
-import WorkZoneEntity from "./entities/WorkZoneEntity";
-import CenterPiece from "./components/CenterPiece";
 import Entity from "./entity";
+import WorkZoneManagerEntity from "./entities/WorkZoneManagerEntity";
+import WorkZoneGenerator from "./components/WorkZoneGenerator";
+import CenterPieceEntity from "./entities/CenterPieceEntity";
+import CenterPiece from "./components/CenterPiece";
 
 export default class World {
 	/** @type {Map} */
@@ -51,26 +47,26 @@ export default class World {
 	}
 
 	testWorld() {
+		const workZoneManager = new WorkZoneManagerEntity();
+		workZoneManager.addComponent(new WorkZoneGenerator());
+		this.addEntity(workZoneManager);
+
 		// NOTE: Ideally it should all look like this
-		const centerPiece = new CenterPieceEntity();
-		centerPiece.addComponent(new CenterPiece());
-		this.addEntity(centerPiece);
+		//const centerPiece = new CenterPieceEntity();
+		//centerPiece.addComponent(new CenterPiece());
+		//this.addEntity(centerPiece);
 
-		const workZone = new WorkZoneEntity();
-		workZone.addComponent(new WorkZone());
-		this.addEntity(workZone);
-
-		const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
-		const cubeMaterial = new SimpleMeshMaterial({
-			color: new Color(0, 0, 1),
-		});
-		this.cube = new Entity(cubeGeom, cubeMaterial);
-		const rb = new RigidBody();
-		rb.boxCollider(0.5, 0.5, 0.5);
-		this.cube.mesh.position.y = 2;
-		this.cube.mesh.position.z = -2;
-		this.cube.addComponent(rb);
-		this.addEntity(this.cube);
+		//const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
+		//const cubeMaterial = new SimpleMeshMaterial({
+		//	color: new Color(0, 0, 1),
+		//});
+		//this.cube = new Entity(cubeGeom, cubeMaterial);
+		//const rb = new RigidBody();
+		//rb.boxCollider(0.5, 0.5, 0.5);
+		//this.cube.mesh.position.y = 2;
+		//this.cube.mesh.position.z = -2;
+		//this.cube.addComponent(rb);
+		//this.addEntity(this.cube);
 
 		const playerGeom = new SimpleCubeGeometry(1, 1, 1);
 		const playerMaterial = new PlayerMaterial();
@@ -85,26 +81,6 @@ export default class World {
 		const bc = new BoxCollider(50, 0.5, 50);
 		this.floor.addComponent(bc);
 		this.addEntity(this.floor);
-		const width = 3;
-		const height = 1;
-		const depth = 2;
-		const triggerGeom = new SimpleCubeGeometry(width, height, depth);
-		const triggerMaterial = new SimpleMeshMaterial({
-			color: new Color(1, 0, 1),
-		});
-		this.testTriggerBox = new Entity(triggerGeom, triggerMaterial);
-		const trigger = new TriggerBox(width, height, depth);
-		trigger.onTriggerEnter = () => {
-			console.log("Enter");
-		}
-		trigger.onTriggerExit = () => {
-			console.log("Exit");
-		}
-		this.testTriggerBox.addComponent(trigger);
-		this.testTriggerBox.mesh.position.z = 0;
-		this.testTriggerBox.material.wireframe = true;
-		this.addEntity(this.testTriggerBox);
 
-		Game.instance.mainCamera.instance.position.z = 5;
 	}
 };

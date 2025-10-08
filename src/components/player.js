@@ -32,8 +32,6 @@ export default class Player extends Component {
 	}
 
 	init() {
-		this.mesh.position.z = 15;
-
 		const sphereMaterial = new SimpleMeshMaterial({
 			color: new Color(1.0, 0.0, 0.0),
 		});

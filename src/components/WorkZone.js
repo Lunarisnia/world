@@ -4,32 +4,28 @@ import WorkDisplayEntity from "../entities/WorkDisplayEntity";
 import WorkDisplay from "./WorkDisplay";
 import { degToRad } from "three/src/math/MathUtils";
 import GroundBorderEntity from "../entities/GroundBorderEntity";
-import { FontLoader, TextGeometry } from "three/examples/jsm/Addons.js";
-import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
-import { Color } from "three";
-import Entity from "../entity";
 
 export default class WorkZone extends Component {
-	/** @type {WorkDisplayEntity} */
+	/** @type {WorkDisplay} */
 	workDisplay;
 	/** @type {GroundBorderEntity} */
 	infoZone;
 
 	constructor() {
 		super();
+		this.workDisplayEntity = new WorkDisplayEntity();
+		this.workDisplay = new WorkDisplay();
+		this.workDisplayEntity.addComponent(this.workDisplay);
 	}
 
 	init() {
-		this.workDisplay = new WorkDisplayEntity();
-		this.workDisplay.addComponent(new WorkDisplay());
-		this.owner.addChild(this.workDisplay);
+		this.owner.addChild(this.workDisplayEntity);
 
 		this.infoZone = new GroundBorderEntity();
 		this.infoZone.addComponent(new GroundBorderZone());
 		this.owner.addChild(this.infoZone);
 
-		this.mesh.position.z = 10;
-		//this.mesh.position.y = -0.4;
+		this.mesh.position.y = -0.4;
 
 		this.workDisplay.mesh.position.x = -1;
 		this.workDisplay.mesh.position.z = -2;
