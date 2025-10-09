@@ -28,7 +28,7 @@ export default class WorkZoneGenerator extends Component {
 		for (let i = 0; i < this.count; i++) {
 			this.offset = i * this.shift;
 			const zoneEntity = new WorkZoneEntity();
-			const zone = new WorkZone(Databank.workHistories[i].role);
+			const zone = new WorkZone(Databank.workHistories[i].company, Databank.workHistories[i].role);
 			zoneEntity.addComponent(zone);
 			zoneEntity.mesh.position.x = this.offset;
 
