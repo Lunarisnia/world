@@ -4,6 +4,7 @@ import MeshLoader from "../loaders/MeshLoader";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
 import { Color } from "three";
 import BoxCollider from "./box-collider";
+import TLoader from "../loaders/TLoader";
 
 export default class CenterPiece extends Component {
 	constructor() {
@@ -30,6 +31,9 @@ export default class CenterPiece extends Component {
 
 		this.mesh.position.x = 4;
 		this.mesh.position.y = 3;
+
+		const matcap = TLoader.load("/textures/matcap_plastic.png");
+		this.mesh.material.uniforms.uMatcap = { value: matcap };
 	}
 
 	update() {

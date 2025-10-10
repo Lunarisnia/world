@@ -11,6 +11,8 @@ import WorkZoneManagerEntity from "./entities/WorkZoneManagerEntity";
 import WorkZoneGenerator from "./components/WorkZoneGenerator";
 import CenterPieceEntity from "./entities/CenterPieceEntity";
 import CenterPiece from "./components/CenterPiece";
+import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
+import TLoader from "./loaders/TLoader";
 
 export default class World {
 	/** @type {Map} */
@@ -47,14 +49,10 @@ export default class World {
 	}
 
 	testWorld() {
-		const workZoneManager = new WorkZoneManagerEntity();
-		workZoneManager.addComponent(new WorkZoneGenerator());
-		this.addEntity(workZoneManager);
-
 		// NOTE: Ideally it should all look like this
-		//const centerPiece = new CenterPieceEntity();
-		//centerPiece.addComponent(new CenterPiece());
-		//this.addEntity(centerPiece);
+		const centerPiece = new CenterPieceEntity();
+		centerPiece.addComponent(new CenterPiece());
+		this.addEntity(centerPiece);
 
 		//const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
 		//const cubeMaterial = new SimpleMeshMaterial({

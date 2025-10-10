@@ -8,6 +8,7 @@ in mat4 vModelMatrix;
 
 uniform float uTime;
 uniform vec3 uCameraPosition;
+uniform sampler2D uMatcap;
 
 // Source: https://www.shadertoy.com/view/4dffRH
 vec3 hash(vec3 p) // this hash is not production ready, please
@@ -82,6 +83,12 @@ float normalizeFBM(float n) {
     return (1.0f + n) / 2.0f;
 }
 
+vec2 matcap(vec3 eye, vec3 normal) {
+    vec3 reflected = reflect(eye, normal);
+    float m = 2.8284271247461903 * sqrt(reflected.z + 1.0);
+    return reflected.xy / m + 0.5;
+}
+
 void main() {
     float eps = 0.01f;
     int octaves = 2;
@@ -104,19 +111,26 @@ void main() {
         );
     dNormal = normalize(vNormal - dNormal);
 
-    vec3 lightPosition = vec3(0.0f, 0.0f, 4.0f) + vFragPos;
+    vec3 cameraDir = normalize(uCameraPosition - vFragPos);
+    vec2 uv = matcap(cameraDir, dNormal);
+    vec4 matcapTexture = texture2D(uMatcap, uv);
+    FragColor = matcapTexture;
+    BrightColor = vec4(dNormal, 1.0f);
 
-    vec3 lightDir = normalize(lightPosition - vFragPos);
-    float diff = max(0.0f, dot(lightDir, dNormal));
-    vec3 diffuse = vec3(vNormal) * diff;
+    // NOTE: Old lighting
+    // vec3 lightPosition = vec3(0.0f, 0.0f, 4.0f) + vFragPos;
+    //
+    // vec3 lightDir = normalize(lightPosition - vFragPos);
+    // float diff = max(0.0f, dot(lightDir, dNormal));
+    // vec3 diffuse = vec3(vNormal) * diff;
+    //
+    // vec3 cameraDir = normalize(uCameraPosition - pos);
+    // vec3 halfDir = normalize(dNormal + cameraDir);
+    // float spec = pow(1.0f - max(0.0f, dot(halfDir, dNormal)), 0.52f);
+    // vec3 specular = vec3(1.0f) * spec;
+    //
+    // vec3 color = diffuse + specular;
+    // FragColor = vec4(color, 1.0f);
 
-    vec3 cameraDir = normalize(uCameraPosition - pos);
-    vec3 halfDir = normalize(dNormal + cameraDir);
-    float spec = pow(1.0f - max(0.0f, dot(halfDir, dNormal)), 0.52f);
-    vec3 specular = vec3(1.0f) * spec;
-
-    vec3 color = diffuse + specular;
-    FragColor = vec4(color, 1.0f);
-
-    BrightColor = vec4(color, 1.0f);
+    // BrightColor = vec4(color, 1.0f);
 }

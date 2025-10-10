@@ -2,24 +2,23 @@ layout(location = 0) out vec4 FragColor;
 layout(location = 1) out vec4 BrightColor;
 in vec2 vUv;
 in vec3 vFragPos;
+in vec3 vNormal;
 
-float sdfCircle(vec3 origin, float r) {
-    return length(origin) - r;
-}
+uniform vec3 uEyePosition;
+uniform sampler2D uMatcap;
 
-float circle(vec3 uv, float r) {
-    return step(distance(uv, vec3(r)), r);
+vec2 matcap(vec3 eye, vec3 normal) {
+    vec3 reflected = reflect(eye, normal);
+    float m = 2.8284271247461903 * sqrt(reflected.z + 1.0);
+    return reflected.xy / m + 0.5;
 }
 
 void main() {
+    vec3 cameraDir = normalize(uEyePosition - vFragPos);
+    vec2 uv = matcap(cameraDir, vNormal);
+
+    vec4 matcapTexture = texture2D(uMatcap, uv);
+    FragColor = matcapTexture;
+
     BrightColor = vec4(0.0f);
-
-    // float dist = sdfCircle(vec3(0.0f), 0.1f);
-    float dist = circle(vFragPos, 0.5f);
-    // if (dist > 0.0f) {
-    //     discard;
-    // }
-
-    vec3 color = vec3(dist);
-    FragColor = vec4(color, 1.0f);
 }

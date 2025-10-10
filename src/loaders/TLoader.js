@@ -1,4 +1,4 @@
-import { TextureLoader } from "three";
+import { Texture, TextureLoader } from "three";
 
 export default class TLoader {
 	static loadedTextures = new Map();
@@ -8,6 +8,7 @@ export default class TLoader {
 	/**
 	 * Load texture
 	 * @param {string} path - desc
+	 * @returns {Texture}
 	 */
 	static load(path) {
 		if (this.loadedTextures.has(path)) {

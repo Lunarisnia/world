@@ -6,6 +6,7 @@ import RigidBody from "./rigidbody";
 import Game from "../game";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
 import Entity from "../entity";
+import TLoader from "../loaders/TLoader";
 
 export default class Player extends Component {
 	/** @type {Vector3} */
@@ -52,9 +53,14 @@ export default class Player extends Component {
 		this.rigidBody.init();
 		this.rigidBody.boxCollider(0.5, 0.5, 0.5);
 
+		const matcap = TLoader.load("/textures/matcap_gray.png");
+		this.mesh.material.uniforms.uMatcap = { value: matcap };
 	}
 
 	update() {
+		this.mesh.material.uniforms.uEyePosition = { value: Game.instance.mainCamera.instance.position };
+
+
 		this.axesHelper.visible = Game.instance.debug.gizmo;
 		this.midSphere.mesh.visible = Game.instance.debug.gizmo;
 		this.handleTankMovement();
