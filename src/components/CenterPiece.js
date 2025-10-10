@@ -1,10 +1,9 @@
 import Component from "../component";
 import Game from "../game";
 import MeshLoader from "../loaders/MeshLoader";
-import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
-import { Color } from "three";
 import BoxCollider from "./box-collider";
 import TLoader from "../loaders/TLoader";
+import MatcapMaterial from "../material/MatcapMaterial";
 
 export default class CenterPiece extends Component {
 	constructor() {
@@ -15,9 +14,8 @@ export default class CenterPiece extends Component {
 		this.boxCollider = new BoxCollider(2.5, 3.5, 2.5);
 		this.owner.addComponent(this.boxCollider);
 
-		const podiumMaterial = new SimpleMeshMaterial({
-			color: new Color(0.9, 0.9, 0.9),
-		});
+		const podiumMatcap = TLoader.load("/textures/matcap_plastic.png");
+		const podiumMaterial = new MatcapMaterial(podiumMatcap);
 		MeshLoader.load("/models/CenterPiecePodium/CenterPiecePodium.obj", (root) => {
 			root.scale.setScalar(0.5);
 			root.position.y = -3;

@@ -5,6 +5,7 @@ in vec2 vUv;
 in vec3 vNormal;
 in vec3 vFragPos;
 in mat4 vModelMatrix;
+in vec3 vInverseMVPos;
 
 uniform float uTime;
 uniform vec3 uCameraPosition;
@@ -83,10 +84,13 @@ float normalizeFBM(float n) {
     return (1.0f + n) / 2.0f;
 }
 
-vec2 matcap(vec3 eye, vec3 normal) {
-    vec3 reflected = reflect(eye, normal);
-    float m = 2.8284271247461903 * sqrt(reflected.z + 1.0);
-    return reflected.xy / m + 0.5;
+vec2 matcapUV(vec3 invMVPos, vec3 normal) {
+    vec3 viewDir = normalize(invMVPos);
+    vec3 x = normalize(vec3(viewDir.z, 0.0, -viewDir.x));
+    vec3 y = cross(viewDir, x);
+    vec2 uv = vec2(dot(x, normal), dot(y, normal)) * 0.495 + 0.5; // 0.495 to remove artifacts caused by undersized matcap disks
+
+    return uv;
 }
 
 void main() {
@@ -111,11 +115,11 @@ void main() {
         );
     dNormal = normalize(vNormal - dNormal);
 
-    vec3 cameraDir = normalize(uCameraPosition - vFragPos);
-    vec2 uv = matcap(cameraDir, dNormal);
+    vec2 uv = matcapUV(vInverseMVPos, dNormal);
     vec4 matcapTexture = texture2D(uMatcap, uv);
     FragColor = matcapTexture;
     BrightColor = vec4(dNormal, 1.0f);
+    // BrightColor = vec4(0.0f);
 
     // NOTE: Old lighting
     // vec3 lightPosition = vec3(0.0f, 0.0f, 4.0f) + vFragPos;

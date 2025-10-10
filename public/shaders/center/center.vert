@@ -2,6 +2,7 @@ out vec2 vUv;
 out vec3 vNormal;
 out vec3 vFragPos;
 out vec3 vPosition;
+out vec3 vInverseMVPos;
 
 out mat4 vModelMatrix;
 uniform float uTime;
@@ -87,6 +88,7 @@ void main() {
     vFragPos = vec3(modelMatrix * vec4(position, 1.0f));
     vModelMatrix = modelMatrix;
     vPosition = position;
+    vInverseMVPos = -vec3(modelViewMatrix * vec4(position, 1.0f));
 
     float eps = 0.01f;
     int octaves = 1;

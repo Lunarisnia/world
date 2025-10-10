@@ -13,6 +13,7 @@ import CenterPieceEntity from "./entities/CenterPieceEntity";
 import CenterPiece from "./components/CenterPiece";
 import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
 import TLoader from "./loaders/TLoader";
+import MatcapMaterial from "./material/MatcapMaterial";
 
 export default class World {
 	/** @type {Map} */
@@ -67,13 +68,14 @@ export default class World {
 		//this.addEntity(this.cube);
 
 		const playerGeom = new SimpleCubeGeometry(1, 1, 1);
-		const playerMaterial = new PlayerMaterial();
+		const playerMaterial = new MatcapMaterial();
 		this.player = new Entity(playerGeom, playerMaterial);
 		this.player.addComponent(new Player());
 		this.addEntity(this.player);
 
+		const floorMatcap = TLoader.load("/textures/matcap_white.png");
 		const floorGeom = new FloorGeometry(100, 1, 100);
-		const floorMaterial = new FloorMaterial();
+		const floorMaterial = new MatcapMaterial(floorMatcap);
 		this.floor = new Entity(floorGeom, floorMaterial);
 		this.floor.mesh.position.y = -1;
 		const bc = new BoxCollider(50, 0.5, 50);
