@@ -1,20 +1,22 @@
 import Component from "../component";
-import Game from "../game";
 import MeshLoader from "../loaders/MeshLoader";
-import BoxCollider from "./box-collider";
 import TLoader from "../loaders/TLoader";
 import MatcapMaterial from "../material/MatcapMaterial";
+import BoxCollider from "./box-collider";
 
-export default class CenterPiece extends Component {
-	constructor() {
+export default class Podium extends Component {
+	displayedEntity;
+
+	constructor(displayModelEntity) {
 		super();
+		this.displayedEntity = displayModelEntity;
 	}
 
 	init() {
 		this.boxCollider = new BoxCollider(2.5, 3.5, 2.5);
 		this.owner.addComponent(this.boxCollider);
 
-		const podiumMatcap = TLoader.load("/textures/matcap_plastic.png");
+		const podiumMatcap = TLoader.load("/textures/matcap_shiny.png");
 		const podiumMaterial = new MatcapMaterial(podiumMatcap);
 		MeshLoader.load("/models/CenterPiecePodium/CenterPiecePodium.obj", (root) => {
 			root.scale.setScalar(0.5);
@@ -27,16 +29,12 @@ export default class CenterPiece extends Component {
 			this.mesh.add(root);
 		});
 
-		this.mesh.position.x = 6;
 		this.mesh.position.y = 3;
 
-		const matcap = TLoader.load("/textures/matcap_plastic.png");
-		this.mesh.material.uniforms.uMatcap = { value: matcap };
+		this.owner.addChild(this.displayedEntity);
 	}
 
 	update() {
-		this.mesh.material.uniforms.uTime.value = Game.instance.clock.getElapsedTime();
-		const cameraPosition = Game.instance.mainCamera.instance.position;
-		this.mesh.material.uniforms.uCameraPosition.value = cameraPosition;
+
 	}
 }

@@ -2,18 +2,16 @@ import Player from "./components/player";
 import BoxCollider from "./components/box-collider";
 import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
 import FloorGeometry from "./geometry/FloorGeometry";
-import FloorMaterial from "./material/FloorMaterial";
 import { Scene } from "three";
 import Physics from "./physics";
-import PlayerMaterial from "./material/PlayerMaterial";
 import Entity from "./entity";
-import WorkZoneManagerEntity from "./entities/WorkZoneManagerEntity";
-import WorkZoneGenerator from "./components/WorkZoneGenerator";
 import CenterPieceEntity from "./entities/CenterPieceEntity";
 import CenterPiece from "./components/CenterPiece";
-import SimpleMeshMaterial from "./material/SimpleMeshMaterial";
 import TLoader from "./loaders/TLoader";
 import MatcapMaterial from "./material/MatcapMaterial";
+import PointEntity from "./entities/PointEntity";
+import Podium from "./components/Podium";
+import Youtube from "./components/Youtube";
 
 export default class World {
 	/** @type {Map} */
@@ -54,6 +52,14 @@ export default class World {
 		const centerPiece = new CenterPieceEntity();
 		centerPiece.addComponent(new CenterPiece());
 		this.addEntity(centerPiece);
+
+		const youtubeLogo = new PointEntity();
+		youtubeLogo.addComponent(new Youtube());
+		const youtubePodium = new PointEntity();
+		youtubePodium.addComponent(new Podium(youtubeLogo));
+		youtubePodium.mesh.position.z = 8;
+		this.addEntity(youtubePodium);
+
 
 		//const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
 		//const cubeMaterial = new SimpleMeshMaterial({

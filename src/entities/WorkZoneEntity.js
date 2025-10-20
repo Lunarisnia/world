@@ -1,5 +1,4 @@
 import { Color } from "three";
-import InvisibleMaterial from "../material/InvisibleMaterial";
 import SimpleCubeGeometry from "../geometry/SimpleCubeGeometry";
 import Entity from "../entity";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
