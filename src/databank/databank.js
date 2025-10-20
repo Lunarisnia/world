@@ -3,8 +3,11 @@ import Work from "./work/work";
 export default class Databank {
 	static baseURL = "https://raw.githubusercontent.com"
 	static streamPath = "refs/heads/main"
-	static githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
-	static publicDataRepoName = import.meta.env.VITE_PUBLIC_DATA_REPO_NAME;
+	//static githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
+	//static publicDataRepoName = import.meta.env.VITE_PUBLIC_DATA_REPO_NAME;
+	// NOTE: Don't wanna deal with this right now
+	static githubUsername = "Lunarisnia";
+	static publicDataRepoName = "porto-public-data";
 	static workHistories;
 
 	/**
