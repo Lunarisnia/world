@@ -54,9 +54,10 @@ export default class World {
 		const logo = new PointEntity();
 		logo.addComponent(displayedComponent);
 
-		const podium = new PointEntity();
-		podium.addComponent(new Podium(logo));
-		this.addEntity(podium);
+		const podiumEntity = new PointEntity();
+		const podium = new Podium(logo);
+		podiumEntity.addComponent(podium);
+		this.addEntity(podiumEntity);
 		return podium;
 	}
 
@@ -67,18 +68,30 @@ export default class World {
 		this.addEntity(centerPiece);
 
 		const youtube = this.spawnPodium(new Youtube());
+		youtube.onInteract = () => {
+			window.open("https://www.youtube.com/@Lounarisnia", "_blank");
+		}
 		youtube.mesh.position.z = 8;
 		youtube.mesh.position.x = -8;
 
 		const github = this.spawnPodium(new Github())
-		github.mesh.position.z = 9;
+		github.onInteract = () => {
+			window.open("https://github.com/Lunarisnia", "_blank");
+		}
+		github.mesh.position.z = 8;
 		github.mesh.position.x = 0;
 
 		const tiktok = this.spawnPodium(new Tiktok());
+		tiktok.onInteract = () => {
+			window.open("https://www.tiktok.com/@lunarisnia", "_blank");
+		}
 		tiktok.mesh.position.z = 8;
 		tiktok.mesh.position.x = 8;
 
 		const linkedIn = this.spawnPodium(new LinkedIn());
+		linkedIn.onInteract = () => {
+			window.open("https://www.linkedin.com/in/rio-arswendo-rachmad-990a091a9/", "_blank");
+		}
 		linkedIn.mesh.position.z = 8;
 		linkedIn.mesh.position.x = 16;
 

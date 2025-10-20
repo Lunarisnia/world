@@ -7,6 +7,7 @@ import BoxCollider from "./box-collider";
 import GroundBorderZone from "./GroundBorderZone";
 
 export default class Podium extends Component {
+	onInteract = () => { };
 	displayedEntity;
 
 	constructor(displayModelEntity) {
@@ -19,7 +20,9 @@ export default class Podium extends Component {
 		this.owner.addComponent(this.boxCollider);
 
 		this.infoZone = new GroundBorderEntity();
-		this.infoZone.addComponent(new GroundBorderZone());
+		const zone = new GroundBorderZone();
+		zone.onInteract = this.onInteract;
+		this.infoZone.addComponent(zone);
 		this.owner.addChild(this.infoZone);
 		this.infoZone.mesh.position.z = 5;
 		this.infoZone.mesh.position.y = -3.49;
