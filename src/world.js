@@ -15,6 +15,8 @@ import Youtube from "./components/Youtube";
 import Github from "./components/Github";
 import Tiktok from "./components/Tiktok";
 import LinkedIn from "./components/LinkedIn";
+import { degToRad } from "three/src/math/MathUtils.js";
+import WorkZoneGenerator from "./components/WorkZoneGenerator";
 
 export default class World {
 	/** @type {Map} */
@@ -62,50 +64,46 @@ export default class World {
 	}
 
 	testWorld() {
-		// NOTE: Ideally it should all look like this
+		const centerPieceZPos = 16;
 		const centerPiece = new CenterPieceEntity();
 		centerPiece.addComponent(new CenterPiece());
+		centerPiece.mesh.position.z = centerPieceZPos;
 		this.addEntity(centerPiece);
 
+		const workZone = new PointEntity();
+		workZone.addComponent(new WorkZoneGenerator());
+		workZone.mesh.position.z = centerPieceZPos;
+		workZone.mesh.position.x = 28;
+		this.addEntity(workZone);
+
+		const socialAreaZPos = 40;
 		const youtube = this.spawnPodium(new Youtube());
 		youtube.onInteract = () => {
 			window.open("https://www.youtube.com/@Lounarisnia", "_blank");
 		}
-		youtube.mesh.position.z = 8;
+		youtube.mesh.position.z = socialAreaZPos;
 		youtube.mesh.position.x = -8;
 
 		const github = this.spawnPodium(new Github())
 		github.onInteract = () => {
 			window.open("https://github.com/Lunarisnia", "_blank");
 		}
-		github.mesh.position.z = 8;
+		github.mesh.position.z = socialAreaZPos;
 		github.mesh.position.x = 0;
 
 		const tiktok = this.spawnPodium(new Tiktok());
 		tiktok.onInteract = () => {
 			window.open("https://www.tiktok.com/@lunarisnia", "_blank");
 		}
-		tiktok.mesh.position.z = 8;
+		tiktok.mesh.position.z = socialAreaZPos;
 		tiktok.mesh.position.x = 8;
 
 		const linkedIn = this.spawnPodium(new LinkedIn());
 		linkedIn.onInteract = () => {
 			window.open("https://www.linkedin.com/in/rio-arswendo-rachmad-990a091a9/", "_blank");
 		}
-		linkedIn.mesh.position.z = 8;
+		linkedIn.mesh.position.z = socialAreaZPos;
 		linkedIn.mesh.position.x = 16;
-
-		//const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
-		//const cubeMaterial = new SimpleMeshMaterial({
-		//	color: new Color(0, 0, 1),
-		//});
-		//this.cube = new Entity(cubeGeom, cubeMaterial);
-		//const rb = new RigidBody();
-		//rb.boxCollider(0.5, 0.5, 0.5);
-		//this.cube.mesh.position.y = 2;
-		//this.cube.mesh.position.z = -2;
-		//this.cube.addComponent(rb);
-		//this.addEntity(this.cube);
 
 		const playerGeom = new SimpleCubeGeometry(1, 1, 1);
 		const playerMaterial = new MatcapMaterial();
@@ -113,12 +111,14 @@ export default class World {
 		this.player.addComponent(new Player());
 		this.addEntity(this.player);
 
-		const floorMatcap = TLoader.load("/textures/matcap_white.png");
-		const floorGeom = new FloorGeometry(100, 1, 100);
+		const floorMatcap = TLoader.load("/textures/matcap_green.png");
+		const width = 200;
+		const height = 200;
+		const floorGeom = new FloorGeometry(width, 1, height);
 		const floorMaterial = new MatcapMaterial(floorMatcap);
 		this.floor = new Entity(floorGeom, floorMaterial);
 		this.floor.mesh.position.y = -1;
-		const bc = new BoxCollider(50, 0.5, 50);
+		const bc = new BoxCollider(width / 2, 0.5, height / 2);
 		this.floor.addComponent(bc);
 		this.addEntity(this.floor);
 

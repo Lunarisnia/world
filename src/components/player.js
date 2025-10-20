@@ -18,7 +18,7 @@ export default class Player extends Component {
 
 	angle = 0;
 	turnSpeed = 3.5;
-	direction = new Vector3(0.0, 0.0, -1.0);
+	direction = new Vector3(0.0, 0.0, 1.0);
 
 	/** @type {RigidBody} */
 	rigidBody;
@@ -26,7 +26,6 @@ export default class Player extends Component {
 	constructor() {
 		super();
 
-		this.forward = new Vector3(0.0, 0.0, -1.0);
 		this.up = new Vector3(0.0, 1.0, 0.0);
 
 		this.speed = 4.0;
@@ -67,7 +66,6 @@ export default class Player extends Component {
 	// TODO: make acceleration gradual 
 	handleTankMovement() {
 		this.mesh.getWorldDirection(this.direction);
-		this.direction.negate();
 		const r = this.rigidBody.instance.rotation();
 		const rotation = new Quaternion(r.x, r.y, r.z, r.w);
 

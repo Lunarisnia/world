@@ -27,7 +27,6 @@ export default class CenterPiece extends Component {
 			this.mesh.add(root);
 		});
 
-		this.mesh.position.x = 6;
 		this.mesh.position.y = 3;
 
 		const matcap = TLoader.load("/textures/matcap_plastic.png");
