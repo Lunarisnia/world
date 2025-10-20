@@ -12,6 +12,9 @@ import MatcapMaterial from "./material/MatcapMaterial";
 import PointEntity from "./entities/PointEntity";
 import Podium from "./components/Podium";
 import Youtube from "./components/Youtube";
+import Github from "./components/Github";
+import Tiktok from "./components/Tiktok";
+import LinkedIn from "./components/LinkedIn";
 
 export default class World {
 	/** @type {Map} */
@@ -47,19 +50,37 @@ export default class World {
 		}
 	}
 
+	spawnPodium(displayedComponent) {
+		const logo = new PointEntity();
+		logo.addComponent(displayedComponent);
+
+		const podium = new PointEntity();
+		podium.addComponent(new Podium(logo));
+		this.addEntity(podium);
+		return podium;
+	}
+
 	testWorld() {
 		// NOTE: Ideally it should all look like this
 		const centerPiece = new CenterPieceEntity();
 		centerPiece.addComponent(new CenterPiece());
 		this.addEntity(centerPiece);
 
-		const youtubeLogo = new PointEntity();
-		youtubeLogo.addComponent(new Youtube());
-		const youtubePodium = new PointEntity();
-		youtubePodium.addComponent(new Podium(youtubeLogo));
-		youtubePodium.mesh.position.z = 8;
-		this.addEntity(youtubePodium);
+		const youtube = this.spawnPodium(new Youtube());
+		youtube.mesh.position.z = 8;
+		youtube.mesh.position.x = -8;
 
+		const github = this.spawnPodium(new Github())
+		github.mesh.position.z = 9;
+		github.mesh.position.x = 0;
+
+		const tiktok = this.spawnPodium(new Tiktok());
+		tiktok.mesh.position.z = 8;
+		tiktok.mesh.position.x = 8;
+
+		const linkedIn = this.spawnPodium(new LinkedIn());
+		linkedIn.mesh.position.z = 8;
+		linkedIn.mesh.position.x = 16;
 
 		//const cubeGeom = new SimpleCubeGeometry(1, 1, 1);
 		//const cubeMaterial = new SimpleMeshMaterial({

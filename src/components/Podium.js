@@ -1,8 +1,10 @@
 import Component from "../component";
+import GroundBorderEntity from "../entities/GroundBorderEntity";
 import MeshLoader from "../loaders/MeshLoader";
 import TLoader from "../loaders/TLoader";
 import MatcapMaterial from "../material/MatcapMaterial";
 import BoxCollider from "./box-collider";
+import GroundBorderZone from "./GroundBorderZone";
 
 export default class Podium extends Component {
 	displayedEntity;
@@ -15,6 +17,12 @@ export default class Podium extends Component {
 	init() {
 		this.boxCollider = new BoxCollider(2.5, 3.5, 2.5);
 		this.owner.addComponent(this.boxCollider);
+
+		this.infoZone = new GroundBorderEntity();
+		this.infoZone.addComponent(new GroundBorderZone());
+		this.owner.addChild(this.infoZone);
+		this.infoZone.mesh.position.z = 5;
+		this.infoZone.mesh.position.y = -3.49;
 
 		const podiumMatcap = TLoader.load("/textures/matcap_shiny.png");
 		const podiumMaterial = new MatcapMaterial(podiumMatcap);

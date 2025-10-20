@@ -19,6 +19,8 @@ export default class BlurPlaneMaterial {
 		};
 
 		const material = new ShaderMaterial({
+			depthTest: false,
+			depthWrite: false,
 			uniforms: uniforms,
 			vertexShader: vertexShader,
 			fragmentShader: fragmentShader,

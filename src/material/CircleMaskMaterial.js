@@ -6,6 +6,8 @@ import fragmentShader from "/shaders/post-process/mask/circle.frag?url&raw";
 export default class CircleMaskMaterial {
 	constructor() {
 		const material = new ShaderMaterial({
+			depthWrite: false,
+			depthTest: false,
 			vertexShader: vertexShader,
 			fragmentShader: fragmentShader,
 

@@ -11,8 +11,8 @@ export default class OuterGroundBorderMaterial {
 
 		const material = new ShaderMaterial({
 			wireframe: false,
-			transparent: true,
-			depthWrite: false,
+			transparent: false,
+			depthWrite: true,
 			depthTest: true,
 			uniforms: uniforms,
 			side: DoubleSide,

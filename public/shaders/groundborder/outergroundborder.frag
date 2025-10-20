@@ -7,7 +7,7 @@ uniform float uTime;
 
 void main() {
     vec3 color = vec3(1.0f);
-    FragColor = vec4(color, 0.7f);
+    FragColor = vec4(color, 1.0f);
 
     BrightColor = vec4(0.0f);
 }
