@@ -2,7 +2,7 @@ import Player from "./components/player";
 import BoxCollider from "./components/box-collider";
 import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
 import FloorGeometry from "./geometry/FloorGeometry";
-import { Scene } from "three";
+import { Scene, SphereGeometry } from "three";
 import Physics from "./physics";
 import Entity from "./entity";
 import CenterPieceEntity from "./entities/CenterPieceEntity";
@@ -17,6 +17,8 @@ import Tiktok from "./components/Tiktok";
 import LinkedIn from "./components/LinkedIn";
 import { degToRad } from "three/src/math/MathUtils.js";
 import WorkZoneGenerator from "./components/WorkZoneGenerator";
+import DiffuseCubeMaterial from "./material/DiffuseCubeMaterial";
+import EntityPositionInfo from "./components/EntityPositionInfo";
 
 export default class World {
 	/** @type {Map} */
@@ -64,6 +66,7 @@ export default class World {
 	}
 
 	testWorld() {
+
 		const centerPieceZPos = 16;
 		const centerPiece = new CenterPieceEntity();
 		centerPiece.addComponent(new CenterPiece());
@@ -110,6 +113,15 @@ export default class World {
 		this.player = new Entity(playerGeom, playerMaterial);
 		this.player.addComponent(new Player());
 		this.addEntity(this.player);
+
+		let cubeGeometry = new SphereGeometry(1, 16, 16);
+		// NOTE: Flat shading example
+		cubeGeometry = cubeGeometry.toNonIndexed();
+		cubeGeometry.computeVertexNormals();
+		const cubeMaterial = new DiffuseCubeMaterial();
+		const cube = new Entity(cubeGeometry, cubeMaterial);
+		cube.addComponent(new EntityPositionInfo(this.player, "uLightPosition"));
+		this.addEntity(cube);
 
 		const floorMatcap = TLoader.load("/textures/matcap_green.png");
 		const width = 200;

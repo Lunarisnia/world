@@ -1,5 +1,6 @@
 import Component from "../component";
 import GroundBorderEntity from "../entities/GroundBorderEntity";
+import flatShading from "../geometry/flatShading";
 import MeshLoader from "../loaders/MeshLoader";
 import TLoader from "../loaders/TLoader";
 import MatcapMaterial from "../material/MatcapMaterial";
@@ -35,6 +36,7 @@ export default class Podium extends Component {
 			root.traverse((child) => {
 				if (child.isMesh) {
 					child.material = podiumMaterial;
+					child.geometry = flatShading(child.geometry);
 				}
 			});
 			this.mesh.add(root);

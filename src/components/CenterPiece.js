@@ -4,6 +4,7 @@ import MeshLoader from "../loaders/MeshLoader";
 import BoxCollider from "./box-collider";
 import TLoader from "../loaders/TLoader";
 import MatcapMaterial from "../material/MatcapMaterial";
+import flatShading from "../geometry/flatShading";
 
 export default class CenterPiece extends Component {
 	constructor() {
@@ -22,6 +23,7 @@ export default class CenterPiece extends Component {
 			root.traverse((child) => {
 				if (child.isMesh) {
 					child.material = podiumMaterial;
+					child.geometry = flatShading(child.geometry);
 				}
 			});
 			this.mesh.add(root);
