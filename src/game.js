@@ -99,6 +99,7 @@ export default class Game {
 		this.clock.start();
 		await Physics.instance.init();
 		this.world.init();
+		this.renderer.init();
 		this.mainCamera.init();
 
 		this.debug.init();

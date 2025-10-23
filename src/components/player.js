@@ -52,8 +52,8 @@ export default class Player extends Component {
 		this.rigidBody.init();
 		this.rigidBody.boxCollider(0.5, 0.5, 0.5);
 
-		const matcap = TLoader.load("/textures/matcap_plastic.png");
-		this.mesh.material.uniforms.uMatcap = { value: matcap };
+		//const matcap = TLoader.load("/textures/matcap_plastic.png");
+		//this.mesh.material.uniforms.uMatcap = { value: matcap };
 	}
 
 	update() {

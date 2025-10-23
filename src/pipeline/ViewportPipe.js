@@ -11,14 +11,14 @@ export default class ViewportPipe extends Pipe {
 	}
 
 	draw() {
-		const bloomPipe = this.pipeline.getPipe("BloomPipe");
-		this.renderer.viewport.material.uniforms.uBloomTexture = { value: bloomPipe.renderTarget.texture };
+		//const bloomPipe = this.pipeline.getPipe("BloomPipe");
+		//this.renderer.viewport.material.uniforms.uBloomTexture = { value: bloomPipe.renderTarget.texture };
 
 		const worldPipe = this.pipeline.getPipe("WorldPipe");
-		const circleMaskPipe = this.pipeline.getPipe("CircleMaskPipe");
+		//const circleMaskPipe = this.pipeline.getPipe("CircleMaskPipe");
+		//this.renderer.viewport.material.uniforms.uMaskTexture = { value: circleMaskPipe.renderTarget.texture };
 		this.renderer.viewport.material.uniforms.uWorldTexture.value = worldPipe.renderTarget.texture;
-		this.renderer.viewport.material.uniforms.uDepthTexture.value = worldPipe.renderTarget.depthTexture;
-		this.renderer.viewport.material.uniforms.uMaskTexture = { value: circleMaskPipe.renderTarget.texture };
+		//this.renderer.viewport.material.uniforms.uDepthTexture.value = worldPipe.renderTarget.depthTexture;
 		this.renderer.viewport.material.uniforms.uTime = { value: Game.instance.clock.getElapsedTime() };
 
 		Game.instance.mainCamera.instance.updateMatrixWorld();

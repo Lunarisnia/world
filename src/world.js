@@ -2,7 +2,7 @@ import Player from "./components/player";
 import BoxCollider from "./components/box-collider";
 import SimpleCubeGeometry from "./geometry/SimpleCubeGeometry";
 import FloorGeometry from "./geometry/FloorGeometry";
-import { Scene, SphereGeometry } from "three";
+import { BoxGeometry, CameraHelper, Color, DirectionalLight, DirectionalLightHelper, Mesh, MeshBasicMaterial, MeshStandardMaterial, PointLight, PointLightHelper, Scene, SphereGeometry } from "three";
 import Physics from "./physics";
 import Entity from "./entity";
 import CenterPieceEntity from "./entities/CenterPieceEntity";
@@ -15,10 +15,11 @@ import Youtube from "./components/Youtube";
 import Github from "./components/Github";
 import Tiktok from "./components/Tiktok";
 import LinkedIn from "./components/LinkedIn";
-import { degToRad } from "three/src/math/MathUtils.js";
 import WorkZoneGenerator from "./components/WorkZoneGenerator";
 import DiffuseCubeMaterial from "./material/DiffuseCubeMaterial";
 import EntityPositionInfo from "./components/EntityPositionInfo";
+import FloorMaterial from "./material/FloorMaterial";
+import { degToRad } from "three/src/math/MathUtils.js";
 
 export default class World {
 	/** @type {Map} */
@@ -67,6 +68,7 @@ export default class World {
 
 	testWorld() {
 
+		// TODO: set everything to cast shadow
 		const centerPieceZPos = 16;
 		const centerPiece = new CenterPieceEntity();
 		centerPiece.addComponent(new CenterPiece());
@@ -109,8 +111,13 @@ export default class World {
 		linkedIn.mesh.position.x = 16;
 
 		const playerGeom = new SimpleCubeGeometry(1, 1, 1);
-		const playerMaterial = new MatcapMaterial();
+		//const playerMaterial = new MatcapMaterial();
+		const playerMaterial = new MeshStandardMaterial({
+			color: 0xFF00FF,
+		});
 		this.player = new Entity(playerGeom, playerMaterial);
+		this.player.mesh.castShadow = true;
+		this.player.mesh.receiveShadow = true;
 		this.player.addComponent(new Player());
 		this.addEntity(this.player);
 
@@ -123,16 +130,64 @@ export default class World {
 		cube.addComponent(new EntityPositionInfo(this.player, "uLightPosition"));
 		this.addEntity(cube);
 
-		const floorMatcap = TLoader.load("/textures/matcap_green.png");
+		//const floorMatcap = TLoader.load("/textures/matcap_green.png");
 		const width = 200;
 		const height = 200;
 		const floorGeom = new FloorGeometry(width, 1, height);
-		const floorMaterial = new MatcapMaterial(floorMatcap);
+		const floorMaterial = new FloorMaterial();
 		this.floor = new Entity(floorGeom, floorMaterial);
 		this.floor.mesh.position.y = -1;
 		const bc = new BoxCollider(width / 2, 0.5, height / 2);
 		this.floor.addComponent(bc);
+		this.floor.mesh.receiveShadow = true;
 		this.addEntity(this.floor);
 
+
+		//const testFloorGeom = new BoxGeometry(8, 2, 8);
+		//const testFloorMat = new MeshStandardMaterial({
+		//	color: new Color(1, 1, 1),
+		//});
+		//const testFloor = new Mesh(testFloorGeom, testFloorMat);
+		//testFloor.position.setY(2);
+		//testFloor.receiveShadow = true;
+		//this.scene.add(testFloor);
+		//
+		//const testCubeGeom = new BoxGeometry(1, 1, 1);
+		//const testCubeMat = new MeshStandardMaterial(
+		//	{ color: new Color(1, 0, 0) },
+		//);
+		//const testCube = new Mesh(testCubeGeom, testCubeMat);
+		//testCube.position.setY(4);
+		//testCube.receiveShadow = true;
+		//testCube.castShadow = true;
+		//this.scene.add(testCube);
+
+		const light = new DirectionalLight(0xffffff, 10);
+		const cubeGeom = new BoxGeometry(1, 1, 1);
+		const cubeMat = new MeshBasicMaterial({
+			color: 0x00FF00,
+		});
+		const lightCube = new Mesh(cubeGeom, cubeMat);
+		lightCube.position.setX(1);
+		lightCube.position.setZ(-4);
+		this.scene.add(lightCube);
+
+		// TODO: Move the object along the player
+		light.position.set(0, 100, 200);
+		light.target = lightCube;
+		light.castShadow = true;
+		light.shadow.mapSize.width = 1024; // default
+		light.shadow.mapSize.height = 1024; // default
+		light.shadow.camera.near = 0.5; // default
+		light.shadow.camera.far = 1000; // default
+
+		light.shadow.camera.left = -10;
+		light.shadow.camera.right = 10;
+		light.shadow.camera.top = 10;
+		light.shadow.camera.bottom = -10;
+		this.scene.add(light);
+
+		const sHelper = new DirectionalLightHelper(light, 1, 0xFF0000);
+		this.scene.add(sHelper);
 	}
 };

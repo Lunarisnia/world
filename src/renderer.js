@@ -1,15 +1,12 @@
-import { Mesh, NearestFilter, WebGLRenderer, WebGLRenderTarget } from "three";
+import { Mesh, WebGLRenderer, WebGLRenderTarget } from "three";
 import Camera from "./camera";
 import { Scene } from "three";
 import Game from "./game";
 import ViewportGeometry from "./geometry/ViewportGeometry";
 import ViewportMaterial from "./material/ViewportMaterial";
-import TestBedViewportMaterial from "./material/TestBedViewportMaterial";
-import RenderPipeline from "./RenderPipeline";
-import ViewportPipe from "./pipeline/ViewportPipe";
-import WorldPipe from "./pipeline/WorldPipe";
-import CircleMaskPipe from "./pipeline/CircleMaskPipe";
-import BloomPipe from "./pipeline/BloomPipe";
+import { EffectComposer } from "postprocessing";
+import MainRenderPass from "./renderpasses/MainRenderpass";
+
 
 export default class Renderer {
 	/** @type {WebGLRenderer} */
@@ -25,38 +22,27 @@ export default class Renderer {
 	/** @type {Mesh} */
 	postProcessViewport;
 
-	/** @type {{main: RenderPipeline, testBed: RenderPipeline}} */
-	pipelines = {
-		main: null,
-		testBed: null,
-	};
-
 	constructor() {
 		const canvas = document.querySelector("#mainCanvas")
-		this.instance = new WebGLRenderer({ antialias: false, canvas });
-
-
-		this.testBedRenderTarget = new WebGLRenderTarget(512, 512, {
-			minFilter: NearestFilter,
-			magFilter: NearestFilter,
-			generateMipmaps: false,
-			// MSAA sample
-			samples: 2,
+		this.instance = new WebGLRenderer({
+			antialias: false,
+			stencil: false,
+			powerPreference: "high-performance",
+			depth: false,
+			canvas
 		});
+		this.instance.shadowMap.enabled = true;
+		this.instance.setPixelRatio(window.devicePixelRatio);
 
+		// TODO: Abstract this to its own file
+		this.composer = new EffectComposer(this.instance);
+		this.registerRenderTargetToBeResized(this.composer);
 
-		this.pipelines.main = new RenderPipeline(this,
-			new WorldPipe(Game.instance.world.scene, Game.instance.mainCamera.instance),
-			new BloomPipe(Game.instance.viewportCamera),
-			new CircleMaskPipe(Game.instance.viewportCamera),
-			new ViewportPipe(Game.instance.scene, Game.instance.viewportCamera),
-		);
-		// FIXME: test bed is broken
-		this.pipelines.testBed = new RenderPipeline(this,
-			new WorldPipe(Game.instance.testRealmScene, Game.instance.mainCamera.instance),
-			// TODO: This should have its own viewport pipe
-			new ViewportPipe(Game.instance.testRealmViewportScene, Game.instance.viewportCamera),
-		);
+		this.mainPass = new MainRenderPass(this.composer);
+	}
+
+	init() {
+		this.mainPass.init();
 	}
 
 	registerRenderTargetToBeResized(renderTarget) {
@@ -69,10 +55,6 @@ export default class Renderer {
 		this.viewport = new Mesh(geom, material);
 		Game.instance.scene.add(this.viewport);
 
-		const testBedGeom = new ViewportGeometry();
-		const testBedMaterial = new TestBedViewportMaterial(this.pipelines.testBed.getPipe("WorldPipe").renderTarget);
-		this.testBedViewport = new Mesh(testBedGeom, testBedMaterial);
-		Game.instance.testRealmViewportScene.add(this.testBedViewport);
 	}
 
 	/**
@@ -94,15 +76,11 @@ export default class Renderer {
 	setSize(width, height) {
 		this.instance.setSize(width, height);
 		for (const rt of this.resizedRenderTarget) {
-			rt.setSize(width * window.devicePixelRatio, height * window.devicePixelRatio);
+			rt.setSize(width, height);
 		}
 	}
 
 	draw() {
-		if (Game.instance.debug.shaderTestBed) {
-			this.pipelines.testBed.run();
-			return;
-		}
-		this.pipelines.main.run();
+		this.mainPass.render();
 	}
 };
