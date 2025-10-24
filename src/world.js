@@ -20,6 +20,7 @@ import DiffuseCubeMaterial from "./material/DiffuseCubeMaterial";
 import EntityPositionInfo from "./components/EntityPositionInfo";
 import FloorMaterial from "./material/FloorMaterial";
 import { degToRad } from "three/src/math/MathUtils.js";
+import FollowLight from "./components/FollowLight";
 
 export default class World {
 	/** @type {Map} */
@@ -110,6 +111,7 @@ export default class World {
 		linkedIn.mesh.position.z = socialAreaZPos;
 		linkedIn.mesh.position.x = 16;
 
+
 		const playerGeom = new SimpleCubeGeometry(1, 1, 1);
 		//const playerMaterial = new MatcapMaterial();
 		const playerMaterial = new MeshStandardMaterial({
@@ -143,38 +145,20 @@ export default class World {
 		this.addEntity(this.floor);
 
 
-		//const testFloorGeom = new BoxGeometry(8, 2, 8);
-		//const testFloorMat = new MeshStandardMaterial({
-		//	color: new Color(1, 1, 1),
-		//});
-		//const testFloor = new Mesh(testFloorGeom, testFloorMat);
-		//testFloor.position.setY(2);
-		//testFloor.receiveShadow = true;
-		//this.scene.add(testFloor);
-		//
-		//const testCubeGeom = new BoxGeometry(1, 1, 1);
-		//const testCubeMat = new MeshStandardMaterial(
-		//	{ color: new Color(1, 0, 0) },
-		//);
-		//const testCube = new Mesh(testCubeGeom, testCubeMat);
-		//testCube.position.setY(4);
-		//testCube.receiveShadow = true;
-		//testCube.castShadow = true;
-		//this.scene.add(testCube);
-
 		const light = new DirectionalLight(0xffffff, 10);
 		const cubeGeom = new BoxGeometry(1, 1, 1);
 		const cubeMat = new MeshBasicMaterial({
 			color: 0x00FF00,
 		});
-		const lightCube = new Mesh(cubeGeom, cubeMat);
-		lightCube.position.setX(1);
-		lightCube.position.setZ(-4);
-		this.scene.add(lightCube);
+		this.lightCube = new Entity(cubeGeom, cubeMat);
+		this.lightCube.mesh.position.setX(1);
+		this.lightCube.mesh.position.setZ(-4);
+		this.lightCube.addComponent(new FollowLight(light, this.player))
+		this.addEntity(this.lightCube);
 
 		// TODO: Move the object along the player
 		light.position.set(0, 100, 200);
-		light.target = lightCube;
+		light.target = this.lightCube.mesh;
 		light.castShadow = true;
 		light.shadow.mapSize.width = 1024; // default
 		light.shadow.mapSize.height = 1024; // default
@@ -187,7 +171,8 @@ export default class World {
 		light.shadow.camera.bottom = -10;
 		this.scene.add(light);
 
-		const sHelper = new DirectionalLightHelper(light, 1, 0xFF0000);
-		this.scene.add(sHelper);
+
+		//const sHelper = new DirectionalLightHelper(light, 1, 0xFF0000);
+		//this.scene.add(sHelper);
 	}
 };

@@ -1,4 +1,4 @@
-import { ArrowHelper, Color, Mesh, Quaternion, SphereGeometry, Vector3 } from "three";
+import { ArrowHelper, Color, Quaternion, SphereGeometry, Vector3 } from "three";
 import Component from "../component";
 import { degToRad, } from "three/src/math/MathUtils.js";
 import InputManager from "../input/inputManager";
