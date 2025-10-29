@@ -16,6 +16,7 @@ export default class Tiktok extends Component {
 			root.traverse((child) => {
 				if (child.isMesh) {
 					child.material = material;
+					child.castShadow = true;
 				}
 			});
 			this.mesh.add(root);

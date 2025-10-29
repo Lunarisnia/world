@@ -3,8 +3,8 @@ import Component from "../component";
 
 export default class FollowLight extends Component {
 	playerWorldPos = new Vector3();
-	lightOffsetPos = new Vector3(0, 100, 200);
-	controlOffsetPos = new Vector3(0, 0, -4);
+	lightOffsetPos = new Vector3(0, 100, 40);
+	controlOffsetPos = new Vector3(0, 0, -10);
 	constructor(light, player) {
 		super();
 		this.light = light;

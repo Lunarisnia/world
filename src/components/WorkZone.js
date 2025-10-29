@@ -38,7 +38,7 @@ export default class WorkZone extends Component {
 
 		this.workDisplay.mesh.position.x = -1;
 		this.workDisplay.mesh.position.z = -2;
-		this.workDisplay.mesh.position.y = 0.5;
+		this.workDisplay.mesh.position.y = -0.1;
 		this.workDisplay.mesh.rotateY(degToRad(15));
 
 		this.infoZone.mesh.position.z = 2;

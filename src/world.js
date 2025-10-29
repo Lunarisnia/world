@@ -160,15 +160,15 @@ export default class World {
 		light.position.set(0, 100, 200);
 		light.target = this.lightCube.mesh;
 		light.castShadow = true;
-		light.shadow.mapSize.width = 1024; // default
-		light.shadow.mapSize.height = 1024; // default
+		light.shadow.mapSize.width = 2048; // default
+		light.shadow.mapSize.height = 2048; // default
 		light.shadow.camera.near = 0.5; // default
 		light.shadow.camera.far = 1000; // default
 
-		light.shadow.camera.left = -10;
-		light.shadow.camera.right = 10;
-		light.shadow.camera.top = 10;
-		light.shadow.camera.bottom = -10;
+		light.shadow.camera.left = -20;
+		light.shadow.camera.right = 20;
+		light.shadow.camera.top = 20;
+		light.shadow.camera.bottom = -20;
 		this.scene.add(light);
 
 

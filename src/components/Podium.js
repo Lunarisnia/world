@@ -37,6 +37,7 @@ export default class Podium extends Component {
 				if (child.isMesh) {
 					child.material = podiumMaterial;
 					child.geometry = flatShading(child.geometry);
+					child.castShadow = true;
 				}
 			});
 			this.mesh.add(root);

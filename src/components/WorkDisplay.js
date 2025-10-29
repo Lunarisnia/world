@@ -1,9 +1,11 @@
 import Component from "../component";
-import WorkDisplayMaterial from "../material/WorkDisplayMaterial";
 import { Color, DoubleSide, Material } from "three";
 import SimpleMeshMaterial from "../material/SimpleMeshMaterial";
 import BoxCollider from "./box-collider";
 import MeshLoader from "../loaders/MeshLoader";
+import flatShading from "../geometry/flatShading";
+import MatcapMaterial from "../material/MatcapMaterial";
+import TLoader from "../loaders/TLoader";
 
 export default class WorkDisplay extends Component {
 	/** @type {Material} */
@@ -23,12 +25,15 @@ export default class WorkDisplay extends Component {
 		this.boxCollider = new BoxCollider(3, 4, 0.5);
 		this.owner.addComponent(this.boxCollider);
 
-		const workDisplayMaterial = new WorkDisplayMaterial();
+		const podiumMatcap = TLoader.load("/textures/matcap_plastic.png");
+		const workDisplayMaterial = new MatcapMaterial(podiumMatcap);
 		// TODO: Load texture
 		MeshLoader.load("/models/WorkDisplay/WorkDisplay.obj", (root) => {
 			root.traverse((child) => {
 				if (child.isMesh) {
 					child.material = workDisplayMaterial;
+					child.geometry = flatShading(child.geometry);
+					child.castShadow = true;
 					if (child.name === "Cube.001") {
 						child.material = this.displayMaterial;
 					}
