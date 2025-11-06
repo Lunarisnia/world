@@ -2,7 +2,7 @@ import InputManager from "./input/inputManager";
 
 export default class DebugController {
 	/** @type {boolean} */
-	gizmo = true;
+	gizmo = false;
 
 	/** @type {boolean} */
 	shaderTestBed = false;
